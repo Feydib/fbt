@@ -1,4 +1,4 @@
-fbt
+feydib/fbt
 ===
 Free Bet Tournament Web Application
 
