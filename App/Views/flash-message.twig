@@ -1,0 +1,15 @@
+{% for message in app.session.getFlashBag.get('message') %} 
+    <div class="message info">
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}
+{% for message in app.session.getFlashBag.get('error') %}
+    <div class="message error">
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}
+{% for message in app.session.getFlashBag.get('success') %}
+    <div class="message success">
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}

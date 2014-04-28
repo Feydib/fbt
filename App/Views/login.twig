@@ -1,0 +1,19 @@
+{% extends layout %}
+
+{% block body %}
+<div id="login">
+{% if is_granted('ROLE_USER') %}
+    <p>Bienvenue {{ app.security.token.user.username }} !</p>
+    <p><a href="{{ path('deconnexion') }}">{% trans %}logout{% endtrans %}</a></p>
+{% else %}
+    <form action="{{ path('connexion') }}" method="post">
+        <p><label for="username">{% trans %}username{% endtrans %} : </label><input id="username" type="text" name="_username" value="{{ last_username }}"></p>
+        <p><label for="password">{% trans %}password{% endtrans %} : </label><input id="password" type="password" name="_password"></p>
+        <p><input type="submit" class="btn" value="{% trans %}connection{% endtrans %}"></p>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+    </form>
+{% endif %}
+</div>
+{% endblock %}

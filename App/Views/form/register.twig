@@ -1,0 +1,34 @@
+<form  action="{{ action }}" method="post">
+    
+  <legend>{% trans  %}register{% endtrans %}</legend>
+  {{ form_errors(form)}}
+  <div class="champ">
+    {{ form_label(form.username, form.username.vars.name ) }}</label>
+    {{ form_widget(form.username) }}
+    {{ form_errors(form.username) }}
+  </div>
+  <div class="champ">
+  {{ form_label(form.email, form.email.vars.name ) }}
+  {{ form_widget(form.email) }}
+  </div>
+  <div class="champ">
+  {{ form_label(form.lastname, form.lastname.vars.name ) }}
+  {{ form_widget(form.lastname) }}
+  </div>
+  <div class="champ">
+  {{ form_label(form.firstname, form.firstname.vars.name ) }}
+  {{ form_widget(form.firstname) }}
+  </div>
+  <div class="champ">
+  <label class="required" for="register_password_repeated_first">{% trans  %} password{% endtrans %}</label>
+  {{ form_widget(form.password_repeated.first) }}
+  </div>
+  <div class="champ">
+  <label class="required" for="register_password_repeated_second">{% trans  %}repeat{% endtrans %} {% trans  %} password{% endtrans %}</label>
+  {{ form_widget(form.password_repeated.second) }}
+  </div>
+  
+{{ form_rest(form)}}
+  
+  <input class="btn" type="submit" name="submit">
+</form>

@@ -1,0 +1,29 @@
+site_title : Pronostics
+
+submit : valider
+connection : Connexion
+
+#Menu
+home : Accueil
+login : Se connecter
+logout : Se déconnecter
+signup : Créer un compte
+
+#Utilisateur
+username : Login
+password : Mot de passe
+email : Email
+firstname : Prénom
+lastname : Nom
+repeat : Répéter
+
+register : Enregistrement
+confirm : Confirmer
+
+#Message d'erreur 
+email already exists : Le Mail existe déjà
+username already exists : Login déjà existant
+Invalid credentials.: Pseudo ou mot de passe incorect
+The form contains errors : Le formulaire contient des erreurs
+Your account was successfully created, please login : Votre compte a bien été créé, vous pouvez vous connecter
+

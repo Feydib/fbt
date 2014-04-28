@@ -1,0 +1,7 @@
+{% extends layout %}
+
+{% block body %}
+<div id="register">
+{% include 'form/register.twig' with {'form': registrationForm, 'action': path('user.dosignup')} only %}
+</div>
+{% endblock %}

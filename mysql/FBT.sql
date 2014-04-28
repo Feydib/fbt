@@ -100,15 +100,19 @@ DROP TABLE IF EXISTS `FBT`.`FBT_Players` ;
 
 CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_Players` (
   `idPlayers` INT NOT NULL AUTO_INCREMENT ,
-  `firstname` VARCHAR(45) NULL ,
-  `lastname` VARCHAR(45) NULL ,
-  `mail` VARCHAR(45) NULL ,
-  `password` VARCHAR(255) NULL ,
+  `username` VARCHAR(45) NOT NULL ,
+  `firstname` VARCHAR(45) NOT NULL ,
+  `lastname` VARCHAR(45) NOT NULL ,
+  `mail` VARCHAR(45) NOT NULL ,
+  `salt` VARCHAR(45) NOT NULL ,
+  `password` VARCHAR(255) NOT NULL ,
   `rdate` DATETIME NULL ,
   `role` VARCHAR(45) NULL ,
   `active` TINYINT NULL ,
   PRIMARY KEY (`idPlayers`) ,
-  UNIQUE INDEX `idPlayers_UNIQUE` (`idPlayers` ASC) )
+  UNIQUE INDEX `idPlayers_UNIQUE` (`idPlayers` ASC) ,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) ,
+  UNIQUE INDEX `mail_UNIQUE` (`mail` ASC) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
