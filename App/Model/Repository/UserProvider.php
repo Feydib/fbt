@@ -11,15 +11,17 @@ use Doctrine\DBAL\Connection;
 class UserProvider implements UserProviderInterface
 {
     private $conn;
+    protected $table;
  
     public function __construct(Connection $conn)
     {
         $this->conn = $conn;
+        $this->table = "fbt_players";
     }
  
     public function loadUserByUsername($username)
     {
-        $stmt = $this->conn->executeQuery('SELECT * FROM users WHERE username = ?', array(strtolower($username)));
+        $stmt = $this->conn->executeQuery('SELECT * FROM '.$this->table.' WHERE username = ?', array(strtolower($username)));
         if (!$user = $stmt->fetch()) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }

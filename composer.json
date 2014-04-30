@@ -20,6 +20,7 @@
         "doctrine/dbal": "2.4.*",
         "swiftmailer/swiftmailer": "5.*",
         "symfony/yaml": "~2.3",
+        "deralex/yaml-config-service-provider": "1.0.x-dev",
         "doctrine/orm": "2.4.*"
     },
     "autoload": {

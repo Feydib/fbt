@@ -10,7 +10,7 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
     $translator->addLoader('yaml', new YamlFileLoader());
     $translator->addResource('yaml', __DIR__.'/../../web/locales/fr.yml', 'fr');
     $translator->addLoader('xliff', new XliffFileLoader());
-    $file = __DIR__ .'/../vendor/symfony/validator/Symfony/Component/Validator/Resources/translations/validators.fr.xlf';
+    $file = __DIR__ .'/../../vendor/symfony/validator/Symfony/Component/Validator/Resources/translations/validators.fr.xlf';
     $translator->addResource('xliff', $file , 'fr');
     return $translator;
 }));

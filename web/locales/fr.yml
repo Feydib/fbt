@@ -2,6 +2,8 @@ site_title : Pronostics
 
 submit : valider
 connection : Connexion
+welcome : Bienvenue
+save done : Sauvegarde effectuée
 
 #Menu
 home : Accueil
@@ -16,6 +18,7 @@ email : Email
 firstname : Prénom
 lastname : Nom
 repeat : Répéter
+name : Nom
 
 register : Enregistrement
 confirm : Confirmer
@@ -26,4 +29,11 @@ username already exists : Login déjà existant
 Invalid credentials.: Pseudo ou mot de passe incorect
 The form contains errors : Le formulaire contient des erreurs
 Your account was successfully created, please login : Votre compte a bien été créé, vous pouvez vous connecter
+
+#Tournament
+tournament : Compétition
+tournaments list : Liste des Compétitions 
+new tournament : Nouvelle compétition
+my tournaments : Mes compétitions
+
 

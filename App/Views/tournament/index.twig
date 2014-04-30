@@ -1,0 +1,29 @@
+{% extends layout %}
+
+{% block body %}
+<div id="content">
+
+    <legend>{% trans %} new tournament {% endtrans %}</legend>
+    {{ render(url('tournament.add')) }}
+    
+    <h3>{% trans %} my tournaments {% endtrans %}</h3>
+    <p>
+    {% for mytournament in myTournaments %}
+        {{mytournament.name}} - {{mytournament.year|date('Y')}} - 
+        <a href="{{path('tournament.leave', { idTournament : mytournament.idTournament } )}}">leave</a>
+        <a href="{{path('tournament.delete', { idTournament : mytournament.idTournament } )}}">delete</a>
+        <br/>
+    {% endfor %}
+    </p>
+    
+    <h3>{% trans %} tournaments list {% endtrans %}</h3>
+    <p>
+    {% for tournament in tournaments %}
+        {{tournament.name}} - {{tournament.year|date('Y')}} - 
+        <a href="{{path('tournament.join', { idTournament : tournament.idTournament } )}}">join</a>
+        <br/>
+    {% endfor %}
+    </p>
+    
+</div>
+{% endblock %}

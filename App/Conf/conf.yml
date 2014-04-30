@@ -1,0 +1,8 @@
+#configuration file
+database:
+    driver: pdo_mysql
+    host: localhost
+    dbname: fbt
+    user: root
+    password: 
+    charset: utf8
