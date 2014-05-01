@@ -5,8 +5,8 @@ namespace App\Model\Entity;
 /**
  * FbtMatchteam
  *
- * @Table(name="fbt_matchteam", uniqueConstraints={@UniqueConstraint(name="id_UNIQUE", columns={"idMatchTeam"})}, indexes={@Index(name="fk_FBT_MatchTeam_FBTTeams1", columns={"idTeams"}), @Index(name="fk_FBT_MatchTeam_FBTMatchs1", columns={"idMatchs"})})
- * @Entity
+ * @Table(name="fbt_matchteam")
+ * @Entity(repositoryClass="App\Model\Repository\MatchTeamRepository")
  */
 class Matchteam
 {
@@ -52,6 +52,15 @@ class Matchteam
      * })
      */
     private $idmatchs;
+    
+    /**
+     * 
+     * @var bet
+     *
+     *  @OneToMany(targetEntity="Betmatchs", mappedBy="idmatchteam", orphanRemoval=true)
+     *
+     */
+    private $bet;
 
     public function getIdmatchteam() {
         return $this->idmatchteam;
@@ -92,6 +101,14 @@ class Matchteam
     public function setIdmatchs(Matchs $idmatchs) {
         $this->idmatchs = $idmatchs;
     }
+    public function getBet() {
+        return $this->bet;
+    }
+
+    public function setBet(bet $bet) {
+        $this->bet = $bet;
+    }
+
 
 
 }

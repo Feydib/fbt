@@ -70,7 +70,7 @@ class Matchs
         return $this->teams;
     }
 
-    public function setTeams(team $teams) {
+    public function setTeams(Teams $teams) {
         $this->teams = $teams;
     }
 

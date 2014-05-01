@@ -11,7 +11,7 @@ class MatchController implements ControllerProviderInterface {
     public function index(Application $app) {
        $matchRepository = $app['em']->getRepository('App\Model\Entity\Matchs');
        $matchList = $matchRepository->find(null, 0 , array('date' => 'ASC')); 
-       
+
        return $app["twig"]->render("match/index.twig", array('matchs' => $matchList));
     }
 

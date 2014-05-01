@@ -6,7 +6,7 @@ namespace App\Model\Entity;
  * FbtBetmatchs
  *
  * @Table(name="fbt_betmatchs")
- * @Entity
+ * @Entity(repositoryClass="App\Model\Repository\BetMatchRepository")
  */
 class Betmatchs
 {
@@ -15,7 +15,7 @@ class Betmatchs
      *
      * @Column(name="idBetMatchs", type="integer", nullable=false)
      * @Id
-     * @GeneratedValue(strategy="NONE")
+     * @GeneratedValue(strategy="IDENTITY")
      */
     private $idbetmatchs;
 
@@ -29,9 +29,7 @@ class Betmatchs
     /**
      * @var \FbtPlayers
      *
-     * @Id
-     * @GeneratedValue(strategy="NONE")
-     * @OneToOne(targetEntity="FbtPlayers")
+     * @OneToOne(targetEntity="Players")
      * @JoinColumns({
      *   @JoinColumn(name="idPlayers", referencedColumnName="idPlayers")
      * })
@@ -41,9 +39,7 @@ class Betmatchs
     /**
      * @var \FbtMatchteam
      *
-     * @Id
-     * @GeneratedValue(strategy="NONE")
-     * @OneToOne(targetEntity="FbtMatchteam")
+     * @OneToOne(targetEntity="Matchteam")
      * @JoinColumns({
      *   @JoinColumn(name="idMatchTeam", referencedColumnName="idMatchTeam")
      * })
@@ -74,11 +70,11 @@ class Betmatchs
         $this->score = $score;
     }
 
-    public function setIdplayers(\FbtPlayers $idplayers) {
+    public function setIdplayers(Players $idplayers) {
         $this->idplayers = $idplayers;
     }
 
-    public function setIdmatchteam(\FbtMatchteam $idmatchteam) {
+    public function setIdmatchteam(Matchteam $idmatchteam) {
         $this->idmatchteam = $idmatchteam;
     }
 
