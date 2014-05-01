@@ -16,6 +16,11 @@ class ToPlayersRepository extends EntityRepository
         $toPlayers = $this->findOneBy(array( "idtournament" => $tournament, 'idplayers' => $players));
         return $toPlayers ? $toPlayers : FALSE;
     }
+    
+    public function findToPlayersById($idToPlayers) {
+        $toPlayers = $this->findOneBy(array( "idtoplayers" => $idToPlayers));
+        return $toPlayers ? $toPlayers : FALSE;
+    }
     /**
      * Saves tournament to the database.
      *

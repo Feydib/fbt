@@ -59,6 +59,7 @@ class TournamentRepository extends EntityRepository
     {
         $qb = $this->_em->createQueryBuilder()
                 ->select('t')
+                ->addSelect('to')
                 ->from('App\Model\Entity\Tournament', 't')
                 ->leftJoin('t.players', 'to')
                 ->where('to.idplayers = ?1')
