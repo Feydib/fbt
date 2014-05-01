@@ -22,7 +22,6 @@ require __DIR__ . '/../App/Conf/doctrine.php';
 $app->register(new Silex\Provider\SessionServiceProvider());
 //on ajoute la gestion des url avec "path" 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
-use Symfony\Component\HttpFoundation\Request;
 
 //politique de securité et userManager
 require __DIR__ . '/../App/Conf/security.php';       
@@ -30,6 +29,8 @@ require __DIR__ . '/../App/Conf/security.php';
 // FR: Obtenir la configuration lang.
 require __DIR__ . '/../App/Conf/lang.php';
 
+// Config mail
+require __DIR__ . '/../App/Conf/swiftmailer.php';
 
 /*****************  Inclusion des ROUTES *************************/ 
 // FR: Obtenir les routes.

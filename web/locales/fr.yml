@@ -5,6 +5,20 @@ connection : Connexion
 welcome : Bienvenue
 save done : Sauvegarde effectuée
 
+join : Rejoindre
+leave : Quitter
+view : Voir
+delete : Supprimer
+date : Date
+
+add asking : Demande d'ajout
+ranking : Classement
+setAdmin : Mettre admin
+removeAdmin : Supprimer droits admin
+accept : Accepter
+remove : supprimer
+pronostics : Pronotics
+
 #Menu
 home : Accueil
 login : Se connecter
@@ -35,5 +49,8 @@ tournament : Compétition
 tournaments list : Liste des Compétitions 
 new tournament : Nouvelle compétition
 my tournaments : Mes compétitions
+accept waiting : En attente d'acceptation
+invite player : Inviter un joueur
 
-
+#Match
+matchs list : Liste des matchs

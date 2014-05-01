@@ -1,0 +1,13 @@
+<form  action="{{path('tournament.doInvite')}}" method="post">
+    
+  {{ form_errors(form)}}
+
+  <div class="champ">
+  {{ form_label(form.email, form.email.vars.name ) }}
+  {{ form_widget(form.email) }}
+  </div>
+  
+{{ form_rest(form)}}
+  
+  <input class="btn" type="submit" name="submit">
+</form>

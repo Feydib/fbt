@@ -1,8 +1,0 @@
-#configuration file
-database: 
-  # database
-  database: silex
-  driver: pdo_mysql
-  password: root
-  server: localhost
-  user: root

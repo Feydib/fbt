@@ -12,6 +12,10 @@ body {
     background: #16A857;
 }
 
+table td {
+    padding : 2px;
+}
+
 header {
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
@@ -94,23 +98,23 @@ section#content {
 /************************************************
 ********* FORM REGISTER ************************/
 
-div#register form {
+div#register for, div#content form {
     width : 90%;
     margin-left : 5%;
 }
 
-div#register form div {
+div#register form div{
     margin-bottom : 10px;
 }
 
-div#register form label {
+div#register form label, div#content form label {
     text-align : left;
     width : 200px;
 }
-div#register form input {
+div#register form input, div#content form input {
     width : 250px;
 }
-div#register form input[type=submit] {
+div#register form input[type=submit], div#content form input[type=submit], div#content div.date {
     margin-left : 24%;
 }
 div#register form div ul {

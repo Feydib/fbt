@@ -1,0 +1,38 @@
+{% extends layout %}
+
+{% block body %}
+<div id="content">
+    <h1>{{tournament.name}}</h1>
+    
+<legend>{% trans %}ranking{% endtrans %}</legend>
+{% for player in tournament.players %}
+    {% if player.isaccepted == true %}
+        {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
+        {% if currentUserAdmin == true %}
+            {% if player.isadmin == true %}
+                <a href="{{path('tournament.removeAdmin', { idToPlayers : player.idtoplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
+            {% else %}
+                <a href="{{path('tournament.setAdmin', { idToPlayers : player.idtoplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
+            {% endif %}
+            <a href="{{path('tournament.remove', { idToPlayers : player.idtoplayers} )}}">{% trans %}remove{% endtrans %}</a>
+        {% endif %}
+        <br/>
+    {% endif %}
+{% endfor %}
+
+<legend>{% trans %}add asking{% endtrans %}</legend>
+{% for player in tournament.players %}
+    {% if player.isaccepted == false %}
+        {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
+        {% if currentUserAdmin == true %}
+            <a href="{{path('tournament.accept', { idToPlayers : player.idtoplayers} )}}">{% trans %}accept{% endtrans %}</a>
+        {% endif %}
+        <br/>
+    {% endif %}
+{% endfor %}
+
+<legend>{% trans %} invite player {% endtrans %}</legend>
+{{ render(url('tournament.invite', { idTournament : tournament.idtournament}))}}
+
+</div>
+{% endblock %}
