@@ -44,7 +44,7 @@ class MatchRepository extends EntityRepository
      *
      * @return array A collection of matchs, keyed by id.
      */
-    public function findTout($limit, $offset = 0, $orderBy = array())
+    public function find($limit = null, $offset = 0, $orderBy = array())
     {        
         $matchs = $this->findBy(array(), $orderBy, $limit, $offset);
         return $matchs;

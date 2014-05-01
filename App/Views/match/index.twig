@@ -4,13 +4,38 @@
 <div id="content">
 
     <legend>{% trans %} matchs list {% endtrans %}</legend>
+    () -> {% trans %} my pronostics{% endtrans %}
     <table>
     {% for match in matchs %}
         <tr>
             <td>{{match.date|date('j/m/Y h:m')}}</td> 
             <td>{{match.stadium}}</td> 
+            {% set firstTeam = true %}
+    
         {% for team in match.teams %}
-            <td>{{team.idteams.countries.nameFr}}</td> 
+            
+            <td>
+                {% if firstTeam == false and team.score is not null %}
+                    {{team.score}} (  )
+                    {% if team.pen is not null %}
+                        {{team.pen}}
+                    {% endif %}
+                {% elseif firstTeam == false and team.score is null %}
+                    -
+                {% endif %}
+            </td>
+            <td>
+                {{team.idteams.countries.nameFr}}
+            </td>
+            <td>
+                {% if firstTeam == true and team.score is not null %}
+                   {{team.score}} ( ) -
+                   {% if team.pen is not null %}
+                        {{team.pen}}
+                   {% endif %}
+                {% endif %}
+            </td> 
+            {% set firstTeam = false %}
         {% endfor %}
         </tr>
     {% endfor %}
