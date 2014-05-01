@@ -13,10 +13,10 @@ $app = new Silex\Application();
 $app['debug'] = true;
 
 //configuration twig
-require __DIR__ . '/../App/conf/twig.php';
+require __DIR__ . '/../App/Conf/twig.php';
 
 //doctrine conf
-require __DIR__ . '/../App/conf/doctrine.php';
+require __DIR__ . '/../App/Conf/doctrine.php';
 
 //on ajoute la gestion des sessions
 $app->register(new Silex\Provider\SessionServiceProvider());
@@ -25,15 +25,15 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 use Symfony\Component\HttpFoundation\Request;
 
 //politique de securité et userManager
-require __DIR__ . '/../App/conf/security.php';       
+require __DIR__ . '/../App/Conf/security.php';       
 
 // FR: Obtenir la configuration lang.
-require __DIR__ . '/../App/conf/lang.php';
+require __DIR__ . '/../App/Conf/lang.php';
 
 
 /*****************  Inclusion des ROUTES *************************/ 
 // FR: Obtenir les routes.
-require __DIR__ . '/../App/conf/routes.php';
+require __DIR__ . '/../App/Conf/routes.php';
 # validation
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 # form
