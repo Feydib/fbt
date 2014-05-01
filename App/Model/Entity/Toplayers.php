@@ -24,6 +24,13 @@ class Toplayers
      * @Column(name="isAdmin", type="boolean", nullable=true)
      */
     private $isadmin;
+    
+    /**
+     * @var boolean
+     *
+     * @Column(name="isaccepted", type="boolean", nullable=true)
+     */
+    private $isaccepted;
 
     /**
      * @var \FbtTournament
@@ -77,6 +84,14 @@ class Toplayers
     public function setIdplayers(Players $idplayers) {
         $this->idplayers = $idplayers;
     }
+    public function getIsaccepted() {
+        return $this->isaccepted;
+    }
+
+    public function setIsaccepted($isaccepted) {
+        $this->isaccepted = $isaccepted;
+    }
+
 
 
 }

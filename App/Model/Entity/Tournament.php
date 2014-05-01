@@ -66,5 +66,13 @@ class Tournament
         $this->year = $year;
     }
 
+    public function getPlayers() {
+        return $this->players;
+    }
+
+    public function setPlayers(players $players) {
+        $this->players = $players;
+    }
+
 
 }
