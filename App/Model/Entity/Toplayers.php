@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 /**
  * FbtToplayers
  *
- * @Table(name="fbt_toplayers")
+ * @Table(name="FBT_toplayers")
  * @Entity(repositoryClass="App\Model\Repository\ToPlayersRepository")
  */
 class Toplayers

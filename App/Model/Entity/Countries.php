@@ -5,7 +5,7 @@ namespace App\Model\Entity;
 /**
  * FbtCountries
  *
- * @Table(name="fbt_countries")
+ * @Table(name="FBT_countries")
  * @Entity
  */
 class Countries

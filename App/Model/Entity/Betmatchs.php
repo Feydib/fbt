@@ -5,7 +5,7 @@ namespace App\Model\Entity;
 /**
  * FbtBetmatchs
  *
- * @Table(name="fbt_betmatchs")
+ * @Table(name="FBT_betmatchs")
  * @Entity(repositoryClass="App\Model\Repository\BetMatchRepository")
  */
 class Betmatchs

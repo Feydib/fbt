@@ -5,7 +5,7 @@ namespace App\Model\Entity;
 /**
  * FbtFootball
  *
- * @Table(name="fbt_football")
+ * @Table(name="FBT_football")
  * @Entity
  */
 class Football
@@ -24,7 +24,7 @@ class Football
      *
      * @Id
      * @GeneratedValue(strategy="NONE")
-     * @OneToOne(targetEntity="FbtCountries")
+     * @OneToOne(targetEntity="Countries")
      * @JoinColumns({
      *   @JoinColumn(name="Countries_id", referencedColumnName="idCountries")
      * })
@@ -43,7 +43,7 @@ class Football
         $this->worldrank = $worldrank;
     }
 
-    public function setCountries(\FbtCountries $countries) {
+    public function setCountries(Countries $countries) {
         $this->countries = $countries;
     }
 

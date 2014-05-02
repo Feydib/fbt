@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 /**
  * FbtTeams
  *
- * @Table(name="fbt_teams")
+ * @Table(name="FBT_teams")
  * @Entity
  */
 class Teams

@@ -5,7 +5,7 @@ namespace App\Model\Entity;
 /**
  * FbtMatchteam
  *
- * @Table(name="fbt_matchteam")
+ * @Table(name="FBT_matchteam")
  * @Entity(repositoryClass="App\Model\Repository\MatchTeamRepository")
  */
 class Matchteam

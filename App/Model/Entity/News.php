@@ -5,7 +5,7 @@ namespace App\Model\Entity;
 /**
  * FbtNews
  *
- * @Table(name="fbt_news")
+ * @Table(name="FBT_news")
  * @Entity
  */
 class News

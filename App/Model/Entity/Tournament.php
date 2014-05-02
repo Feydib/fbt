@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 /**
  * FbtTournament
  *
- * @Table(name="fbt_tournament")
+ * @Table(name="FBT_tournament")
  * @Entity(repositoryClass="App\Model\Repository\TournamentRepository")
  */
 class Tournament

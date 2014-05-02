@@ -66,15 +66,7 @@ class UserRepository extends EntityRepository
      * @return boolean
      */
     function emailExists($email) { 
-      $queryBuilder = $this->conn->createQueryBuilder();
-        $queryBuilder
-            ->select('u.*')
-            ->from($this->table, 'u')
-            ->where('u.mail = :mail')
-            ->setParameter('mail', $email)
-            ->setMaxResults(1);
-        $statement = $queryBuilder->execute();
-        $usersData = $statement->fetchAll();
+        $usersData = $this->findOneBy(array( "mail" => $email));
         if (!empty($usersData)) {
             return true;
         }
@@ -87,15 +79,7 @@ class UserRepository extends EntityRepository
      * @return boolean
      */
     function usernameExists($username) {
-        $queryBuilder = $this->conn->createQueryBuilder();
-        $queryBuilder
-            ->select('u.*')
-            ->from($this->table, 'u')
-            ->where('u.username = :username')
-            ->setParameter('username', $username)
-            ->setMaxResults(1);
-        $statement = $queryBuilder->execute();
-        $usersData = $statement->fetchAll();
+        $usersData = $this->findOneBy(array( "username" => $username));
         if (!empty($usersData)) {
             return true;
         }
