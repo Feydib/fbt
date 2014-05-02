@@ -11,7 +11,7 @@ class RegisterType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options ) {
         $builder->add('username', "text", array("constraints" => array(
             new Assert\NotBlank(),
-            new Assert\Length(array('min' => 5))),
+            new Assert\Length(array('min' => 3))),
             "attr" => array("placeholder" => "name"))
         );
         $builder->add('email', "email", array("constraints" => array(
@@ -21,11 +21,11 @@ class RegisterType extends AbstractType {
         );
         $builder->add('lastname', "text", array("constraints" => array(
             new Assert\NotBlank(),
-            new Assert\Length(array('min' => 3))))
+            new Assert\Length(array('min' => 2))))
         );
         $builder->add('firstname', "text", array("constraints" => array(
             new Assert\NotBlank(),
-            new Assert\Length(array('min' => 3))))
+            new Assert\Length(array('min' => 2))))
         );
         $builder->add('password_repeated', 'repeated', array(
             'type' => 'password',

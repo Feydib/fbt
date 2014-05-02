@@ -3,18 +3,22 @@
 {% block body %}
 <div id="content">
     <h1>{{tournament.name}}</h1>
-    
+
+<legend>{% trans %}pool list{% endtrans %}</legend>
+
+TODO : Afficher les poules
+   
 <legend>{% trans %}ranking{% endtrans %}</legend>
 {% for player in tournament.players %}
     {% if player.isaccepted == true %}
         {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
         {% if currentUserAdmin == true %}
             {% if player.isadmin == true %}
-                <a href="{{path('tournament.removeAdmin', { idToPlayers : player.idtoplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
+                <a href="{{path('tournament.removeAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
             {% else %}
-                <a href="{{path('tournament.setAdmin', { idToPlayers : player.idtoplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
+                <a href="{{path('tournament.setAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
             {% endif %}
-            <a href="{{path('tournament.remove', { idToPlayers : player.idtoplayers} )}}">{% trans %}remove{% endtrans %}</a>
+            <a href="{{path('tournament.remove', { idTournPlayers : player.idtournplayers} )}}">{% trans %}remove{% endtrans %}</a>
         {% endif %}
         <br/>
     {% endif %}
@@ -25,7 +29,7 @@
     {% if player.isaccepted == false %}
         {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
         {% if currentUserAdmin == true %}
-            <a href="{{path('tournament.accept', { idToPlayers : player.idtoplayers} )}}">{% trans %}accept{% endtrans %}</a>
+            <a href="{{path('tournament.accept', { idTournPlayers : player.idtournplayers} )}}">{% trans %}accept{% endtrans %}</a>
         {% endif %}
         <br/>
     {% endif %}

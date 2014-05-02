@@ -17,7 +17,7 @@
             {% for team in match.teams %}
 
                 <td>
-                    {% if firstTeam == false and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
+                    {% if firstTeam == false and ( team.score is not null or "now"|date('j/m/Y H:i')  > match.date|date('j/m/Y H:i') ) %}
                         {{team.score}}  
                         {% for bet in team.bet %}
                             {% if bet.idplayers.username == app.security.token.user.username %}
@@ -28,7 +28,7 @@
                         {% if team.pen is not null %}
                             pen {{team.pen}}
                         {% endif %}
-                    {% elseif firstTeam == false and (team.score is null or "now"|date('YmdHi')  < match.date|date('YmdHi') ) %}
+                    {% elseif firstTeam == false and (team.score is null or "now"|date('j/m/Y H:i')  < match.date|date('j/m/Y H:i') ) %}
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}}
                     {% endif %}
                 </td>
@@ -36,7 +36,7 @@
                     {{team.idteams.countries.nameFr}}
                 </td>
                 <td>
-                    {% if firstTeam == true and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
+                    {% if firstTeam == true and ( team.score is not null or "now"|date('j/m/Y H:i')  > match.date|date('j/m/Y H:i') ) %}
                        {{team.score}}
                        {% for bet in team.bet %}
                             {% if bet.idplayers.username == app.security.token.user.username %}
@@ -47,7 +47,7 @@
                             pen {{team.pen}} 
                        {% endif %}
                         -
-                    {% elseif firstTeam == true and (team.score is null or "now"|date('YmdHi')  < match.date|date('YmdHi') ) %}
+                    {% elseif firstTeam == true and (team.score is null or "now"|date('j/m/Y H:i')  < match.date|date('j/m/Y H:i') ) %}
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}} 
                     {% endif %}
                 </td> 

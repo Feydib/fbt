@@ -11,13 +11,13 @@ class TournamentType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options ) {
         $builder->add('name', "text", array("constraints" => array(
             new Assert\NotBlank(),
-            new Assert\Length(array('min' => 5))),
+            new Assert\Length(array('min' => 3))),
             "attr" => array("placeholder" => "name"))
         );
-        $builder->add('date', "datetime", array("constraints" => array(
+        /*$builder->add('date', "datetime", array("constraints" => array(
             new Assert\NotBlank()),
             "attr" => array("placeholder" => "date"))
-        );
+        );*/
        
     }
 

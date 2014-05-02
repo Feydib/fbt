@@ -45,7 +45,7 @@ class TournamentController implements ControllerProviderInterface {
             
             $tournament = new Tournament();
             $tournament->setName($datas['name']);
-            $tournament->setYear($datas['date']);
+            $tournament->setYear(new \DateTime);
                         
             $tournamentRepository->save($tournament);
             

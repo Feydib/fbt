@@ -9,7 +9,7 @@
     <legend>{% trans %} my tournaments {% endtrans %}</legend>
     <p>
     {% for mytournament in myTournaments %}
-        {{mytournament.name}} - {{mytournament.year|date('Y')}} - 
+        {{mytournament.name}} - {{mytournament.year|date('d-M-Y')}} - 
         {% for player in mytournament.players %}
             {% if player.isaccepted == false %}
                 {% trans %}accept waiting{% endtrans %}
@@ -30,7 +30,7 @@
     <legend>{% trans %} tournaments list {% endtrans %}</legend>
     <p>
     {% for tournament in tournaments %}
-        {{tournament.name}} - {{tournament.year|date('Y')}} - 
+        {{tournament.name}} - {{tournament.year|date('d-M-Y')}} - 
         <a href="{{path('tournament.join', { idTournament : tournament.idTournament } )}}">{% trans %}join{% endtrans %}</a>
         <br/>
     {% endfor %}
