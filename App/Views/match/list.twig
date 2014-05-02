@@ -1,0 +1,54 @@
+{% extends layout %}
+
+{% block body %}
+<div id="content">
+
+    <legend>{% trans %} matchs list {% endtrans %}</legend>
+
+    <form action="{{path('match.doScore')}}" method="post">
+    <table>
+   
+        {% for match in matchs %}
+            <tr>
+                <td>{{match.date|date('j/m/Y H:i')}}</td> 
+                <td>{{match.stadium}}</td> 
+                {% set firstTeam = true %}
+
+            {% for team in match.teams %}
+
+                <td>
+                    {% if firstTeam == false and team.score is not null %}
+                        {{team.score}}                   
+                        {% if team.pen is not null %}
+                            pen {{team.pen}}
+                        {% endif %}
+                    {% elseif firstTeam == false and (team.score is null and "now"|date('YmdHi') > match.date|date('YmdHi') ) %}
+                        {{ render(url('match.scoreForm', { idMatchTeam : team.idmatchteam}))}}
+                    {% endif %}
+                </td>
+                <td>
+                    {{team.idteams.countries.nameFr}}
+                </td>
+                <td>
+                    {% if firstTeam == true and team.score is not null %}
+                       {{team.score}}
+                       {% if team.pen is not null %}
+                            pen {{team.pen}} 
+                       {% endif %}
+                        -
+                    {% elseif firstTeam == true and (team.score is null and "now"|date('YmdHi') > match.date|date('YmdHi') ) %}
+                        {{ render(url('match.scoreForm', { idMatchTeam : team.idmatchteam}))}} 
+                    {% endif %}
+                </td> 
+
+                {% set firstTeam = false %}
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    
+    </table>
+            <input type="submit" class="btn" name="submit" />
+    </form>
+    
+</div>
+{% endblock %}
