@@ -4,13 +4,13 @@
 //Nous instancions un objet Silex\Application
 $app = new Silex\Application();
 
-$app->register(new DerAlex\Silex\YamlConfigServiceProvider(__DIR__.'\..\App\conf\conf.yml'));
+$app->register(new DerAlex\Silex\YamlConfigServiceProvider(__DIR__.'/../App/Conf/conf.yml'));
 
 // Doctrine (db)
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 $isDevMode = true;
-$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__.'\..\App\Model\Entity'), $isDevMode);
+$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__.'/../App/Model/Entity'), $isDevMode);
 $app->register(new Silex\Provider\DoctrineServiceProvider());
 $app['db.options'] = array(
         'driver' => $app['config']['database']['driver'],

@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 /**
  * FbtTournament
  *
- * @Table(name="FBT_tournament")
+ * @Table(name="FBT_Tournament")
  * @Entity(repositoryClass="App\Model\Repository\TournamentRepository")
  */
 class Tournament
@@ -37,7 +37,7 @@ class Tournament
      * 
      * @var players
      *
-     *  @OneToMany(targetEntity="Toplayers", mappedBy="idtournament", orphanRemoval=true)
+     *  @OneToMany(targetEntity="Tournplayers", mappedBy="idtournament", orphanRemoval=true)
      *
      */
     private $players;

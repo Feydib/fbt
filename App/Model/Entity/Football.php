@@ -5,7 +5,7 @@ namespace App\Model\Entity;
 /**
  * FbtFootball
  *
- * @Table(name="FBT_football")
+ * @Table(name="FBT_Football")
  * @Entity
  */
 class Football

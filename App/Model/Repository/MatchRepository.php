@@ -26,7 +26,7 @@ class MatchRepository extends EntityRepository
      *
      * @param Tournament
      */
-    public function save(Toplayers $tournPlayer)
+    public function save(Tournplayers $tournPlayer)
     {
         $this->_em->persist($tournPlayer);
         $this->_em->flush();

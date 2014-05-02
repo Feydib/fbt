@@ -16,7 +16,7 @@ class UserProvider implements UserProviderInterface
     public function __construct(Connection $conn)
     {
         $this->conn = $conn;
-        $this->table = "fbt_players";
+        $this->table = "FBT_Players";
     }
  
     public function loadUserByUsername($username)

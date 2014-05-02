@@ -100,11 +100,11 @@ DROP TABLE IF EXISTS `FBT`.`FBT_Players` ;
 
 CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_Players` (
   `idPlayers` INT NOT NULL AUTO_INCREMENT ,
-  `username` VARCHAR(45) NOT NULL ,
+  `username` VARCHAR(255) NOT NULL ,
   `firstname` VARCHAR(45) NOT NULL ,
   `lastname` VARCHAR(45) NOT NULL ,
   `mail` VARCHAR(45) NOT NULL ,
-  `salt` VARCHAR(45) NOT NULL ,
+  `salt` VARCHAR(255) NOT NULL ,
   `password` VARCHAR(255) NOT NULL ,
   `rdate` DATETIME NULL ,
   `role` VARCHAR(45) NULL ,
@@ -143,7 +143,9 @@ CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_MatchTeam` (
     REFERENCES `FBT`.`FBT_Matchs` (`idMatchs` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
@@ -182,7 +184,7 @@ DROP TABLE IF EXISTS `FBT`.`FBT_Tournament` ;
 CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_Tournament` (
   `idTournament` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NULL ,
-  `year` YEAR NULL ,
+  `year` DATETIME NULL ,
   PRIMARY KEY (`idTournament`) )
 ENGINE = InnoDB;
 
@@ -193,11 +195,14 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `FBT`.`FBT_News` ;
 
 CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_News` (
-  `idNews` INT NOT NULL ,
+  `idNews` INT NOT NULL AUTO_INCREMENT ,
   `date` TIMESTAMP NULL ,
   `comment` MEDIUMTEXT NULL ,
-  PRIMARY KEY (`idNews`) )
-ENGINE = InnoDB;
+  PRIMARY KEY (`idNews`) ,
+  UNIQUE INDEX `idNews_UNIQUE` (`idNews` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
@@ -207,11 +212,11 @@ DROP TABLE IF EXISTS `FBT`.`FBT_Football` ;
 
 CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_Football` (
   `worldrank` INT NOT NULL ,
-  `Countries_id` SMALLINT(5) NOT NULL ,
-  PRIMARY KEY (`worldrank`, `Countries_id`) ,
+  `idCountries` SMALLINT(5) NOT NULL ,
+  PRIMARY KEY (`worldrank`, `idCountries`) ,
   UNIQUE INDEX `worldrank_UNIQUE` (`worldrank` ASC) ,
   CONSTRAINT `fk_FBTFootball_FBTCountries1`
-    FOREIGN KEY (`Countries_id` )
+    FOREIGN KEY (`idCountries` )
     REFERENCES `FBT`.`FBT_Countries` (`idCountries` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -221,24 +226,25 @@ COLLATE = utf8_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `FBT`.`FBT_ToPlayers`
+-- Table `FBT`.`FBT_TournPlayers`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `FBT`.`FBT_ToPlayers` ;
+DROP TABLE IF EXISTS `FBT`.`FBT_TournPlayers` ;
 
-CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_ToPlayers` (
-  `idToPlayers` INT NOT NULL AUTO_INCREMENT ,
+CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_TournPlayers` (
+  `idTournPlayers` INT NOT NULL AUTO_INCREMENT ,
   `idTournament` INT NOT NULL ,
   `idPlayers` INT NOT NULL ,
   `isAdmin` TINYINT NULL ,
-  PRIMARY KEY (`idToPlayers`) ,
-  INDEX `fk_FBTToPlayers_FBTPlayers1` (`idPlayers` ASC) ,
-  UNIQUE INDEX `idToPlayers_UNIQUE` (`idToPlayers` ASC) ,
-  CONSTRAINT `fk_FBTToPlayers_FBTTournament1`
+  `isAccepted` TINYINT NULL ,
+  PRIMARY KEY (`idTournPlayers`) ,
+  INDEX `fk_FBTTournPlayers_FBTPlayers1` (`idPlayers` ASC) ,
+  UNIQUE INDEX `idToPlayers_UNIQUE` (`idTournPlayers` ASC) ,
+  CONSTRAINT `fk_FBTTournPlayers_FBTTournament1`
     FOREIGN KEY (`idTournament` )
     REFERENCES `FBT`.`FBT_Tournament` (`idTournament` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_FBTToPlayers_FBTPlayers1`
+  CONSTRAINT `fk_FBTTournPlayers_FBTPlayers1`
     FOREIGN KEY (`idPlayers` )
     REFERENCES `FBT`.`FBT_Players` (`idPlayers` )
     ON DELETE NO ACTION

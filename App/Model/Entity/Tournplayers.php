@@ -2,17 +2,17 @@
 
 namespace App\Model\Entity;
 /**
- * FbtToplayers
+ * FbtTournplayers
  *
- * @Table(name="FBT_toplayers")
- * @Entity(repositoryClass="App\Model\Repository\ToPlayersRepository")
+ * @Table(name="FBT_TournPlayers")
+ * @Entity(repositoryClass="App\Model\Repository\TournPlayersRepository")
  */
-class Toplayers
+class Tournplayers
 {
     /**
      * @var integer
      *
-     * @Column(name="idToPlayers", type="integer", nullable=false)
+     * @Column(name="idTournPlayers", type="integer", nullable=false)
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
@@ -28,9 +28,9 @@ class Toplayers
     /**
      * @var boolean
      *
-     * @Column(name="isaccepted", type="boolean", nullable=true)
+     * @Column(name="isAccepted", type="boolean", nullable=true)
      */
-    private $isaccepted;
+    private $isAccepted;
 
     /**
      * @var \FbtTournament
@@ -85,11 +85,11 @@ class Toplayers
         $this->idplayers = $idplayers;
     }
     public function getIsaccepted() {
-        return $this->isaccepted;
+        return $this->isAccepted;
     }
 
     public function setIsaccepted($isaccepted) {
-        $this->isaccepted = $isaccepted;
+        $this->isAccepted = $isaccepted;
     }
 
 

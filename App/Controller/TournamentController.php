@@ -4,7 +4,7 @@ namespace App\Controller;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use App\Model\Entity\Tournament;
-use App\Model\Entity\Toplayers;
+use App\Model\Entity\Tournplayers;
 
 
 class TournamentController implements ControllerProviderInterface {
@@ -49,8 +49,8 @@ class TournamentController implements ControllerProviderInterface {
                         
             $tournamentRepository->save($tournament);
             
-            $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
-            $tournPlayer = new Toplayers();
+            $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+            $tournPlayer = new Tournplayers();
             $tournPlayer->setIdtournament($tournament);    
 
             $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
@@ -80,8 +80,8 @@ class TournamentController implements ControllerProviderInterface {
         $tounament = $tournamentRepository->find($idTournament);
         
         //We find tournament to delete
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
-        $tournPlayer = $tournPlayersRepository->findToPlayers($user, $tounament);
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        $tournPlayer = $tournPlayersRepository->findTournPlayers($user, $tounament);
         
         //User can delete a tournament if he is admin of this tournament
         if($tournPlayer && $tournPlayer->getIsadmin()) {
@@ -99,8 +99,8 @@ class TournamentController implements ControllerProviderInterface {
     public function join($idTournament) {
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
         
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
-        $tournPlayer = new Toplayers();
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        $tournPlayer = new Tournplayers();
         $tournPlayer->setIdtournament($tournamentRepository->find($idTournament));    
 
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
@@ -121,13 +121,13 @@ class TournamentController implements ControllerProviderInterface {
      */
     public function leave($idTournament) {
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         
         //We get current user
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         //We find tournament to leave
-        $tournPlayer = $tournPlayersRepository->findToPlayers($user, $tournamentRepository->find($idTournament));
+        $tournPlayer = $tournPlayersRepository->findTournPlayers($user, $tournamentRepository->find($idTournament));
         //We remove entry for currect user in tournament
         $tournPlayersRepository->remove($tournPlayer);
         
@@ -142,12 +142,12 @@ class TournamentController implements ControllerProviderInterface {
 
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
         $tounament = $tournamentRepository->find($idTournament);
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        $currentToPlayer = $tournPlayersRepository->findToPlayers($user, $tounament);
+        $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tounament);
 
         //We vérify that currect user is group member and accepted in group and we check if user is admin
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
@@ -164,16 +164,16 @@ class TournamentController implements ControllerProviderInterface {
     
     /**
      * accept a player in a tournament
-     * @param int $idToPlayers
+     * @param int $idTournPlayers
      */
-    public function accept($idToPlayers) {
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
-        //We find ToPlayers to accept
-        $tournPlayer = $tournPlayersRepository->findToPlayersById($idToPlayers);
+    public function accept($idTournPlayers) {
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        //We find TournPlayers to accept
+        $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        $currentToPlayer = $tournPlayersRepository->findToPlayers($user, $tournPlayer->getIdtournament());
+        $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $tournPlayer->setIsaccepted(true); 
             $tournPlayersRepository->save($tournPlayer);
@@ -183,16 +183,16 @@ class TournamentController implements ControllerProviderInterface {
     
     /**
      * remove a player from a tournament
-     * @param int $idToPlayers
+     * @param int $idTournPlayers
      */
-    public function remove($idToPlayers) {
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
-        //We find ToPlayers to accept
-        $tournPlayer = $tournPlayersRepository->findToPlayersById($idToPlayers);
+    public function remove($idTournPlayers) {
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        //We find TournPlayers to accept
+        $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        $currentToPlayer = $tournPlayersRepository->findToPlayers($user, $tournPlayer->getIdtournament());
+        $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $tournPlayer->setIsaccepted(false); 
             $tournPlayersRepository->save($tournPlayer);
@@ -203,16 +203,16 @@ class TournamentController implements ControllerProviderInterface {
         
     /**
      * set admin right on a tournament
-     * @param int $idToPlayers
+     * @param int $idTournPlayers
      */
-    public function setAdmin($idToPlayers) {
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
-        //We find ToPlayers to accept
-        $tournPlayer = $tournPlayersRepository->findToPlayersById($idToPlayers);
+    public function setAdmin($idTournPlayers) {
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        //We find TournPlayers to accept
+        $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        $currentToPlayer = $tournPlayersRepository->findToPlayers($user, $tournPlayer->getIdtournament());
+        $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $tournPlayer->setIsadmin(true); 
             $tournPlayersRepository->save($tournPlayer);
@@ -222,16 +222,16 @@ class TournamentController implements ControllerProviderInterface {
 
     /**
      * remove admin right on a tournament
-     * @param int $idToPlayers
+     * @param int $idTournPlayers
      */
-    public function removeAdmin($idToPlayers) {
-        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Toplayers');
-        //We find ToPlayers to accept
-        $tournPlayer = $tournPlayersRepository->findToPlayersById($idToPlayers);
+    public function removeAdmin($idTournPlayers) {
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        //We find TournPlayers to accept
+        $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        $currentToPlayer = $tournPlayersRepository->findToPlayers($user, $tournPlayer->getIdtournament());
+        $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $tournPlayer->setIsadmin(false); 
             $tournPlayersRepository->save($tournPlayer);
@@ -241,7 +241,7 @@ class TournamentController implements ControllerProviderInterface {
     
     /**
      * remove admin right on a tournament
-     * @param int $idToPlayers
+     * @param int $idTournPlayers
      */
     public function invite($idTournament) {
         $inviteForm = $this->app['form.factory']->create(new \App\Form\MailType($idTournament));
@@ -250,7 +250,7 @@ class TournamentController implements ControllerProviderInterface {
     
     /**
      * remove admin right on a tournament
-     * @param int $idToPlayers
+     * @param int $idTournPlayers
      */
     public function doInvite() {
         $inviteForm = $this->app['form.factory']->create(new \App\Form\MailType());
@@ -292,10 +292,10 @@ class TournamentController implements ControllerProviderInterface {
         $tournament->get('/join/{idTournament}', array($this,"Join"))->bind('tournament.join');
         $tournament->get('/leave/{idTournament}', array($this,"Leave"))->bind('tournament.leave');
         $tournament->get('/view/{idTournament}', array($this,"View"))->bind('tournament.view');
-        $tournament->get('/accept/{idToPlayers}', array($this,"Accept"))->bind('tournament.accept');
-        $tournament->get('/remove/{idToPlayers}', array($this,"Remove"))->bind('tournament.remove');
-        $tournament->get('/setadmin/{idToPlayers}', array($this,"SetAdmin"))->bind('tournament.setAdmin');
-        $tournament->get('/removeadmin/{idToPlayers}', array($this,"RemoveAdmin"))->bind('tournament.removeAdmin');
+        $tournament->get('/accept/{idTournPlayers}', array($this,"Accept"))->bind('tournament.accept');
+        $tournament->get('/remove/{idTournPlayers}', array($this,"Remove"))->bind('tournament.remove');
+        $tournament->get('/setadmin/{idTournPlayers}', array($this,"SetAdmin"))->bind('tournament.setAdmin');
+        $tournament->get('/removeadmin/{idTournPlayers}', array($this,"RemoveAdmin"))->bind('tournament.removeAdmin');
         $tournament->get('/invite/{idTournament}', array($this,"Invite"))->bind('tournament.invite');
         $tournament->post('/doinvite', array($this,"doInvite"))->bind('tournament.doInvite');
         return $tournament;

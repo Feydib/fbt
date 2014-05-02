@@ -2,23 +2,23 @@
 
 namespace App\Model\Repository;
 
-use App\Model\Entity\Toplayers;
+use App\Model\Entity\Tournplayers;
 use Doctrine\ORM\EntityRepository;
 use App\Model\Entity\Players;
 use App\Model\Entity\Tournament;
 /**
  * User repository
  */
-class ToPlayersRepository extends EntityRepository
+class TournPlayersRepository extends EntityRepository
 {
 
-    public function findToPlayers(Players $players, Tournament $tournament) {
+    public function findTournPlayers(Players $players, Tournament $tournament) {
         $toPlayers = $this->findOneBy(array( "idtournament" => $tournament, 'idplayers' => $players));
         return $toPlayers ? $toPlayers : FALSE;
     }
     
-    public function findToPlayersById($idToPlayers) {
-        $toPlayers = $this->findOneBy(array( "idtoplayers" => $idToPlayers));
+    public function findTournPlayersById($idTournPlayers) {
+        $toPlayers = $this->findOneBy(array( "idtoplayers" => $idTournPlayers));
         return $toPlayers ? $toPlayers : FALSE;
     }
     /**
@@ -26,7 +26,7 @@ class ToPlayersRepository extends EntityRepository
      *
      * @param Tournament
      */
-    public function remove(Toplayers $tournPlayer)
+    public function remove(Tournplayers $tournPlayer)
     {
         $this->_em->remove($tournPlayer);
         $this->_em->flush();
@@ -37,7 +37,7 @@ class ToPlayersRepository extends EntityRepository
      *
      * @param Tournament
      */
-    public function save(Toplayers $tournPlayer)
+    public function save(Tournplayers $tournPlayer)
     {
         $this->_em->persist($tournPlayer);
         $this->_em->flush();

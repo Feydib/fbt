@@ -4,7 +4,7 @@ namespace App\Model\Entity;
 /**
  * FbtContinent
  *
- * @Table(name="FBT_continent")
+ * @Table(name="FBT_Continent")
  * @Entity
  */
 class Continent

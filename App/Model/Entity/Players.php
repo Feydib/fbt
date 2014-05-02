@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * FbtPlayers
  *
- * @Table(name="FBT_players")
+ * @Table(name="FBT_Players")
  * @Entity(repositoryClass="App\Model\Repository\UserRepository")
  */
 class Players implements UserInterface
