@@ -30,9 +30,7 @@ class BetController implements ControllerProviderInterface {
         $betMatchRepository = $this->app['em']->getRepository('App\Model\Entity\Betmatchs');
         $matchTeamList = $matchTeamRepository->find(null, 0, array("score" => NULL)); 
  
-        //var_dump($matchTeamList);
         foreach($matchTeamList as $matchTeam) {
-            //var_dump($matchTeamIdList->getIdmatchteam());
             $matchTeamIdList[] = $matchTeam->getIdmatchteam();
         }
         
