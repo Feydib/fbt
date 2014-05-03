@@ -2,7 +2,7 @@
 database:
     driver: pdo_mysql
     host: localhost
-    dbname: dbname
+    dbname: fbt
     user: root
-    password: root
+    password: 
     charset: utf8
