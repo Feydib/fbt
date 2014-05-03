@@ -16,7 +16,7 @@ class Tournplayers
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
      */
-    private $idtoplayers;
+    private $idtournplayers;
 
     /**
      * @var boolean
@@ -30,7 +30,7 @@ class Tournplayers
      *
      * @Column(name="isAccepted", type="boolean", nullable=true)
      */
-    private $isAccepted;
+    private $isaccepted;
 
     /**
      * @var \FbtTournament
@@ -53,8 +53,8 @@ class Tournplayers
     private $idplayers;
     
 
-    public function getIdtoplayers() {
-        return $this->idtoplayers;
+    public function getIdtournplayers() {
+        return $this->idtournplayers;
     }
 
     public function getIsadmin() {
@@ -69,8 +69,8 @@ class Tournplayers
         return $this->idplayers;
     }
 
-    public function setIdtoplayers($idtoplayers) {
-        $this->idtoplayers = $idtoplayers;
+    public function setIdtournplayers($idtournplayers) {
+        $this->idtournplayers  = $idtournplayers;
     }
 
     public function setIsadmin($isadmin) {
@@ -85,7 +85,7 @@ class Tournplayers
         $this->idplayers = $idplayers;
     }
     public function getIsaccepted() {
-        return $this->isAccepted;
+        return $this->isaccepted;
     }
 
     public function setIsaccepted($isaccepted) {
