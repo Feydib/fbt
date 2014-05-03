@@ -29,7 +29,7 @@ class Betmatchs
     /**
      * @var \FbtPlayers
      *
-     * @OneToOne(targetEntity="Players")
+     * @ManyToOne(targetEntity="Players")
      * @JoinColumns({
      *   @JoinColumn(name="idPlayers", referencedColumnName="idPlayers")
      * })
@@ -39,7 +39,7 @@ class Betmatchs
     /**
      * @var \FbtMatchteam
      *
-     * @OneToOne(targetEntity="Matchteam")
+     * @ManyToOne(targetEntity="Matchteam")
      * @JoinColumns({
      *   @JoinColumn(name="idMatchTeam", referencedColumnName="idMatchTeam")
      * })
