@@ -89,7 +89,7 @@ class Tournplayers
     }
 
     public function setIsaccepted($isaccepted) {
-        $this->isAccepted = $isaccepted;
+        $this->isaccepted = $isaccepted;
     }
 
 
