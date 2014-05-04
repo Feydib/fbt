@@ -70,7 +70,7 @@ class Tournplayers
     }
 
     public function setIdtournplayers($idtournplayers) {
-        $this->idtournplayers = $idtournplayers;
+        $this->idtournplayers  = $idtournplayers;
     }
 
     public function setIsadmin($isadmin) {
@@ -89,7 +89,7 @@ class Tournplayers
     }
 
     public function setIsaccepted($isaccepted) {
-        $this->isaccepted = $isaccepted;
+        $this->isAccepted = $isaccepted;
     }
 
 
