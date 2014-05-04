@@ -15,6 +15,7 @@ $app['db.options'] = array(
         'dbname' => $app['config']['database']['dbname'],
         'user' => $app['config']['database']['user'],
         'password' => $app['config']['database']['password'],
+		'charset' => $app['config']['database']['charset'],
 );
 
 $app['em'] = EntityManager::create($app['db'], $config);
