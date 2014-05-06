@@ -18,7 +18,7 @@ class TournPlayersRepository extends EntityRepository
     }
     
     public function findTournPlayersById($idTournPlayers) {
-        $toPlayers = $this->findOneBy(array( "idtoplayers" => $idTournPlayers));
+        $toPlayers = $this->findOneBy(array( "idtournplayers" => $idTournPlayers));
         return $toPlayers ? $toPlayers : FALSE;
     }
     /**
