@@ -5,7 +5,7 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use App\Model\Entity\Tournament;
 use App\Model\Entity\Tournplayers;
-
+use App\Model\Entity\Teams;
 
 class TournamentController implements ControllerProviderInterface {
     
@@ -139,17 +139,21 @@ class TournamentController implements ControllerProviderInterface {
      * @param int $idTournament
      */
     public function view($idTournament) {
-
+    	
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
         $tounament = $tournamentRepository->find($idTournament);
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         
+        $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
+    	$teamsList = $teamRepository->findTeams();
+    	$groupList = $teamRepository->findGroups();
+    	
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tounament);
 
-        //We vérify that currect user is group member and accepted in group and we check if user is admin
+        //We vérify that current user is group member and accepted in group and we check if user is admin
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $isadmin = true;
         } else if (!$currentToPlayer || !$currentToPlayer->getIsaccepted()) {
@@ -157,9 +161,8 @@ class TournamentController implements ControllerProviderInterface {
         } else {
             $isadmin = false;
         }
-            
-        
-        return $this->app["twig"]->render("tournament/view.html.twig", array('tournament' => $tounament, 'currentUserAdmin' => $isadmin));
+
+        return $this->app["twig"]->render("tournament/view.html.twig", array('tournament' => $tounament, 'currentUserAdmin' => $isadmin, 'groupList' => $groupList, 'teamsList' => $teamsList));
     }
     
     /**
