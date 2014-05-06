@@ -6,7 +6,14 @@
 
 <legend>{% trans %}pool list{% endtrans %}</legend>
 
-TODO : Afficher les poules
+{% for group in groupList %}
+    Groupe {{group.pool}}<br/>
+	{% for team in teamsList %}
+	    {% if team.pool == group.pool %}
+	        {{team.ranking}} - {{team.countries.nameFr}}<br/>
+	    {% endif %}
+	{% endfor %}
+{% endfor %}
    
 <legend>{% trans %}ranking{% endtrans %}</legend>
 {% for player in tournament.players %}
