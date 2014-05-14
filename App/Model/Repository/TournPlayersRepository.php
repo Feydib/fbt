@@ -2,6 +2,8 @@
 
 namespace App\Model\Repository;
 
+use Doctrine\ORM\Query\AST\Functions\IdentityFunction;
+
 use App\Model\Entity\Tournplayers;
 use Doctrine\ORM\EntityRepository;
 use App\Model\Entity\Players;
@@ -21,6 +23,8 @@ class TournPlayersRepository extends EntityRepository
         $toPlayers = $this->findOneBy(array( "idtournplayers" => $idTournPlayers));
         return $toPlayers ? $toPlayers : FALSE;
     }
+
+
     /**
      * Saves tournament to the database.
      *

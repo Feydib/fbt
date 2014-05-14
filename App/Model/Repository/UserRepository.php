@@ -22,6 +22,12 @@ class UserRepository extends EntityRepository
         return $user;
     }
 
+    public function getUserById($idPlayer)
+    {
+    	$user = $this->findOneBy(array('idplayers' => $idPlayer));
+    	return $user;
+    }
+    
     /**
      * Saves the user to the database.
      *
