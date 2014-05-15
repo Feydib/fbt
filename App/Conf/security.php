@@ -27,6 +27,10 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     ),
 ));
 $app['security.access_rules'] = array(
+    array('^.*/admin.*$', 'ROLE_ADMIN'),
     array('^/login.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
     array('^/.+$', 'ROLE_USER')
+);
+$app['security.role_hierarchy'] = array(
+    'ROLE_ADMIN' => array('ROLE_USER'),
 );

@@ -61,7 +61,9 @@
                     <li><a href="{{ path('login') }}">{% trans %}login{% endtrans %}</a></li>
                 {% endif %}
                 <li><a href="{{ path('user.signup') }}">{% trans %}signup{% endtrans %}</a></li>
-                <li><a href="{{ path('match.matchToScore') }}">{% trans %}matchs results{% endtrans %}</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('match.matchToScore') }}">{% trans %}matchs results{% endtrans %}</a></li>
+                {% endif %}
             </ul>
             <div id="login">
             </div>
