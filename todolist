@@ -3,7 +3,7 @@ Actions
 IHM
 
 Accueil :
-News
+Afficher News
 Tableau avec les 3 derniers matchs + 3 prochains
 Top 10 des pronostiqueurs
 + formulaire login
@@ -25,12 +25,10 @@ Afficher le tournoi (groupes + éliminatoires) dans une page spécifique
 TODO
 
 Créer MDP oublié
-
+lister les News
 Obtenir l'enchainement des matchs automatiquement (phases éliminatoires)
 Finaliser les scores des paris
-
-Débloquer page Accueil
-
+Débloquer page Accueil -> OK
 Bloquer page Admin -> OK
 
 
