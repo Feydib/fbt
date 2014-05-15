@@ -46,9 +46,9 @@ class BetMatchRepository extends EntityRepository
      *
      * @return array A collection of matchs, keyed by id.
      */
-    public function find($limit = null, $offset = 0, $crit = array(), $orderBy = array())
+    public function find($crit)
     {        
-        $betMatch = $this->findBy($crit, $orderBy, $limit, $offset);
+        $betMatch = $this->findOneBy($crit);
         return $betMatch ? $betMatch : FALSE;
     }
 
