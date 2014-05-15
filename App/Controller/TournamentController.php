@@ -12,14 +12,24 @@ class TournamentController implements ControllerProviderInterface {
     private $app;
 
     public function index(Application $app) {
+       //We list all tournament
        $tournamentRepository = $app['em']->getRepository('App\Model\Entity\Tournament');
-       $tournamentList = $tournamentRepository->findTout(50);
-       
+       $tournamentList = $tournamentRepository->findAllTournaments();
+       //We get logged user
        $userRepository =$app['em']->getRepository('App\Model\Entity\Players');
        $user = $userRepository->getUserByUsername($app['security']->getToken()->getUser()->getUsername());
+       //We search user's tournaments
        $myTournaments = $tournamentRepository->findMyTournaments($user);
+       
+       //We build tournament list with tournaments which are not already joined
+       $tournamentNotJoined = array();
+       foreach($tournamentList as $tournament) {
+           if (!in_array($tournament, $myTournaments)) {
+               $tournamentNotJoined[] = $tournament;
+           }
+       }
 
-       return $app["twig"]->render("tournament/index.twig", array('tournaments' => $tournamentList, "myTournaments" => $myTournaments));
+       return $app["twig"]->render("tournament/index.twig", array('tournaments' => $tournamentNotJoined, "myTournaments" => $myTournaments));
     }
     
     

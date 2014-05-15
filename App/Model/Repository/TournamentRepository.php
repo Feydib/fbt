@@ -84,9 +84,9 @@ class TournamentRepository extends EntityRepository
      *
      * @return array A collection of users, keyed by user id.
      */
-    public function findTout($limit, $offset = 0, $orderBy = array())
+    public function findAllTournaments()
     {        
-        $tournaments = $this->findBy(array(), $orderBy, $limit, $offset);
+        $tournaments = $this->findAll();
         return $tournaments;
     }
     
