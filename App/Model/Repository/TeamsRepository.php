@@ -75,7 +75,7 @@ class TeamsRepository extends EntityRepository
      *
      * @return array A collection of users, keyed by user id.
      */
-    public function findTeams($limit, $offset = 0, $orderBy = array())
+    public function findTeams($limit = null, $offset = 0, $orderBy = array())
     {        
         $teams = $this->findBy(array(), $orderBy, $limit, $offset);
         return $teams;
