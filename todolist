@@ -1,0 +1,36 @@
+Actions
+
+IHM
+
+Accueil :
+News
+Tableau avec les 3 derniers matchs + 3 prochains
+Top 10 des pronostiqueurs
++ formulaire login
+Si loggé : Liste des mes compétitions + mon score avec classement Global/Compétition
+
+Onglet Résultats :
+ devient Onglet Admin
+
+Onglet Compétition :
+ Formulaire nouvelle compétition
+ Liste de toutes les compétitions
+ Supprimer le lien rejoindre pour les compétitions déjà rejointes
+
+Supprimer onglet créer un compte (devient lien à côté login)
+
+Afficher le tournoi (groupes + éliminatoires) dans une page spécifique
+
+
+TODO
+
+Créer MDP oublié
+
+Obtenir l'enchainement des matchs automatiquement (phases éliminatoires)
+Finaliser les scores des paris
+
+Débloquer page Accueil
+
+Bloquer page Admin
+
+
