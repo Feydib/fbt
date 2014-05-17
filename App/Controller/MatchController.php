@@ -32,59 +32,55 @@ class MatchController implements ControllerProviderInterface {
 				$betplayerList[] = $bet->getIdplayers();
 			}
 		}
-		
-		if ( ($scoreList[O] != null ) && ( $scoreList[1] != null ) ) {
-
-			foreach ($playerIdList as $player) { //List array for each players who bets
-				$i = 0;
-				foreach ($betplayerList as $key => $betplayer) { //List array of betMatch to find players
-					if ($player['idplayers'] === $betplayer->getIdplayers()) { // Try to match players and betters
-						$betscore[$i] = $betscoreList[$key];
-						$i++;
-					}
-				}
-				//Calculate probability
-				//TODO get team ranking
-				
-				//If match bet = match result, then calulate odds, else, odds = 0
-				if ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
-					$odds = 3;
-				}
-				elseif ( ($scoreList[0] == $scoreList[1] && $betscore[0] == $betscore[1]) ) {
-					$odds = 7;
-				}
-				elseif ( ($scoreList[0] < $scoreList[1] && $betscore[0] < $betscore[1]) ) {
-					$odds = 5;
-				}
-				else {
-					$odds = 0;
-				}
-				//Verify if bet score equal real score
-				if ($scoreList[0] == $betscore1 && $scoreList[1] == $betscore2) {
-					$coef = 2;
-				}
-				elseif ($scoreList[0] == $betscore1 || $scoreList[1] == $betscore2) {
-					$coef = 1.5;
-				}
-				else $coef = 1;
-				
-				$points = 10*$coef*$odds;
-				/*$var = $playersRepository->getUserById($player);
-				 echo gettype($var);
-				if (is_object($var)) {
-				echo get_class($var);
-				}*/
-						
-				$score = new Betscore();
-				$score->setScore($points);
-				$score->setIdmatchs($idMatch);
-				$score->setIdplayers($playersRepository->getUserById($player));
-				$betScoreRepository->save($score);
-			}
-		
+		/*$var = $scoreList;
+		if (is_array($var)) {
+			print_r($var);
 		}
-		
+		if (is_object($var)) {
+			echo get_class($var);
+		}*/
 
+		foreach ($playerIdList as $player) { //List array for each players who bets
+			$i = $points = $coef = $odds = 0;
+			foreach ($betplayerList as $key => $betplayer) { //List array of betMatch to find players
+				if ($player['idplayers'] === $betplayer->getIdplayers()) { // Try to match players and betters
+					$betscore[$i] = $betscoreList[$key];
+					$i++;
+				}
+			}
+			//Calculate probability
+			//TODO get team ranking
+			
+			//If match bet = match result, then calulate odds, else, odds = 0
+			if ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
+				$odds = 3;
+			}
+			elseif ( ($scoreList[0] == $scoreList[1] && $betscore[0] == $betscore[1]) ) {
+				$odds = 7;
+			}
+			elseif ( ($scoreList[0] < $scoreList[1] && $betscore[0] < $betscore[1]) ) {
+				$odds = 5;
+			}
+			else {
+				$odds = 0;
+			}
+			//Verify if bet score equal real score
+			if ($scoreList[0] == $betscore[0] && $scoreList[1] == $betscore[1]) {
+				$coef = 2;
+			}
+			elseif ($scoreList[0] == $betscore[0] || $scoreList[1] == $betscore[1]) {
+				$coef = 1.5;
+			}
+			else $coef = 1;
+			
+			$points = 10*$coef*$odds;
+
+			$score = new Betscore();
+			$score->setScore($points);
+			$score->setIdmatchs($idMatch);
+			$score->setIdplayers($playersRepository->getUserById($player));
+			$betScoreRepository->save($score);
+		}
 	}
 	
     public function index(Application $app) {
@@ -146,16 +142,19 @@ class MatchController implements ControllerProviderInterface {
 
             foreach($matchTeamList as $matchTeam) {
             	$idmatch = $matchTeam->getIdmatchs();
-                if ( $datas["score".$matchTeam->getIdmatchteam()] !== "-"  ) {
-                    $matchTeam->setScore($datas["score".$matchTeam->getIdmatchteam()]);       
+            	$score = false;
+                if ( $datas["score".$matchTeam->getIdmatchteam()] !== "-" && $datas["score".$matchTeam->getIdmatchteam()] !== null) {
+                    $matchTeam->setScore($datas["score".$matchTeam->getIdmatchteam()]); 
+                    $score = true;
                 }
-                if ( $datas["pen".$matchTeam->getIdmatchteam()] !== "-" ) {
+                if ( $datas["pen".$matchTeam->getIdmatchteam()] !== "-" && $datas["pen".$matchTeam->getIdmatchteam()] !== null) {
                     $matchTeam->setPen($datas["pen".$matchTeam->getIdmatchteam()]);
                 }
-                $matchTeamRepository->update($matchTeam);
-                ( $idmatch == $idmatchprec ) ? $this->calculPoint($idmatch) : $idmatchprec = $idmatch ;
+                if ($score) {
+                	$matchTeamRepository->update($matchTeam);
+                	( $idmatch == $idmatchprec ) ? $this->calculPoint($idmatch) : $idmatchprec = $idmatch ;
+                }
             }
-            
         }
        
         return $this->app->redirect($this->app["url_generator"]->generate("match.matchToScore"));
