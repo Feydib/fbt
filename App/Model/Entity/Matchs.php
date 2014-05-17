@@ -32,8 +32,15 @@ class Matchs
      * @Column(name="stadium", type="string", length=255, nullable=true)
      */
     private $stadium;
+
+    /**
+     * @var string
+     *
+     * @Column(name="type", type="string", length=45, nullable=true)
+     */
+    private $type;
     
-        /**
+     /**
      * 
      * @var team
      *
@@ -53,7 +60,11 @@ class Matchs
     public function getStadium() {
         return $this->stadium;
     }
-
+    
+    public function getType() {
+    	return $this->type;
+    }
+    
     public function setIdmatchs($idmatchs) {
         $this->idmatchs = $idmatchs;
     }
@@ -65,7 +76,11 @@ class Matchs
     public function setStadium($stadium) {
         $this->stadium = $stadium;
     }
-
+    
+    public function setType($type) {
+    	$this->type = $type;
+    }
+    
     public function getTeams() {
         return $this->teams;
     }
