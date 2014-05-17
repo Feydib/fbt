@@ -26,14 +26,17 @@ TODO
 
 Créer MDP oublié
 lister les News
-Update du classement de la poule  -> OK
 Obtenir l'enchainement des matchs automatiquement (phases éliminatoires)-> OK ( TODO tester en déroulant toute une compétition )
 Remplir la table MatchPrequisite
+ajouter une checkbox pour indiquer que le match a été gagné après prolongation dans les phases finales
+Que se passe t'il en poule quand 2 équipes totalements égalitées ?
+Tester calcul ranking quand trois équipes sont à egalitées
+
+Update du classement de la poule  -> OK
 Finaliser les scores des paris -> OK
 Débloquer page Accueil -> OK
 Bloquer page Admin -> OK
 Mettre à jour le ranking -> OK
 Récupérer premier de la poule en fonction du ranking dans completeNextMatchs() -> OK
-ajouter une checkbox pour indiquer que le match a été gagné après prolongation dans les phases finales
 
 PROD => Mettre les champs de la table team à 0 au lieu de null (played, win, pts...)
