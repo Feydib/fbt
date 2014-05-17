@@ -48,4 +48,21 @@ class MatchTeamRepository extends EntityRepository
         $matchs = $this->findBy($crit, $orderBy, $limit, $offset);
         return $matchs;
     }
+     /**
+     * Returns a collection of MatchsTeam.
+     *
+     * @param integer $limit
+     *   The number of users to return.
+     * @param integer $offset
+     *   The number of users to skip.
+     * @param array $orderBy
+     *   Optionally, the order by info, in the $column => $direction format.
+     *
+     * @return array A collection of matchs, keyed by id.
+     */
+    public function findOne($crit = array())
+    {        
+        $matchs = $this->findOneBy($crit);
+        return $matchs;
+    }
 }

@@ -105,6 +105,80 @@ class MatchController implements ControllerProviderInterface {
         }
     }
     
+    /**
+     * Method to update pool ranking
+     * @param type $pool
+     */
+    private function updatePoolRanking($pool) {
+        $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
+        $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
+        $matchteamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
+        $arrayTeams = $teamRepository->findTeams(array("pool" => $pool), null, 0, array("pts" => "DESC", "gav" => "DESC", "gf" => "DESC", "ga" => "ASC"));
+        
+        
+        $ranking = 1;
+        $teamEqual = null;
+        foreach($arrayTeams as $team) {
+            $equal = false;
+            foreach($arrayTeams as $teamToCompare) {
+                // if team is Equal with prévious, his ranking is already updated
+                if($team !== $teamToCompare && $team !== $teamEqual) {
+                    //if teams' results are totally equal
+                    if($team->getPts() == $teamToCompare->getPts() 
+                            && $team->getGav() == $teamToCompare->getGav()
+                            && $team->getGf() == $teamToCompare->getGf()
+                            && $team->getGa() == $teamToCompare->getGa()) {
+                        $equal = true;
+                        $teamEqual = $teamToCompare;
+                    } 
+                }
+            } 
+            
+            if ($team !== $teamEqual) {
+                
+                if (!$equal) {
+                    $team->setRanking($ranking++);
+                } else {
+                    //when we have to compare match result in 2 teams
+                    $matchTeamList = $matchteamRepository->find(null, 0, array("idteams" => $team));
+                    foreach($matchTeamList as $matchteam){
+                        $match = $matchteam->getIdmatchs();
+                        //var_dump($match);
+                        $listMatchTeams = $match->getTeams();
+                        $matchToCompare = $matchRepository->find(array("idmatchs" => $match->getIdmatchs()));
+                        $matchTeam1 = $matchteamRepository->findOne(array("idteams" => $team, "idmatchs" => $matchToCompare));
+                        $matchTeam2 = $matchteamRepository->findOne(array("idteams" => $teamEqual, "idmatchs" => $matchToCompare));
+                        if ($matchTeam2 !== null) {
+                            $matchTeamArray = $matchteamRepository->find(null, 0, array("idmatchs" => $match));
+                            if ($matchTeamArray[0]->getScore() > $matchTeamArray[1]->getScore()) {
+                                //we update equals team ranking
+                                if($matchTeamArray[0] == $matchTeam1 ) {
+                                    $team->setRanking($ranking++);
+                                    $teamEqual->setRanking($ranking++);
+                                    $teamRepository->update($teamEqual);
+                                } else {
+                                    $teamEqual->setRanking($ranking++);
+                                    $teamRepository->update($teamEqual);
+                                    $team->setRanking($ranking++);
+                                }
+                            } else if ($matchTeamArray[0]->getScore() < $matchTeamArray[1]->getScore()) {
+                                if($matchTeamArray[0] == $matchTeam1 ) {
+                                    $teamEqual->setRanking($ranking++);
+                                    $teamRepository->update($teamEqual);
+                                    $team->setRanking($ranking++);
+                                } else {
+                                    $team->setRanking($ranking++);
+                                    $teamEqual->setRanking($ranking++);
+                                    $teamRepository->update($teamEqual);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            $teamRepository->update($team);
+        }
+    }
 
     /**
      * Update teams after set score
@@ -140,8 +214,8 @@ class MatchController implements ControllerProviderInterface {
             $team1->setGf($matchTeam1->getScore() + $team1->getGf());
             $team1->setGa($matchTeam2->getScore() + $team1->getGa());
             $team1->setGav($team1->getGav() + ($matchTeam1->getScore() - $matchTeam2->getScore()));
-            $team1->setPlayed($team2->getPlayed() + 1);
-            $team1->setLost($team2->getLost() + 1);
+            $team1->setPlayed($team1->getPlayed() + 1);
+            $team1->setLost($team1->getLost() + 1);
             
             $team2->setPts($team2->getPts() + 3);
             $team2->setGf($matchTeam2->getScore() + $team2->getGf());
@@ -165,6 +239,8 @@ class MatchController implements ControllerProviderInterface {
         //we update teams
         $teamRepository->update($team1);
         $teamRepository->update($team2);
+        
+        $this->updatePoolRanking($team1->getPool());
     }   
         
     public function index(Application $app) {
@@ -181,7 +257,7 @@ class MatchController implements ControllerProviderInterface {
      */
     public function matchToScore(Application $app) {
        $matchRepository = $app['em']->getRepository('App\Model\Entity\Matchs');
-       $matchList = $matchRepository->find(null, 0 , array('date' => 'ASC')); 
+       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC')); 
 
        return $app["twig"]->render("match/list.twig", array('matchs' => $matchList));
     }
@@ -323,6 +399,7 @@ class MatchController implements ControllerProviderInterface {
         $match->get("/admin/match/score/{idMatchTeam}", array($this,"scoreForm") )->bind("match.scoreForm");
         $match->get("/admin/match/pen/{idMatchTeam}", array($this,"penForm") )->bind("match.penForm");
         $match->post('/admin/match/doScore', array($this,"doScore"))->bind('match.doScore');
+        
         return $match;
     }
     

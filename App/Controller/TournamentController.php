@@ -155,7 +155,7 @@ class TournamentController implements ControllerProviderInterface {
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         
         $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
-    	$teamsList = $teamRepository->findTeams();
+    	$teamsList = $teamRepository->findTeams(array(), null, 0, array("ranking" => "ASC"));
     	$groupList = $teamRepository->findGroups();
     	
         //We get current user and we check he's admin of tournament to accept
