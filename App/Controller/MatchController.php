@@ -115,7 +115,7 @@ class MatchController implements ControllerProviderInterface {
         $matchteamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
         $arrayTeams = $teamRepository->findTeams(array("pool" => $pool), null, 0, array("pts" => "DESC", "gav" => "DESC", "gf" => "DESC", "ga" => "ASC"));
         
-        
+        //var_dump($arrayTeams);
         $ranking = 1;
         $teamEqual = null;
         foreach($arrayTeams as $team) {
@@ -133,22 +133,21 @@ class MatchController implements ControllerProviderInterface {
                     } 
                 }
             } 
-            
             if ($team !== $teamEqual) {
-                
                 if (!$equal) {
                     $team->setRanking($ranking++);
                 } else {
+                    
                     //when we have to compare match result in 2 teams
                     $matchTeamList = $matchteamRepository->find(null, 0, array("idteams" => $team));
                     foreach($matchTeamList as $matchteam){
                         $match = $matchteam->getIdmatchs();
-                        //var_dump($match);
                         $listMatchTeams = $match->getTeams();
                         $matchToCompare = $matchRepository->find(array("idmatchs" => $match->getIdmatchs()));
                         $matchTeam1 = $matchteamRepository->findOne(array("idteams" => $team, "idmatchs" => $matchToCompare));
                         $matchTeam2 = $matchteamRepository->findOne(array("idteams" => $teamEqual, "idmatchs" => $matchToCompare));
                         if ($matchTeam2 !== null) {
+                            
                             $matchTeamArray = $matchteamRepository->find(null, 0, array("idmatchs" => $match));
                             if ($matchTeamArray[0]->getScore() > $matchTeamArray[1]->getScore()) {
                                 //we update equals team ranking
@@ -171,6 +170,11 @@ class MatchController implements ControllerProviderInterface {
                                     $teamEqual->setRanking($ranking++);
                                     $teamRepository->update($teamEqual);
                                 }
+                            } else {
+                                //when totally equal
+                                $team->setRanking($ranking++);
+                                $teamEqual->setRanking($ranking++);
+                                $teamRepository->update($teamEqual);
                             }
                         }
                     }
@@ -400,6 +404,7 @@ class MatchController implements ControllerProviderInterface {
         $match->get("/admin/match/pen/{idMatchTeam}", array($this,"penForm") )->bind("match.penForm");
         $match->post('/admin/match/doScore', array($this,"doScore"))->bind('match.doScore');
         
+        //$match->get("/admin/match/test/{pool}", array($this,"updatePoolRanking") )->bind("match.updatePoolRanking");
         return $match;
     }
     
