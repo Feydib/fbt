@@ -16,18 +16,29 @@ class TeamsRepository extends EntityRepository
      *
      * @param Team
      */
-    public function save(Team $team)
+    public function save(Teams $team)
     {
         $this->_em->persist($team);
         $this->_em->flush();
     }
 
+     /**
+     * Update Team to the database.
+     *
+     * @param Team
+     */
+    public function update(Teams $team)
+    {
+        $this->_em->merge($team);
+        $this->_em->flush();
+    }
+    
     /**
      * Deletes the tournament.
      *
      * @param Tournament tournament
      */
-    public function delete(Team $team)
+    public function delete(Teams $team)
     {
         $this->_em->remove($team);
         $this->_em->flush();
@@ -73,15 +84,35 @@ class TeamsRepository extends EntityRepository
      * @param array $orderBy
      *   Optionally, the order by info, in the $column => $direction format.
      *
-     * @return array A collection of users, keyed by user id.
+     * @return array A collection of teams, keyed by team id.
      */
-    public function findTeams($limit = null, $offset = 0, $orderBy = array())
+    public function findTeams($crit=array(), $limit = null, $offset = 0, $orderBy = array())
     {        
-        $teams = $this->findBy(array(), $orderBy, $limit, $offset);
+        $teams = $this->findBy($crit, $orderBy, $limit, $offset);
         return $teams;
     }
     
-    
+    /**
+     * Get teams wich are not finished their pool.
+     *
+     * @param integer $limit
+     * @return Returns a collection of Team.
+     */
+    public function findTeamsPoolUnfinished($pool) {
+        $qb = $this->_em->createQueryBuilder()
+                ->select('t')
+                ->from('App\Model\Entity\Teams', 't')
+                ->where('t.played < 3')
+                ->andWhere('t.pool = ?1')
+                ->setParameter(1, $pool)
+                ;
+        
+        $query = $qb->getQuery();
+        $teams = $query->getResult();
+        return $teams;
+        
+    }
+        
     /**
      * Instantiates a Team entity and sets its properties using db data.
      *

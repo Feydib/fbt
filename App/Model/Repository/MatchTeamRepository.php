@@ -11,7 +11,16 @@ use Doctrine\ORM\EntityRepository;
 class MatchTeamRepository extends EntityRepository
 {
     
-
+    /**
+     * Saves MatchTeam to the database.
+     *
+     * @param Matchteam
+     */
+    public function save(Matchteam $matchteam)
+    {
+        $this->_em->persist($matchteam);
+        $this->_em->flush();
+    }
     /**
      * Saves MatchTeam to the database.
      *
