@@ -27,7 +27,7 @@ TODO
 Créer MDP oublié
 lister les News
 Obtenir l'enchainement des matchs automatiquement (phases éliminatoires)-> OK ( TODO tester en déroulant toute une compétition )
-Remplir la table MatchPrequisite
+Remplir la table MatchPrequisite -> OK
 ajouter une checkbox pour indiquer que le match a été gagné après prolongation dans les phases finales
 Que se passe t'il en poule quand 2 équipes totalements égalitées ?
 Tester calcul ranking quand trois équipes sont à egalitées
