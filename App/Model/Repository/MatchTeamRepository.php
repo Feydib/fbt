@@ -65,4 +65,5 @@ class MatchTeamRepository extends EntityRepository
         $matchs = $this->findOneBy($crit);
         return $matchs;
     }
+    
 }

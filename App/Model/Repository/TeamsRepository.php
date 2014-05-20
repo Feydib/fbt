@@ -5,6 +5,9 @@ namespace App\Model\Repository;
 use App\Model\Entity\Teams;
 use Doctrine\ORM\EntityRepository;
 
+use App\Model\Entity\Football;
+use App\Model\Entity\Countries;
+
 /**
  * User repository
  */
@@ -111,6 +114,27 @@ class TeamsRepository extends EntityRepository
         $teams = $query->getResult();
         return $teams;
         
+    }
+
+    /**
+     * Get teams ranking.
+     *
+     * @param integer $idteam
+     * @return Returns an INT.
+     */
+    public function getRank($idteam) {
+    	$qb = $this->_em->createQueryBuilder()
+    	->select('f.worldrank')
+    	->from('App\Model\Entity\Teams', 't')
+    	->join('t.countries', 'c')
+    	->join('c.football','f')
+    	->where('t.idteams = ?1')
+    	->setParameter(1, $idteam)
+    	;
+    	
+    	$query = $qb->getQuery();
+    	$rank = $query->getResult();
+    	return $rank[0]['worldrank'];
     }
         
     /**

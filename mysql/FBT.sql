@@ -87,6 +87,7 @@ CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_Matchs` (
   `idMatchs` INT NOT NULL AUTO_INCREMENT ,
   `date` DATETIME NULL ,
   `stadium` VARCHAR(255) NULL ,
+  `type` VARCHAR(45) NULL ,
   PRIMARY KEY (`idMatchs`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -247,6 +248,71 @@ CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_TournPlayers` (
   CONSTRAINT `fk_FBTTournPlayers_FBTPlayers1`
     FOREIGN KEY (`idPlayers` )
     REFERENCES `FBT`.`FBT_Players` (`idPlayers` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `FBT`.`FBT_BetScore`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `FBT`.`FBT_BetScore` ;
+
+CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_BetScore` (
+  `idScore` INT NOT NULL AUTO_INCREMENT ,
+  `idMatchs` INT NOT NULL ,
+  `idPlayers` INT NOT NULL ,
+  `score` INT NULL ,
+  PRIMARY KEY (`idScore`) ,
+  UNIQUE INDEX `idScore_UNIQUE` (`idScore` ASC) ,
+  INDEX `fk_FBT_BetScore_FBT_Matchs1` (`idMatchs` ASC) ,
+  INDEX `fk_FBT_BetScore_FBT_Players1` (`idPlayers` ASC) ,
+  CONSTRAINT `fk_FBT_BetScore_FBT_Matchs1`
+    FOREIGN KEY (`idMatchs` )
+    REFERENCES `FBT`.`FBT_Matchs` (`idMatchs` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBT_BetScore_FBT_Players1`
+    FOREIGN KEY (`idPlayers` )
+    REFERENCES `FBT`.`FBT_Players` (`idPlayers` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `FBT`.`FBT_MatchPrerequisite`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `FBT`.`FBT_MatchPrerequisite` ;
+
+CREATE  TABLE IF NOT EXISTS `FBT`.`FBT_MatchPrerequisite` (
+  `idMatchPrerequisite` INT NOT NULL AUTO_INCREMENT ,
+  `idPoolWinner` INT NULL ,
+  `idPoolSecond` INT NULL ,
+  `idMatchs` INT NOT NULL ,
+  `idMatchs1` INT NOT NULL ,
+  `idMatchs2` INT NOT NULL ,
+  PRIMARY KEY (`idMatchPrerequisite`) ,
+  INDEX `fk_FBT_MatchPrerequisite_FBT_Matchs1` (`idMatchs1` ASC) ,
+  INDEX `fk_FBT_MatchPrerequisite_FBT_Matchs2` (`idMatchs2` ASC) ,
+  INDEX `fk_FBT_MatchPrerequisite_FBT_Matchs3` (`idMatchs` ASC) ,
+  CONSTRAINT `fk_FBT_MatchPrerequisite_FBT_Matchs1`
+    FOREIGN KEY (`idMatchs1` )
+    REFERENCES `FBT`.`FBT_Matchs` (`idMatchs` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBT_MatchPrerequisite_FBT_Matchs2`
+    FOREIGN KEY (`idMatchs2` )
+    REFERENCES `FBT`.`FBT_Matchs` (`idMatchs` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBT_MatchPrerequisite_FBT_Matchs3`
+    FOREIGN KEY (`idMatchs` )
+    REFERENCES `FBT`.`FBT_Matchs` (`idMatchs` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

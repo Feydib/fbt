@@ -63,6 +63,17 @@ class Countries
      * })
      */
     private $idcontinent;
+    
+    /**
+     *
+     * @var \FbtFootball
+     *
+     *  @OneToOne(targetEntity="Football")
+     *  @JoinColumns({
+     *   @JoinColumn(name="idCountries", referencedColumnName="idCountries")
+     * })
+     */
+    private $football;
 
     public function getIdcountries() {
         return $this->idcountries;
@@ -119,6 +130,5 @@ class Countries
     public function setIdcontinent(Continent $idcontinent) {
         $this->idcontinent = $idcontinent;
     }
-
 
 }

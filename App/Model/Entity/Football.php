@@ -26,7 +26,7 @@ class Football
      * @GeneratedValue(strategy="NONE")
      * @OneToOne(targetEntity="Countries")
      * @JoinColumns({
-     *   @JoinColumn(name="Countries_id", referencedColumnName="idCountries")
+     *   @JoinColumn(name="idCountries", referencedColumnName="idCountries")
      * })
      */
     private $countries;

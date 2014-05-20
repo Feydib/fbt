@@ -11,6 +11,8 @@ use App\Model\Entity\Matchs;
 use App\Model\Entity\Betmatchs;
 use App\Model\Entity\Players;
 
+use App\Model\Entity\Teams;
+
 class MatchController implements ControllerProviderInterface {
 
 
@@ -19,15 +21,17 @@ class MatchController implements ControllerProviderInterface {
 	$betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
 	$betMatchRepository = $this->app['em']->getRepository('App\Model\Entity\Betmatchs');
 	$playersRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
+	$teamsRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
 
 	$playerIdList = $betMatchRepository->findAllPlayersId();
 	$matchTeamList = $matchTeamRepository->find(null, 0, array("idmatchs" => $idMatch->getIdmatchs()));
 
-        //Get idTeam, Score and Pen for both teams
+    //Get idTeam, Score, Pen and worldrank for both teams
 	foreach($matchTeamList as $matchTeam) {
             $scoreList[] = $matchTeam->getScore();
             $penList[] = $matchTeam->getPen();
             $idmatchteamList[] = $matchTeam->getIdmatchteam();
+            $teamRankList[] = ($teamsRepository->getRank($matchTeam->getIdteams()->getIdteams()));
             foreach ($matchTeam->getBet() as $bet) {
 		$betscoreList[] = $bet->getScore();
 		$betplayerList[] = $bet->getIdplayers();
@@ -42,18 +46,32 @@ class MatchController implements ControllerProviderInterface {
                     $i++;
 		}
             }
-            //Calculate probability
-            //TODO get team ranking
+            //Calculate probability and odds
+            $diff = $teamRankList[0] - $teamRankList[1];
+            $rdiff = $teamRankList[1] - $teamRankList[0];
+            //Limit difference between two teams to 29, else we will tend infinity...
+            if ($diff < -29) {
+            	$diff = -29;
+            	$rdiff = 29;
+            }
+            if ($diff > 29) {
+            	$diff = 29;
+            	$rdiff = -29;
+            }
+            $probw = 1/3 - ($diff)/100;
+            $probl = 1/3 - ($rdiff)/100;
+            $oddw = round(1/$probw , 1);
+            $oddl = round(1/$probl , 1);
 
             //If match bet = match result, then calulate odds, else, odds = 0
             if ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
-                $odds = 3;
+                $odds = $oddw;
             }
             elseif ( ($scoreList[0] == $scoreList[1] && $betscore[0] == $betscore[1]) ) {
-                $odds = 7;
+                $odds = ($oddw > $oddl) ? round((3 + $oddw)/2 , 1) :  round((3 + $oddl)/2 , 1);
             }
             elseif ( ($scoreList[0] < $scoreList[1] && $betscore[0] < $betscore[1]) ) {
-                $odds = 5;
+                $odds = $oddl;
             }
             else {
                 $odds = 0;
@@ -320,8 +338,8 @@ class MatchController implements ControllerProviderInterface {
                     $matchTeamRepository->update($matchTeam);
                     //if ($idmatch == $idmatchprec) {
                     if (in_array($idmatch, $savedMatchs)) {
-                        $this->updateTeams($idmatch);
-                        $this->completeNextMatchs($matchTeam);
+                        //$this->updateTeams($idmatch);
+                        //$this->completeNextMatchs($matchTeam);
                         $this->calculPoint($idmatch);
                     } else {
                         $savedMatchs[] = $idmatch;
