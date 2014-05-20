@@ -267,7 +267,7 @@ class MatchController implements ControllerProviderInterface {
         
     public function index(Application $app) {
        $matchRepository = $app['em']->getRepository('App\Model\Entity\Matchs');
-       $matchList = $matchRepository->find(null, 0 , array('date' => 'ASC')); 
+       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC')); 
 
        return $app["twig"]->render("match/index.twig", array('matchs' => $matchList));
     }
@@ -338,8 +338,8 @@ class MatchController implements ControllerProviderInterface {
                     $matchTeamRepository->update($matchTeam);
                     //if ($idmatch == $idmatchprec) {
                     if (in_array($idmatch, $savedMatchs)) {
-                        //$this->updateTeams($idmatch);
-                        //$this->completeNextMatchs($matchTeam);
+                        $this->updateTeams($idmatch);
+                        $this->completeNextMatchs($matchTeam);
                         $this->calculPoint($idmatch);
                     } else {
                         $savedMatchs[] = $idmatch;
