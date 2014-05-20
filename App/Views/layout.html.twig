@@ -7,67 +7,47 @@
             <link rel="stylesheet" href="{{ app.request.basepath }} /js/JQuery/jquery-ui.css" type="text/css" />
             <!-- Styles pour jScrollPane -->
             <script charset="utf-8" type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-            <script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/jquery.nivo.slider.pack.js"></script>
+            <!--script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/jquery.nivo.slider.pack.js"></script>-->
             <!-- Latest compiled and minified CSS -->
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-            <link rel="stylesheet" href="{{ app.request.basepath }}/css/nivo-slider.css">
-            <link rel="stylesheet" href="{{ app.request.basepath }}/css/themes/default/default.css">
+            <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
+            <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.css">
+            <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap-responsive.css">
+            <!--<link rel="stylesheet" href="{{ app.request.basepath }}/css/nivo-slider.css">
+            <link rel="stylesheet" href="{{ app.request.basepath }}/css/themes/default/default.css">-->
             <link rel="stylesheet" href="{{ app.request.basepath }}/css/style.css">
     </head>
     <body>
         <header>
-            <div class="slider-wrapper theme-default">
-                <div class="ribbon"></div>
-                <div id="slider" class="nivoSlider">
-                    <img src="{{ app.request.basepath }}/img/cdm2014.jpg" title="CDM 2014" />
-                    <img src="{{ app.request.basepath }}/img/coupe-du-monde.jpg" title="Coupe du monde" />
-                    <img src="{{ app.request.basepath }}/img/index.jpg" title="Coupe du monde" />
-		</div>
-            </div>      
-            <script type="text/javascript">
-            $(window).load(function() {
-                $('#slider').nivoSlider({
-                    slices: 15,                     // For slice animations
-                    boxCols: 8,                     // For box animations
-                    boxRows: 4,                     // For box animations
-                    animSpeed: 100,                 // Slide transition speed
-                    pauseTime: 9000,                // How long each slide will show
-                    startSlide: 0,                  // Set starting Slide (0 index)
-                    directionNav: true,             // Next & Prev navigation
-                    controlNav: true,               // 1,2,3... navigation
-                    controlNavThumbs: false,        // Use thumbnails for Control Nav
-                    pauseOnHover: true,             // Stop animation while hovering
-                    manualAdvance: false,           // Force manual transitions
-                    prevText: 'Prev',               // Prev directionNav text
-                    nextText: 'Next',               // Next directionNav text
-                    randomStart: false,             // Start on a random slide
-                    beforeChange: function(){},     // Triggers before a slide transition
-                    afterChange: function(){},      // Triggers after a slide transition
-                    slideshowEnd: function(){},     // Triggers after all slides have been shown
-                    lastSlide: function(){},        // Triggers when last slide is shown
-                    afterLoad: function(){}         // Triggers when slider has loaded
-                });
-            });
-            </script>
+            
         </header>
-        <nav>
-            <ul>
-                <li><a href="{{ path('index.index') }}">{% trans %}home{% endtrans %}</a></li>
-                <li><a href="{{ path('tournament.index') }}">{% trans %}tournament{% endtrans %}</a></li>
-                <li><a href="{{ path('match.index') }}">{% trans %}pronostics{% endtrans %}</a></li>
-                {% if is_granted('ROLE_USER') %}
-                    <li><a href="{{ path('deconnexion') }}">{% trans %}logout{% endtrans %}</a></li>
-                {% else %}
-                    <li><a href="{{ path('login') }}">{% trans %}login{% endtrans %}</a></li>
-                {% endif %}
-                <li><a href="{{ path('user.signup') }}">{% trans %}signup{% endtrans %}</a></li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path('match.matchToScore') }}">{% trans %}matchs results{% endtrans %}</a></li>
-                {% endif %}
-            </ul>
-            <div id="login">
-            </div>
-        </nav>    
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+              <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="#">Pronostics</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="{{ path('index.index') }}">{% trans %}home{% endtrans %}</a></li>
+                        <li><a href="{{ path('tournament.index') }}">{% trans %}tournament{% endtrans %}</a></li>
+                        <li><a href="{{ path('match.index') }}">{% trans %}pronostics{% endtrans %}</a></li>
+                        {% if is_granted('ROLE_USER') %}
+                            <li><a href="{{ path('deconnexion') }}">{% trans %}logout{% endtrans %}</a></li>
+                        {% else %}
+                            <li><a href="{{ path('login') }}">{% trans %}login{% endtrans %}</a></li>
+                        {% endif %}
+                        <li><a href="{{ path('user.signup') }}">{% trans %}signup{% endtrans %}</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="{{ path('match.matchToScore') }}">{% trans %}matchs results{% endtrans %}</a></li>
+                        {% endif %}
+                    </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </nav>  
         <section id="content">
             {% include 'flash-message.twig' %}
             {% block body %}{% endblock %}	
