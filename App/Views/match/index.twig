@@ -33,7 +33,13 @@
                     {% endif %}
                 </td>
                 <td>
+                    {% if firstTeam == true %}
+                        <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                    {% endif %} 
                     {{team.idteams.countries.nameFr}}
+                    {% if firstTeam == false %}
+                        <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                    {% endif %} 
                 </td>
                 <td>
                     {% if firstTeam == true and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
