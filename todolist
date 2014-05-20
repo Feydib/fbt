@@ -39,4 +39,4 @@ Bloquer page Admin -> OK
 Mettre à jour le ranking -> OK
 Récupérer premier de la poule en fonction du ranking dans completeNextMatchs() -> OK
 
-PROD => Mettre les champs de la table team à 0 au lieu de null (played, win, pts...)
+PROD => Mettre les champs de la table team à 0 au lieu de null (played, win, pts...) -> OK

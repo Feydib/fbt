@@ -1,0 +1,8 @@
+UPDATE `FBT`.`FBT_MatchTeam` SET `score`=NULL WHERE `idMatchTeam`>'0';
+UPDATE `FBT`.`FBT_Teams` SET `played`=0, `win`=0, `draw`=0, `lost`=0, `gf`=0, `ga`=0, `gav`=0 WHERE `idTeams`>'0';
+TRUNCATE TABLE `FBT`.`FBT_BetScore`; 
+TRUNCATE TABLE `FBT`.`FBT_BetMatchs`;
+TRUNCATE TABLE `FBT`.`FBT_TournPlayers`;
+DELETE FROM `FBT`.`FBT_Tournament` WHERE `idTournament` > '0';
+DELETE FROM `FBT`.`FBT_Players` WHERE `idPlayers`>'1';
+

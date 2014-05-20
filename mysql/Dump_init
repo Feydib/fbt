@@ -1,0 +1,417 @@
+CREATE DATABASE  IF NOT EXISTS `FBT` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
+USE `FBT`;
+-- MySQL dump 10.13  Distrib 5.5.37, for debian-linux-gnu (i686)
+--
+-- Host: Elrond.brebion.info    Database: FBT
+-- ------------------------------------------------------
+-- Server version	5.5.37-0ubuntu0.12.04.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `FBT_Continent`
+--
+
+DROP TABLE IF EXISTS `FBT_Continent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_Continent` (
+  `idContinent` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idContinent`),
+  UNIQUE KEY `idContinent_UNIQUE` (`idContinent`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_Continent`
+--
+
+LOCK TABLES `FBT_Continent` WRITE;
+/*!40000 ALTER TABLE `FBT_Continent` DISABLE KEYS */;
+INSERT INTO `FBT_Continent` VALUES (1,'AFRIQUE'),(2,'AMERIQUE'),(3,'ASIE'),(4,'EUROPE'),(5,'ASIE');
+/*!40000 ALTER TABLE `FBT_Continent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_Countries`
+--
+
+DROP TABLE IF EXISTS `FBT_Countries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_Countries` (
+  `idCountries` smallint(5) NOT NULL AUTO_INCREMENT,
+  `iso_num` int(3) NOT NULL,
+  `iso_alpha2` varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `iso_alpha3` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name_fr` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name_en` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `idContinent` int(11) NOT NULL,
+  PRIMARY KEY (`idCountries`),
+  UNIQUE KEY `idCountries_UNIQUE` (`idCountries`),
+  UNIQUE KEY `iso_num_UNIQUE` (`iso_num`),
+  UNIQUE KEY `iso_alpha2_UNIQUE` (`iso_alpha2`),
+  UNIQUE KEY `iso_alpha3_UNIQUE` (`iso_alpha3`),
+  KEY `fk_FBT_Countries_FBT_Continent1` (`idContinent`),
+  CONSTRAINT `fk_FBT_Countries_FBT_Continent1` FOREIGN KEY (`idContinent`) REFERENCES `FBT_Continent` (`idContinent`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_Countries`
+--
+
+LOCK TABLES `FBT_Countries` WRITE;
+/*!40000 ALTER TABLE `FBT_Countries` DISABLE KEYS */;
+INSERT INTO `FBT_Countries` VALUES (1,4,'AF','AFG','Afghanistan','Afghanistan',3),(2,8,'AL','ALB','Albanie','Albania',4),(3,12,'DZ','DZA','Algérie','Algeria',1),(4,16,'AS','ASM','Samoa Américaines','American Samoa',2),(5,20,'AD','AND','Andorre','Andorra',4),(6,24,'AO','AGO','Angola','Angola',1),(7,28,'AG','ATG','Antigua-et-Barbuda','Antigua and Barbuda',2),(8,31,'AZ','AZE','Azerbaïdjan','Azerbaijan',3),(9,32,'AR','ARG','Argentine','Argentina',2),(10,36,'AU','AUS','Australie','Australia',5),(11,40,'AT','AUT','Autriche','Austria',4),(12,44,'BS','BHS','Bahamas','Bahamas',2),(13,48,'BH','BHR','Bahreïn','Bahrain',3),(14,50,'BD','BGD','Bangladesh','Bangladesh',3),(15,51,'AM','ARM','Arménie','Armenia',3),(16,52,'BB','BRB','Barbade','Barbados',2),(17,56,'BE','BEL','Belgique','Belgium',4),(18,60,'BM','BMU','Bermudes','Bermuda',2),(19,64,'BT','BTN','Bhoutan','Bhutan',3),(20,68,'BO','BOL','Bolivie','Bolivia',2),(21,70,'BA','BIH','Bosnie-Herzégovine','Bosnia and Herzegovina',4),(22,72,'BW','BWA','Botswana','Botswana',1),(23,76,'BR','BRA','Brésil','Brazil',2),(24,84,'BZ','BLZ','Belize','Belize',2),(25,90,'SB','SLB','Îles Salomon','Solomon Islands',5),(26,92,'VG','VGB','Îles Vierges Britanniques','British Virgin Islands',2),(27,96,'BN','BRN','Brunéi Darussalam','Brunei Darussalam',3),(28,100,'BG','BGR','Bulgarie','Bulgaria',4),(29,108,'BI','BDI','Burundi','Burundi',1),(30,112,'BY','BLR','Bélarus','Belarus',4),(31,116,'KH','KHM','Cambodge','Cambodia',3),(32,120,'CM','CMR','Cameroun','Cameroon',1),(33,124,'CA','CAN','Canada','Canada',2),(34,132,'CV','CPV','Cap-vert','Cape Verde',1),(35,136,'KY','CYM','Îles Caïmanes','Cayman Islands',2),(36,140,'CF','CAF','République Centrafricaine','Central African',1),(37,144,'LK','LKA','Sri Lanka','Sri Lanka',3),(38,148,'TD','TCD','Tchad','Chad',1),(39,152,'CL','CHL','Chili','Chile',2),(40,156,'CN','CHN','Chine','China',3),(41,158,'TW','TWN','Taïwan','Taiwan',3),(42,170,'CO','COL','Colombie','Colombia',2),(43,174,'KM','COM','Comores','Comoros',1),(44,175,'YT','MYT','Mayotte','Mayotte',1),(45,178,'CG','COG','République du Congo','Republic of the Congo',1),(46,180,'CD','COD','République Démocratique du Congo','The Democratic Republic Of The Congo',1),(47,184,'CK','COK','Îles Cook','Cook Islands',5),(48,188,'CR','CRI','Costa Rica','Costa Rica',2),(49,191,'HR','HRV','Croatie','Croatia',4),(50,192,'CU','CUB','Cuba','Cuba',2),(51,196,'CY','CYP','Chypre','Cyprus',4),(52,203,'CZ','CZE','République Tchèque','Czech Republic',4),(53,204,'BJ','BEN','Bénin','Benin',1),(54,208,'DK','DNK','Danemark','Denmark',4),(55,212,'DM','DMA','Dominique','Dominica',2),(56,214,'DO','DOM','République Dominicaine','Dominican Republic',2),(57,218,'EC','ECU','Équateur','Ecuador',2),(58,222,'SV','SLV','El Salvador','El Salvador',2),(59,226,'GQ','GNQ','Guinée Équatoriale','Equatorial Guinea',1),(60,231,'ET','ETH','Éthiopie','Ethiopia',1),(61,232,'ER','ERI','Érythrée','Eritrea',1),(62,233,'EE','EST','Estonie','Estonia',4),(63,239,'GS','SGS','Géorgie du Sud et les Îles Sandwich du Sud','South Georgia and the South Sandwich Islands',2),(64,242,'FJ','FJI','Fidji','Fiji',5),(65,246,'FI','FIN','Finlande','Finland',4),(66,250,'FR','FRA','France','France',4),(67,254,'GF','GUF','Guyane Française','French Guiana',2),(68,258,'PF','PYF','Polynésie Française','French Polynesia',5),(69,262,'DJ','DJI','Djibouti','Djibouti',1),(70,266,'GA','GAB','Gabon','Gabon',1),(71,268,'GE','GEO','Géorgie','Georgia',3),(72,270,'GM','GMB','Gambie','Gambia',1),(73,276,'DE','DEU','Allemagne','Germany',4),(74,288,'GH','GHA','Ghana','Ghana',1),(75,296,'KI','KIR','Kiribati','Kiribati',5),(76,300,'GR','GRC','Grèce','Greece',4),(77,308,'GD','GRD','Grenade','Grenada',2),(78,312,'GP','GLP','Guadeloupe','Guadeloupe',2),(79,316,'GU','GUM','Guam','Guam',5),(80,320,'GT','GTM','Guatemala','Guatemala',2),(81,324,'GN','GIN','Guinée','Guinea',1),(82,328,'GY','GUY','Guyana','Guyana',2),(83,332,'HT','HTI','Haïti','Haiti',2),(84,336,'VA','VAT','Saint-Siège (état de la Cité du Vatican)','Vatican City State',4),(85,340,'HN','HND','Honduras','Honduras',2),(86,344,'HK','HKG','Hong-Kong','Hong Kong',3),(87,348,'HU','HUN','Hongrie','Hungary',4),(88,352,'IS','ISL','Islande','Iceland',4),(89,356,'IN','IND','Inde','India',3),(90,360,'ID','IDN','Indonésie','Indonesia',3),(91,364,'IR','IRN','République Islamique d\'Iran','Islamic Republic of Iran',3),(92,368,'IQ','IRQ','Iraq','Iraq',3),(93,372,'IE','IRL','Irlande','Ireland',4),(94,376,'IL','ISR','Israël','Israel',3),(95,380,'IT','ITA','Italie','Italy',4),(96,384,'CI','CIV','Côte d\'Ivoire','Côte d\'Ivoire',1),(97,388,'JM','JAM','Jamaïque','Jamaica',2),(98,392,'JP','JPN','Japon','Japan',3),(99,398,'KZ','KAZ','Kazakhstan','Kazakhstan',3),(100,400,'JO','JOR','Jordanie','Jordan',3),(101,404,'KE','KEN','Kenya','Kenya',1),(102,408,'KP','PRK','République Populaire Démocratique de Corée','Democratic People\'s Republic of Korea',3),(103,410,'KR','KOR','République de Corée','Republic of Korea',3),(104,414,'KW','KWT','Koweït','Kuwait',3),(105,417,'KG','KGZ','Kirghizistan','Kyrgyzstan',3),(106,418,'LA','LAO','République Démocratique Populaire Lao','Lao People\'s Democratic Republic',3),(107,422,'LB','LBN','Liban','Lebanon',3),(108,426,'LS','LSO','Lesotho','Lesotho',1),(109,428,'LV','LVA','Lettonie','Latvia',4),(110,430,'LR','LBR','Libéria','Liberia',1),(111,434,'LY','LBY','Jamahiriya Arabe Libyenne','Libyan Arab Jamahiriya',1),(112,438,'LI','LIE','Liechtenstein','Liechtenstein',4),(113,440,'LT','LTU','Lituanie','Lithuania',4),(114,442,'LU','LUX','Luxembourg','Luxembourg',4),(115,450,'MG','MDG','Madagascar','Madagascar',1),(116,454,'MW','MWI','Malawi','Malawi',1),(117,458,'MY','MYS','Malaisie','Malaysia',3),(118,462,'MV','MDV','Maldives','Maldives',3),(119,466,'ML','MLI','Mali','Mali',1),(120,470,'MT','MLT','Malte','Malta',4),(121,474,'MQ','MTQ','Martinique','Martinique',2),(122,478,'MR','MRT','Mauritanie','Mauritania',1),(123,480,'MU','MUS','Maurice','Mauritius',1),(124,484,'MX','MEX','Mexique','Mexico',2),(125,492,'MC','MCO','Monaco','Monaco',4),(126,496,'MN','MNG','Mongolie','Mongolia',3),(127,498,'MD','MDA','République de Moldova','Republic of Moldova',4),(128,500,'MS','MSR','Montserrat','Montserrat',2),(129,504,'MA','MAR','Maroc','Morocco',1),(130,508,'MZ','MOZ','Mozambique','Mozambique',1),(131,512,'OM','OMN','Oman','Oman',3),(132,516,'NA','NAM','Namibie','Namibia',1),(133,520,'NR','NRU','Nauru','Nauru',5),(134,524,'NP','NPL','Népal','Nepal',3),(135,528,'NL','NLD','Pays-Bas','Netherlands',4),(136,533,'AW','ABW','Aruba','Aruba',2),(137,540,'NC','NCL','Nouvelle-Calédonie','New Caledonia',5),(138,548,'VU','VUT','Vanuatu','Vanuatu',5),(139,554,'NZ','NZL','Nouvelle-Zélande','New Zealand',5),(140,558,'NI','NIC','Nicaragua','Nicaragua',2),(141,562,'NE','NER','Niger','Niger',1),(142,566,'NG','NGA','Nigéria','Nigeria',1),(143,570,'NU','NIU','Niué','Niue',5),(144,578,'NO','NOR','Norvège','Norway',4),(145,580,'MP','MNP','Îles Mariannes du Nord','Northern Mariana Islands',5),(146,583,'FM','FSM','États Fédérés de Micronésie','Federated States of Micronesia',5),(147,584,'MH','MHL','Îles Marshall','Marshall Islands',5),(148,585,'PW','PLW','Palaos','Palau',5),(149,586,'PK','PAK','Pakistan','Pa	kistan',3),(150,591,'PA','PAN','Panama','Panama',2),(151,598,'PG','PNG','Papouasie-Nouvelle-Guinée','Papua New Guinea',5),(152,600,'PY','PRY','Paraguay','Paraguay',2),(153,604,'PE','PER','Pérou','Peru',2),(154,608,'PH','PHL','Philippines','Philippines',3),(155,612,'PN','PCN','Pitcairn','Pitcairn',5),(156,616,'PL','POL','Pologne','Poland',4),(157,620,'PT','PRT','Portugal','Portugal',4),(158,624,'GW','GNB','Guinée-Bissau','Guinea-Bissau',1),(159,626,'TL','TLS','Timor-Leste','Timor-Leste',3),(160,630,'PR','PRI','Porto Rico','Puerto Rico',2),(161,634,'QA','QAT','Qatar','Qatar',3),(162,642,'RO','ROU','Roumanie','Romania',4),(163,643,'RU','RUS','Fédération de Russie','Russian Federation',4),(164,646,'RW','RWA','Rwanda','Rwanda',1),(165,654,'SH','SHN','Sainte-Hélène','Saint Helena',1),(166,660,'AI','AIA','Anguilla','Anguilla',2),(167,662,'LC','LCA','Sainte-Lucie','Saint Lucia',2),(168,666,'PM','SPM','Saint-Pierre-et-Miquelon','Saint-Pierre and Miquelon',2),(169,670,'VC','VCT','Saint-Vincent-et-les Grenadines','Saint Vincent and the Grenadines',2),(170,674,'SM','SMR','Saint-Marin','San Marino',4),(171,678,'ST','STP','Sao Tomé-et-Principe','Sao Tome and Principe',1),(172,682,'SA','SAU','Arabie Saoudite','Saudi Arabia',3),(173,686,'SN','SEN','Sénégal','Senegal',1),(174,690,'SC','SYC','Seychelles','Seychelles',1),(175,694,'SL','SLE','Sierra Leone','Sierra Leone',1),(176,702,'SG','SGP','Singapour','Singapore',3),(177,703,'SK','SVK','Slovaquie','Slovakia',4),(178,704,'VN','VNM','Viet Nam','Vietnam',3),(179,705,'SI','SVN','Slovénie','Slovenia',4),(180,706,'SO','SOM','Somalie','Somalia',1),(181,710,'ZA','ZAF','Afrique du Sud','South Africa',1),(182,716,'ZW','ZWE','Zimbabwe','Zimbabwe',1),(183,724,'ES','ESP','Espagne','Spain',4),(184,736,'SD','SDN','Soudan','Sudan',1),(185,740,'SR','SUR','Suriname','Suriname',2),(186,748,'SZ','SWZ','Swaziland','Swaziland',1),(187,752,'SE','SWE','Suède','Sweden',4),(188,756,'CH','CHE','Suisse','Switzerland',4),(189,760,'SY','SYR','République Arabe Syrienne','Syrian Arab Republic',3),(190,762,'TJ','TJK','Tadjikistan','Tajikistan',3),(191,764,'TH','THA','Thaïlande','Thailand',3),(192,768,'TG','TGO','Togo','Togo',1),(193,776,'TO','TON','Tonga','Tonga',5),(194,780,'TT','TTO','Trinité-et-Tobago','Trinidad and Tobago',2),(195,784,'AE','ARE','Émirats Arabes Unis','United Arab Emirates',3),(196,788,'TN','TUN','Tunisie','Tunisia',1),(197,792,'TR','TUR','Turquie','Turkey',3),(198,795,'TM','TKM','Turkménistan','Turkmenistan',3),(199,798,'TV','TUV','Tuvalu','Tuvalu',5),(200,800,'UG','UGA','Ouganda','Uganda',1),(201,804,'UA','UKR','Ukraine','Ukraine',4),(202,807,'MK','MKD','L\'ex-République Yougoslave de Macédoine','The Former Yugoslav Republic of Macedonia',4),(203,818,'EG','EGY','Égypte','Egypt',1),(204,826,'GB','GBR','Royaume-Uni','United Kingdom',4),(205,833,'IM','IMN','Île de Man','Isle of Man',4),(206,834,'TZ','TZA','République-Unie de Tanzanie','United Republic Of Tanzania',1),(207,840,'US','USA','États-Unis','United States',2),(208,850,'VI','VIR','Îles Vierges des États-Unis','U.S. Virgin Islands',2),(209,854,'BF','BFA','Burkina Faso','Burkina Faso',1),(210,858,'UY','URY','Uruguay','Uruguay',2),(211,860,'UZ','UZB','Ouzbékistan','Uzbekistan',3),(212,862,'VE','VEN','Venezuela','Venezuela',2),(213,876,'WF','WLF','Wallis et Futuna','Wallis and Futuna',5),(214,882,'WS','WSM','Samoa','Samoa',5),(215,887,'YE','YEM','Yémen','Yemen',3),(216,891,'CS','SCG','Serbie-et-Monténégro','Serbia and Montenegro',4),(217,894,'ZM','ZMB','Zambie','Zambia',1);
+/*!40000 ALTER TABLE `FBT_Countries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_BetMatchs`
+--
+
+DROP TABLE IF EXISTS `FBT_BetMatchs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_BetMatchs` (
+  `idBetMatchs` int(11) NOT NULL AUTO_INCREMENT,
+  `idPlayers` int(11) NOT NULL,
+  `idMatchTeam` int(11) NOT NULL,
+  `score` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idBetMatchs`,`idPlayers`,`idMatchTeam`),
+  KEY `fk_BetMatchs_Players1` (`idPlayers`),
+  KEY `fk_FBTBetMatchs_FBT_MatchTeam1` (`idMatchTeam`),
+  CONSTRAINT `fk_BetMatchs_Players1` FOREIGN KEY (`idPlayers`) REFERENCES `FBT_Players` (`idPlayers`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBTBetMatchs_FBT_MatchTeam1` FOREIGN KEY (`idMatchTeam`) REFERENCES `FBT_MatchTeam` (`idMatchTeam`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_BetMatchs`
+--
+
+LOCK TABLES `FBT_BetMatchs` WRITE;
+/*!40000 ALTER TABLE `FBT_BetMatchs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `FBT_BetMatchs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_Football`
+--
+
+DROP TABLE IF EXISTS `FBT_Football`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_Football` (
+  `worldrank` int(11) NOT NULL,
+  `idCountries` smallint(5) NOT NULL,
+  PRIMARY KEY (`worldrank`,`idCountries`),
+  KEY `fk_FBTFootball_FBTCountries1` (`idCountries`),
+  CONSTRAINT `fk_FBTFootball_FBTCountries1` FOREIGN KEY (`idCountries`) REFERENCES `FBT_Countries` (`idCountries`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_Football`
+--
+
+LOCK TABLES `FBT_Football` WRITE;
+/*!40000 ALTER TABLE `FBT_Football` DISABLE KEYS */;
+INSERT INTO `FBT_Football` VALUES (70,2),(25,3),(94,6),(85,8),(7,9),(59,10),(40,11),(105,13),(33,15),(12,17),(68,20),(25,21),(91,22),(4,23),(73,28),(83,30),(50,32),(110,33),(42,34),(106,36),(13,39),(96,40),(5,42),(92,45),(88,46),(34,48),(20,49),(90,50),(36,52),(97,53),(23,54),(28,57),(113,59),(101,60),(93,62),(52,65),(16,66),(87,70),(103,71),(2,73),(38,74),(10,76),(51,81),(77,83),(30,85),(45,87),(58,88),(37,91),(100,92),(66,93),(78,94),(9,95),(21,96),(81,97),(47,98),(118,99),(64,100),(106,101),(55,103),(108,104),(114,107),(109,109),(119,110),(104,113),(112,114),(59,119),(19,124),(76,129),(114,130),(82,131),(120,132),(15,135),(111,139),(102,141),(44,142),(55,144),(35,150),(55,152),(42,153),(72,156),(3,157),(95,161),(32,162),(18,163),(75,172),(63,173),(71,175),(46,177),(116,178),(29,179),(65,181),(98,182),(1,183),(117,184),(25,187),(8,188),(121,190),(89,192),(74,194),(67,195),(49,196),(39,197),(86,200),(17,201),(80,202),(24,203),(11,204),(14,207),(61,209),(6,210),(53,211),(41,212),(30,216),(79,217);
+/*!40000 ALTER TABLE `FBT_Football` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_MatchPrerequisite`
+--
+
+DROP TABLE IF EXISTS `FBT_MatchPrerequisite`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_MatchPrerequisite` (
+  `idMatchPrerequisite` int(11) NOT NULL AUTO_INCREMENT,
+  `idPoolWinner` int(11) DEFAULT NULL,
+  `idPoolSecond` int(11) DEFAULT NULL,
+  `idMatchs` int(11) NOT NULL,
+  `idMatchs1` int(11) DEFAULT NULL,
+  `idMatchs2` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idMatchPrerequisite`),
+  KEY `fk_FBT_MatchPrerequisite_FBT_Matchs1` (`idMatchs1`),
+  KEY `fk_FBT_MatchPrerequisite_FBT_Matchs2` (`idMatchs2`),
+  KEY `fk_FBT_MatchPrerequisite_FBT_Matchs3` (`idMatchs`),
+  CONSTRAINT `fk_FBT_MatchPrerequisite_FBT_Matchs1` FOREIGN KEY (`idMatchs1`) REFERENCES `FBT_Matchs` (`idMatchs`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBT_MatchPrerequisite_FBT_Matchs2` FOREIGN KEY (`idMatchs2`) REFERENCES `FBT_Matchs` (`idMatchs`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBT_MatchPrerequisite_FBT_Matchs3` FOREIGN KEY (`idMatchs`) REFERENCES `FBT_Matchs` (`idMatchs`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_MatchPrerequisite`
+--
+
+LOCK TABLES `FBT_MatchPrerequisite` WRITE;
+/*!40000 ALTER TABLE `FBT_MatchPrerequisite` DISABLE KEYS */;
+INSERT INTO `FBT_MatchPrerequisite` VALUES (1,1,2,49,NULL,NULL),(2,3,4,50,NULL,NULL),(3,2,1,51,NULL,NULL),(4,4,3,52,NULL,NULL),(5,5,6,53,NULL,NULL),(6,7,8,54,NULL,NULL),(7,6,5,55,NULL,NULL),(8,8,7,56,NULL,NULL),(9,NULL,NULL,57,53,54),(10,NULL,NULL,58,49,50),(11,NULL,NULL,59,55,56),(12,NULL,NULL,60,51,52),(13,NULL,NULL,61,57,58),(14,NULL,NULL,62,59,60),(15,NULL,NULL,64,61,62);
+/*!40000 ALTER TABLE `FBT_MatchPrerequisite` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_Players`
+--
+
+DROP TABLE IF EXISTS `FBT_Players`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_Players` (
+  `idPlayers` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `firstname` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `lastname` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `mail` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `salt` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `rdate` datetime DEFAULT NULL,
+  `role` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `active` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`idPlayers`),
+  UNIQUE KEY `idPlayers_UNIQUE` (`idPlayers`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `mail_UNIQUE` (`mail`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_Players`
+--
+
+LOCK TABLES `FBT_Players` WRITE;
+/*!40000 ALTER TABLE `FBT_Players` DISABLE KEYS */;
+INSERT INTO `FBT_Players` VALUES (1,'admin','Administrateur','','','1567759177537bb12d2b7aa','nhDr7OyKlXQju+Ge/WKGrPQ9lPBSUFfpK+B1xqx/+8zLZqRNX0+5G1zBQklXUFy86lCpkAofsExlXiorUcKSNQ==',NULL,'ROLE_ADMIN',1);
+/*!40000 ALTER TABLE `FBT_Players` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_BetScore`
+--
+
+DROP TABLE IF EXISTS `FBT_BetScore`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_BetScore` (
+  `idScore` int(11) NOT NULL AUTO_INCREMENT,
+  `idMatchs` int(11) NOT NULL,
+  `idPlayers` int(11) NOT NULL,
+  `score` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idScore`),
+  UNIQUE KEY `idScore_UNIQUE` (`idScore`),
+  KEY `fk_FBT_BetScore_FBT_Matchs1` (`idMatchs`),
+  KEY `fk_FBT_BetScore_FBT_Players1` (`idPlayers`),
+  CONSTRAINT `fk_FBT_BetScore_FBT_Matchs1` FOREIGN KEY (`idMatchs`) REFERENCES `FBT_Matchs` (`idMatchs`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBT_BetScore_FBT_Players1` FOREIGN KEY (`idPlayers`) REFERENCES `FBT_Players` (`idPlayers`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_BetScore`
+--
+
+LOCK TABLES `FBT_BetScore` WRITE;
+/*!40000 ALTER TABLE `FBT_BetScore` DISABLE KEYS */;
+/*!40000 ALTER TABLE `FBT_BetScore` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_TournPlayers`
+--
+
+DROP TABLE IF EXISTS `FBT_TournPlayers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_TournPlayers` (
+  `idTournPlayers` int(11) NOT NULL AUTO_INCREMENT,
+  `idTournament` int(11) NOT NULL,
+  `idPlayers` int(11) NOT NULL,
+  `isAdmin` tinyint(4) DEFAULT NULL,
+  `isAccepted` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`idTournPlayers`),
+  UNIQUE KEY `idToPlayers_UNIQUE` (`idTournPlayers`),
+  KEY `fk_FBTTournPlayers_FBTPlayers1` (`idPlayers`),
+  KEY `fk_FBTTournPlayers_FBTTournament1` (`idTournament`),
+  CONSTRAINT `fk_FBTTournPlayers_FBTPlayers1` FOREIGN KEY (`idPlayers`) REFERENCES `FBT_Players` (`idPlayers`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBTTournPlayers_FBTTournament1` FOREIGN KEY (`idTournament`) REFERENCES `FBT_Tournament` (`idTournament`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_TournPlayers`
+--
+
+LOCK TABLES `FBT_TournPlayers` WRITE;
+/*!40000 ALTER TABLE `FBT_TournPlayers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `FBT_TournPlayers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_Teams`
+--
+
+DROP TABLE IF EXISTS `FBT_Teams`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_Teams` (
+  `idTeams` int(11) NOT NULL AUTO_INCREMENT,
+  `pool` int(11) DEFAULT NULL,
+  `ranking` int(11) DEFAULT NULL,
+  `played` int(11) DEFAULT NULL,
+  `win` int(11) DEFAULT NULL,
+  `draw` int(11) DEFAULT NULL,
+  `lost` int(11) DEFAULT NULL,
+  `gf` int(11) DEFAULT NULL,
+  `ga` int(11) DEFAULT NULL,
+  `gav` int(11) DEFAULT NULL,
+  `pts` int(11) DEFAULT NULL,
+  `Countries_id` smallint(5) NOT NULL,
+  PRIMARY KEY (`idTeams`,`Countries_id`),
+  KEY `fk_Teams_Countries` (`Countries_id`),
+  CONSTRAINT `fk_Teams_Countries` FOREIGN KEY (`Countries_id`) REFERENCES `FBT_Countries` (`idCountries`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_Teams`
+--
+
+LOCK TABLES `FBT_Teams` WRITE;
+/*!40000 ALTER TABLE `FBT_Teams` DISABLE KEYS */;
+INSERT INTO `FBT_Teams` VALUES (1,1,1,0,0,0,0,0,0,0,0,23),(2,1,2,0,0,0,0,0,0,0,0,49),(3,1,3,0,0,0,0,0,0,0,0,124),(4,1,4,0,0,0,0,0,0,0,0,32),(5,2,1,0,0,0,0,0,0,0,0,183),(6,2,2,0,0,0,0,0,0,0,0,135),(7,2,3,0,0,0,0,0,0,0,0,39),(8,2,4,0,0,0,0,0,0,0,0,10),(9,3,1,0,0,0,0,0,0,0,0,42),(10,3,2,0,0,0,0,0,0,0,0,76),(11,3,3,0,0,0,0,0,0,0,0,96),(12,3,4,0,0,0,0,0,0,0,0,98),(13,4,1,0,0,0,0,0,0,0,0,210),(14,4,2,0,0,0,0,0,0,0,0,48),(15,4,3,0,0,0,0,0,0,0,0,204),(16,4,4,0,0,0,0,0,0,0,0,95),(17,5,1,0,0,0,0,0,0,0,0,188),(18,5,2,0,0,0,0,0,0,0,0,57),(19,5,3,0,0,0,0,0,0,0,0,66),(20,5,4,0,0,0,0,0,0,0,0,85),(21,6,1,0,0,0,0,0,0,0,0,9),(22,6,2,0,0,0,0,0,0,0,0,21),(23,6,3,0,0,0,0,0,0,0,0,91),(24,6,4,0,0,0,0,0,0,0,0,142),(25,7,1,0,0,0,0,0,0,0,0,73),(26,7,2,0,0,0,0,0,0,0,0,157),(27,7,3,0,0,0,0,0,0,0,0,74),(28,7,4,0,0,0,0,0,0,0,0,207),(29,8,1,0,0,0,0,0,0,0,0,17),(30,8,2,0,0,0,0,0,0,0,0,3),(31,8,3,0,0,0,0,0,0,0,0,163),(32,8,4,0,0,0,0,0,0,0,0,103);
+/*!40000 ALTER TABLE `FBT_Teams` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_Tournament`
+--
+
+DROP TABLE IF EXISTS `FBT_Tournament`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_Tournament` (
+  `idTournament` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `year` datetime DEFAULT NULL,
+  PRIMARY KEY (`idTournament`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_Tournament`
+--
+
+LOCK TABLES `FBT_Tournament` WRITE;
+/*!40000 ALTER TABLE `FBT_Tournament` DISABLE KEYS */;
+/*!40000 ALTER TABLE `FBT_Tournament` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_Matchs`
+--
+
+DROP TABLE IF EXISTS `FBT_Matchs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_Matchs` (
+  `idMatchs` int(11) NOT NULL AUTO_INCREMENT,
+  `date` datetime DEFAULT NULL,
+  `stadium` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`idMatchs`)
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_Matchs`
+--
+
+LOCK TABLES `FBT_Matchs` WRITE;
+/*!40000 ALTER TABLE `FBT_Matchs` DISABLE KEYS */;
+INSERT INTO `FBT_Matchs` VALUES (1,'2014-06-12 22:00:00','Arena de Sao Paulo (Sao Paulo)','QUALIFICATION'),(2,'2014-06-13 18:00:00','Estadio das Dunas (Natal)','QUALIFICATION'),(3,'2014-06-13 21:00:00','Arena Fonte Nova (Salvador)','QUALIFICATION'),(4,'2014-06-14 00:00:00','Arena Pantanal (Culaba)','QUALIFICATION'),(5,'2014-06-14 18:00:00','Estadio Mineirao (Belo Horizonte)','QUALIFICATION'),(6,'2014-06-15 03:00:00','Arena Pernambuco (Recife)','QUALIFICATION'),(7,'2014-06-14 21:00:00','Estadio Castelao (Fortaleza)','QUALIFICATION'),(8,'2014-06-15 00:00:00','Arena Amazonia (Manaus)','QUALIFICATION'),(9,'2014-06-15 18:00:00','Estadio Nacional (Brasilia)','QUALIFICATION'),(10,'2014-06-15 21:00:00','Estadio Beira-Rio (Porto Alegre)','QUALIFICATION'),(11,'2014-06-16 00:00:00','Estadio do Maracana (Rio De Janeiro)','QUALIFICATION'),(12,'2014-06-16 21:00:00','Arena de Baixada (Curituba)','QUALIFICATION'),(13,'2014-06-16 18:00:00','Arena Fonte Nova (Salvador)','QUALIFICATION'),(14,'2014-06-17 00:00:00','Estadio das Dunas (Natal)','QUALIFICATION'),(15,'2014-06-17 18:00:00','Estadio Mineirao (Belo Horizonte)','QUALIFICATION'),(16,'2014-06-18 00:00:00','Arena Pantanal (Culaba)','QUALIFICATION'),(17,'2014-06-17 21:00:00','Estadio Castelao (Fortaleza)','QUALIFICATION'),(18,'2014-06-19 00:00:00','Arena Amazonia (Manaus)','QUALIFICATION'),(19,'2014-06-18 21:00:00','Estadio do Maracana (Rio De Janeiro)','QUALIFICATION'),(20,'2014-06-18 18:00:00','Estadio Beira-Rio (Porto Alegre)','QUALIFICATION'),(21,'2014-06-19 18:00:00','Estadio Nacional (Brasilia)','QUALIFICATION'),(22,'2014-06-20 00:00:00','Estadio das Dunas (Natal)','QUALIFICATION'),(23,'2014-06-19 21:00:00','Arena de Sao Paulo (Sao Paulo)','QUALIFICATION'),(24,'2014-06-20 18:00:00','Arena Pernambuco (Recife)','QUALIFICATION'),(25,'2014-06-20 21:00:00','Arena Fonte Nova (Salvador)','QUALIFICATION'),(26,'2014-06-21 00:00:00','Arena de Baixada (Curituba)','QUALIFICATION'),(27,'2014-06-21 18:00:00','Estadio Mineirao (Belo Horizonte)','QUALIFICATION'),(28,'2014-06-22 00:00:00','Arena Pantanal (Culaba)','QUALIFICATION'),(29,'2014-06-21 21:00:00','Estadio Castelao (Fortaleza)','QUALIFICATION'),(30,'2014-06-23 00:00:00','Arena Amazonia (Manaus)','QUALIFICATION'),(31,'2014-06-22 18:00:00','Estadio do Maracana (Rio De Janeiro)','QUALIFICATION'),(32,'2014-06-22 21:00:00','Estadio Beira-Rio (Porto Alegre)','QUALIFICATION'),(33,'2014-06-23 22:00:00','Estadio Nacional (Brasilia)','QUALIFICATION'),(34,'2014-06-23 22:00:00','Arena Pernambuco (Recife)','QUALIFICATION'),(35,'2014-06-23 18:00:00','Arena de Baixada (Curituba)','QUALIFICATION'),(36,'2014-06-23 18:00:00','Arena de Sao Paulo (Sao Paulo)','QUALIFICATION'),(37,'2014-06-24 22:00:00','Arena Pantanal (Culaba)','QUALIFICATION'),(38,'2014-06-24 22:00:00','Estadio Castelao (Fortaleza)','QUALIFICATION'),(39,'2014-06-24 18:00:00','Estadio das Dunas (Natal)','QUALIFICATION'),(40,'2014-06-24 18:00:00','Estadio Mineirao (Belo Horizonte)','QUALIFICATION'),(41,'2014-06-25 22:00:00','Arena Amazonia (Manaus)','QUALIFICATION'),(42,'2014-06-25 22:00:00','Estadio do Maracana (Rio De Janeiro)','QUALIFICATION'),(43,'2014-06-25 18:00:00','Estadio Beira-Rio (Porto Alegre)','QUALIFICATION'),(44,'2014-06-25 18:00:00','Arena Fonte Nova (Salvador)','QUALIFICATION'),(45,'2014-06-26 18:00:00','Arena Pernambuco (Recife)','QUALIFICATION'),(46,'2014-06-26 18:00:00','Estadio Nacional (Brasilia)','QUALIFICATION'),(47,'2014-06-26 22:00:00','Arena de Sao Paulo (Sao Paulo)','QUALIFICATION'),(48,'2014-06-26 22:00:00','Arena de Baixada (Curituba)','QUALIFICATION'),(49,'2014-06-28 18:00:00','Estadio Mineirao (Belo Horizonte)','HUITIEME'),(50,'2014-06-28 22:00:00','Estadio do Maracana (Rio De Janeiro)','HUITIEME'),(51,'2014-06-29 18:00:00','Estadio Castelao (Fortaleza)','HUITIEME'),(52,'2014-06-29 22:00:00','Arena Pernambuco (Recife)','HUITIEME'),(53,'2014-06-30 18:00:00','Estadio Nacional (Brasilia)','HUITIEME'),(54,'2014-06-30 22:00:00','Estadio Beira-Rio (Porto Alegre)','HUITIEME'),(55,'2014-07-01 18:00:00','Arena de Sao Paulo (Sao Paulo)','HUITIEME'),(56,'2014-07-01 22:00:00','Arena Fonte Nova (Salvador)','HUITIEME'),(57,'2014-07-04 18:00:00','Estadio do Maracana (Rio De Janeiro)','QUART'),(58,'2014-07-04 22:00:00','Estadio Castelao (Fortaleza)','QUART'),(59,'2014-07-05 18:00:00','Estadio Nacional (Brasilia)','QUART'),(60,'2014-07-05 22:00:00','Arena Fonte Nova (Salvador)','QUART'),(61,'2014-07-08 22:00:00','Estadio Mineirao (Belo Horizonte)','DEMI'),(62,'2014-07-09 22:00:00','Arena de Sao Paulo (Sao Paulo)','DEMI'),(63,'2014-07-12 22:00:00','Estadio Nacional (Brasilia)','PETITE_FINALE'),(64,'2014-07-13 22:00:00','Estadio do Maracana (Rio De Janeiro)','FINALE');
+/*!40000 ALTER TABLE `FBT_Matchs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_MatchTeam`
+--
+
+DROP TABLE IF EXISTS `FBT_MatchTeam`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_MatchTeam` (
+  `idMatchTeam` int(11) NOT NULL AUTO_INCREMENT,
+  `idMatchs` int(11) NOT NULL,
+  `idTeams` int(11) NOT NULL,
+  `score` int(11) DEFAULT NULL,
+  `pen` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idMatchTeam`),
+  UNIQUE KEY `id_UNIQUE` (`idMatchTeam`),
+  KEY `fk_FBT_MatchTeam_FBTTeams1` (`idTeams`),
+  KEY `fk_FBT_MatchTeam_FBTMatchs1` (`idMatchs`),
+  CONSTRAINT `fk_FBT_MatchTeam_FBTMatchs1` FOREIGN KEY (`idMatchs`) REFERENCES `FBT_Matchs` (`idMatchs`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_FBT_MatchTeam_FBTTeams1` FOREIGN KEY (`idTeams`) REFERENCES `FBT_Teams` (`idTeams`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_MatchTeam`
+--
+
+LOCK TABLES `FBT_MatchTeam` WRITE;
+/*!40000 ALTER TABLE `FBT_MatchTeam` DISABLE KEYS */;
+INSERT INTO `FBT_MatchTeam` VALUES (1,1,1,NULL,NULL),(2,1,2,NULL,NULL),(3,2,3,NULL,NULL),(4,2,4,NULL,NULL),(5,3,5,NULL,NULL),(6,3,6,NULL,NULL),(7,4,7,NULL,NULL),(8,4,8,NULL,NULL),(9,5,9,NULL,NULL),(10,5,10,NULL,NULL),(11,6,11,NULL,NULL),(12,6,12,NULL,NULL),(13,7,13,NULL,NULL),(14,7,14,NULL,NULL),(15,8,15,NULL,NULL),(16,8,16,NULL,NULL),(17,9,17,NULL,NULL),(18,9,18,NULL,NULL),(19,10,19,NULL,NULL),(20,10,20,NULL,NULL),(21,11,21,NULL,NULL),(22,11,22,NULL,NULL),(23,12,23,NULL,NULL),(24,12,24,NULL,NULL),(25,13,25,NULL,NULL),(26,13,26,NULL,NULL),(27,14,27,NULL,NULL),(28,14,28,NULL,NULL),(29,15,29,NULL,NULL),(30,15,30,NULL,NULL),(31,16,31,NULL,NULL),(32,16,32,NULL,NULL),(33,17,1,NULL,NULL),(34,17,3,NULL,NULL),(35,18,4,NULL,NULL),(36,18,2,NULL,NULL),(37,19,5,NULL,NULL),(38,19,7,NULL,NULL),(39,20,8,NULL,NULL),(40,20,6,NULL,NULL),(41,21,9,NULL,NULL),(42,21,11,NULL,NULL),(43,22,12,NULL,NULL),(44,22,12,NULL,NULL),(45,23,13,NULL,NULL),(46,23,15,NULL,NULL),(47,24,16,NULL,NULL),(48,24,14,NULL,NULL),(49,25,17,NULL,NULL),(50,25,19,NULL,NULL),(51,26,20,NULL,NULL),(52,26,18,NULL,NULL),(53,27,21,NULL,NULL),(54,27,23,NULL,NULL),(55,28,24,NULL,NULL),(56,28,22,NULL,NULL),(57,29,25,NULL,NULL),(58,29,27,NULL,NULL),(59,30,28,NULL,NULL),(60,30,26,NULL,NULL),(61,31,29,NULL,NULL),(62,31,31,NULL,NULL),(63,32,32,NULL,NULL),(64,32,30,NULL,NULL),(65,33,4,NULL,NULL),(66,33,1,NULL,NULL),(67,34,2,NULL,NULL),(68,34,3,NULL,NULL),(69,35,8,NULL,NULL),(70,35,5,NULL,NULL),(71,36,6,NULL,NULL),(72,36,7,NULL,NULL),(73,37,12,NULL,NULL),(74,37,9,NULL,NULL),(75,38,10,NULL,NULL),(76,38,11,NULL,NULL),(77,39,16,NULL,NULL),(78,39,13,NULL,NULL),(79,40,14,NULL,NULL),(80,40,15,NULL,NULL),(81,41,20,NULL,NULL),(82,41,17,NULL,NULL),(83,42,18,NULL,NULL),(84,42,19,NULL,NULL),(85,43,24,NULL,NULL),(86,43,21,NULL,NULL),(87,44,22,NULL,NULL),(88,44,23,NULL,NULL),(89,45,28,NULL,NULL),(90,45,25,NULL,NULL),(91,46,26,NULL,NULL),(92,46,27,NULL,NULL),(93,47,32,NULL,NULL),(94,47,29,NULL,NULL),(95,48,30,NULL,NULL),(96,48,31,NULL,NULL);
+/*!40000 ALTER TABLE `FBT_MatchTeam` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `FBT_News`
+--
+
+DROP TABLE IF EXISTS `FBT_News`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `FBT_News` (
+  `idNews` int(11) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NULL DEFAULT NULL,
+  `comment` mediumtext COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`idNews`),
+  UNIQUE KEY `idNews_UNIQUE` (`idNews`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `FBT_News`
+--
+
+LOCK TABLES `FBT_News` WRITE;
+/*!40000 ALTER TABLE `FBT_News` DISABLE KEYS */;
+/*!40000 ALTER TABLE `FBT_News` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2014-05-20 22:11:31
