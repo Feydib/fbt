@@ -30,7 +30,7 @@
                     {% if firstTeam == true %}
                         <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
                     {% endif %} 
-                    {{team.idteams.countries.nameFr}}
+                    {{team.idteams.countries.isoAlpha3}}
                     {% if firstTeam == false %}
                         <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
                     {% endif %} 
