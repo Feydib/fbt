@@ -2,35 +2,49 @@ Actions
 
 IHM
 
-Accueil :
-Afficher News
-Tableau avec les 3 derniers matchs + 3 prochains
-Top 10 des pronostiqueurs
-+ formulaire login
-Si loggé : Liste des mes compétitions + mon score avec classement Global/Compétition
+Accueil 1 :
+Inclure Top 10 des pronostiqueurs à côté matchs + formulaire login
+Tableau avec les 3 derniers matchs avec Score + 3 prochains (Utiliser colonne ISO_ALPHA3 de la table Countries)
+Supprimer onglet créer un compte (devient lien à côté login)
 
-Onglet Résultats :
- devient Onglet Admin
+Si loggé (Accueil 2) : Liste des mes compétitions + mon score avec classement Global/Compétition
+Classement OK. Mettre points joueur à côté (le même pour toutes les compétitions)
+
 
 Onglet Compétition :
  Formulaire nouvelle compétition
  Liste de toutes les compétitions
  Supprimer le lien rejoindre pour les compétitions déjà rejointes-> OK
+ Ajouter lien pour suppression compétition (Uniquement Admin)
 
-Supprimer onglet créer un compte (devient lien à côté login)
+Compétition détail (quand on rentre dans la compétition)
+ Affichage du classement des pronostiqueurs
+ Gestion des participants (administrateur de la compétition)
+ Formulaire pour ajout accessible à tous les membres de la competition
+ Pouvoir mettre ou supprimer droits admin de compétition
 
-Afficher le tournoi (groupes + éliminatoires) dans une page spécifique
+Onglet Résultats :
+ devient Onglet Admin
 
+Faire page pour règlement
 
-TODO
+Afficher le tournoi (groupes + éliminatoires) dans une page spécifique (dropdown menu)
+
+Afficher News
+
+Fichier de langue à compléter.
+
+MODELE/CONTROLLEUR
 
 Créer MDP oublié
 lister les News
-Obtenir l'enchainement des matchs automatiquement (phases éliminatoires)-> OK ( TODO tester en déroulant toute une compétition )
-Remplir la table MatchPrequisite -> OK
-ajouter une checkbox pour indiquer que le match a été gagné après prolongation dans les phases finales
 Que se passe t'il en poule quand 2 équipes totalements égalitées ?
 Tester calcul ranking quand trois équipes sont à egalitées
+
+Installer Postfix et paramétrer les mails
+installer modules PHP pour augmentation des performances
+
+
 
 Update du classement de la poule  -> OK
 Finaliser les scores des paris -> OK
@@ -38,5 +52,8 @@ Débloquer page Accueil -> OK
 Bloquer page Admin -> OK
 Mettre à jour le ranking -> OK
 Récupérer premier de la poule en fonction du ranking dans completeNextMatchs() -> OK
-
 PROD => Mettre les champs de la table team à 0 au lieu de null (played, win, pts...) -> OK
+Obtenir l'enchainement des matchs automatiquement (phases éliminatoires)-> OK ( TODO tester en déroulant toute une compétition )
+Remplir la table MatchPrequisite -> OK
+ajouter une checkbox pour indiquer que le match a été gagné après prolongation dans les phases finales -> Non nécessaire.
+
