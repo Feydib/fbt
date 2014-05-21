@@ -10,6 +10,18 @@ use App\Model\Entity\Teams;
 class TournamentController implements ControllerProviderInterface {
     
     private $app;
+    
+    public function myTournaments() {
+        $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+        
+        //We get logged user
+        $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
+        $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+        //We search user's tournaments
+        $myTournaments = $tournamentRepository->findMyTournaments($user);
+        
+        return $this->app["twig"]->render("tournament/myTournaments.twig", array("myTournaments" => $myTournaments));
+    }
 
     public function index(Application $app) {
        //We list all tournament
@@ -299,6 +311,7 @@ class TournamentController implements ControllerProviderInterface {
         // créer un nouveau controller basé sur la route par défaut
         $tournament = $app['controllers_factory'];
         $tournament->match("/", 'App\Controller\TournamentController::index')->bind("tournament.index");
+        $tournament->get('/mines', array($this, "myTournaments"))->bind("tournament.mytournaments");
         $tournament->get('/delete/{idTournament}', array($this,"delete"))->bind('tournament.delete');
         $tournament->post('/doadd', array($this,"doAdd"))->bind('tournament.doadd');
         $tournament->get('/add', array($this,"Add"))->bind('tournament.add');

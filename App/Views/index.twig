@@ -1,14 +1,15 @@
 {% extends layout %}
-
+{% block bodyClass %}accueil{% endblock %}
 {% block body %}
 <div id="content">
     <h1>Pronostics</h1>
 
     
     {% if is_granted('ROLE_USER') %}
-        
+        {{ render(url('tournament.mytournaments'))}}
     {% else %}
         {{ render(url('login'))}}
     {% endif %}
+    {{ render(url('match.nextPrevious'))}}
 </div>
 {% endblock %}

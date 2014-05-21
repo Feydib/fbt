@@ -411,6 +411,14 @@ class MatchController implements ControllerProviderInterface {
         }
         return false;
     }
+    
+    public function nextAndPreviousMatchs() {
+       $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
+       $nextMatchList = $matchRepository->findNext(date("Y-m-d"), "m.date", 3); 
+       $previousMatchList = $matchRepository->findPrevious(date("Y-m-d"), "m.date", 3); 
+
+       return $this->app["twig"]->render("match/recap.twig", array('matchsPrevious' => $previousMatchList, 'matchsNext' => $nextMatchList));
+    }
 
     public function connect(Application $app) {
         // créer un nouveau controller basé sur la route par défaut
@@ -420,6 +428,7 @@ class MatchController implements ControllerProviderInterface {
         $match->get("/admin/match",  array($this,"matchToScore"))->bind("match.matchToScore");
         $match->get("/admin/match/score/{idMatchTeam}", array($this,"scoreForm") )->bind("match.scoreForm");
         $match->get("/admin/match/pen/{idMatchTeam}", array($this,"penForm") )->bind("match.penForm");
+        $match->get("/recap", array($this,"nextAndPreviousMatchs") )->bind("match.nextPrevious");
         $match->post('/admin/match/doScore', array($this,"doScore"))->bind('match.doScore');
         
         //$match->get("/admin/match/test/{pool}", array($this,"updatePoolRanking") )->bind("match.updatePoolRanking");

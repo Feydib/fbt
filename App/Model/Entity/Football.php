@@ -14,8 +14,6 @@ class Football
      * @var integer
      *
      * @Column(name="worldrank", type="integer", nullable=false)
-     * @Id
-     * @GeneratedValue(strategy="NONE")
      */
     private $worldrank;
 

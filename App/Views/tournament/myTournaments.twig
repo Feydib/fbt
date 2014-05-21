@@ -1,0 +1,23 @@
+
+{% block body %}
+<div class="row summary">
+    <div class="col-md-8">
+        <h3>{% trans %} my tournaments {% endtrans %}</h3>
+        <table>       
+            {% for mytournament in myTournaments %}
+                <tr> 
+                    {% for player in mytournament.players %}
+                        {% if player.isaccepted == true %}
+                            <td><a href="{{path('tournament.view', { idTournament : mytournament.idTournament } )}}">{{mytournament.name}} </a></td>
+                        {% endif %}
+                    {% endfor %}  
+                    <td><img src="{{ app.request.basepath }}/img/rank.png" alt="rank icon" title="rank icon" width="20px" height="20px"/></td>
+                    <td></td>
+                    <td><img src="{{ app.request.basepath }}/img/pts.png" alt="pts icon" title="pts icon" width="20px" height="20px"/></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>    
+</div>
+{% endblock %}

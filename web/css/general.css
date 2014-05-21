@@ -37,7 +37,7 @@ body.accueil #container .matchsAccueil table {
 body.accueil #container .matchsAccueil table tr td {
     padding: 10px;
 }
-body.accueil2 h2 {
+body.accueil h2 {
     color: #D33EE5;
     font-family: "Century Gothic",CenturyGothic,Geneva,AppleGothic,sans-serif;
     font-size: 2em;
@@ -46,22 +46,22 @@ body.accueil2 h2 {
     text-align: left;
     width: 50%;
 }
-body.accueil2 #container .summary {
+body.accueil #container .summary {
     margin: 100px 0 0;
 }
-body.accueil2 #container .summary h3 {
+body.accueil #container .summary h3 {
     margin: 20px 20px 20px 100px;
 }
-body.accueil2 #container .summary table {
+body.accueil #container .summary table {
     margin: 0 0 0 100px;
 }
-body.accueil2 #container .summary table tr td {
+body.accueil #container .summary table tr td {
     padding: 10px;
 }
-body.accueil2 #container .summary table tr td img {
+body.accueil #container .summary table tr td img {
     width: 20px;
 }
-body.accueil2 #container .summary .generalRank p {
+body.accueil #container .summary .generalRank p {
     background-color: #DEA8DF;
     border-radius: 10px;
     height: 90px;
@@ -69,21 +69,21 @@ body.accueil2 #container .summary .generalRank p {
     margin: 20px 0 0 30px;
     width: 90px;
 }
-body.accueil2 #container .summary .generalRank p span {
+body.accueil #container .summary .generalRank p span {
     font-size: 4em;
     margin-left: 20px;
 }
-body.accueil2 #container .matchsAccueil {
+body.accueil #container .matchsAccueil {
     margin: 100px 0 0;
     padding: 0 0 50px;
 }
-body.accueil2 #container .matchsAccueil h3 {
+body.accueil #container .matchsAccueil h3 {
     margin: 20px 20px 20px 100px;
 }
-body.accueil2 #container .matchsAccueil table {
+body.accueil #container .matchsAccueil table {
     margin: 0 auto;
 }
-body.accueil2 #container .matchsAccueil table tr td {
+body.accueil #container .matchsAccueil table tr td {
     padding: 10px;
 }
 body.competitionDetail #container .playersInfos {

@@ -6,26 +6,7 @@
     <legend>{% trans %} new tournament {% endtrans %}</legend>
     {{ render(url('tournament.add')) }}
     
-    <legend>{% trans %} my tournaments {% endtrans %}</legend>
-    <p>
-    {% for mytournament in myTournaments %}
-        {{mytournament.name}} - {{mytournament.year|date('d-M-Y')}} - 
-        {% for player in mytournament.players %}
-            {% if player.isaccepted == false %}
-                {% trans %}accept waiting{% endtrans %}
-            {% else %}
-                <a href="{{path('tournament.view', { idTournament : mytournament.idTournament } )}}">{% trans %}view{% endtrans %}</a>
-            {% endif %}
-            {% if player.isadmin == true %}
-                <a href="{{path('tournament.delete', { idTournament : mytournament.idTournament } )}}">{% trans %}delete{% endtrans %}</a>
-            {% else %}
-                <a href="{{path('tournament.leave', { idTournament : mytournament.idTournament } )}}">{% trans %}leave{% endtrans %}</a>    
-            {% endif %}
-            
-        {% endfor %}  
-        <br/>
-    {% endfor %}
-    </p>
+    {{ render(url('tournament.mytournaments'))}}
     
     <legend>{% trans %} tournaments list {% endtrans %}</legend>
     <p>

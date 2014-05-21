@@ -1,0 +1,82 @@
+{% block body %}
+<div class="row matchsAccueil">
+    <div class="col-md-6">
+        <h3>Les derniers matchs :</h3>
+        <table>
+            <tbody>
+            {% for match in matchsPrevious %}
+                <tr>
+                    {% set firstTeam = true %}
+
+                {% for team in match.teams %}
+
+                    <td>
+                        {% if firstTeam == false and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
+                            {{team.score}}  
+                            {% if team.pen is not null %}
+                                pen {{team.pen}}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if firstTeam == true %}
+                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                        {% endif %} 
+                        {{team.idteams.countries.isoAlpha3}}
+                        {% if firstTeam == false %}
+                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                        {% endif %} 
+                    </td>
+                    <td>
+                        {% if firstTeam == true and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
+                           {{team.score}}
+                           {% if team.pen is not null %}
+                                pen {{team.pen}} 
+                           {% endif %}
+                            -
+                        {% endif %}
+                    </td> 
+
+                    {% set firstTeam = false %}
+                {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Les prochains matchs :</h3>
+        <table>
+            <tbody>
+            {% for match in matchsNext %}
+                <tr>
+                    {% set firstTeam = true %}
+
+                {% for team in match.teams %}
+
+                    <td>
+                    </td>
+                    <td>
+                        {% if firstTeam == true %}
+                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                        {% endif %} 
+                        {{team.idteams.countries.isoAlpha3}}
+                        {% if firstTeam == false %}
+                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                        {% endif %} 
+                    </td>
+                    <td>
+                        {% if firstTeam == true %}
+                            -
+                        {% endif %}
+                    </td> 
+
+                    {% set firstTeam = false %}
+                {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>            
+</div>
+{% endblock %}
