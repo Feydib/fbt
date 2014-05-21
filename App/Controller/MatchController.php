@@ -15,7 +15,10 @@ use App\Model\Entity\Teams;
 
 class MatchController implements ControllerProviderInterface {
 
-
+    /**
+     * Méthod to calcul points obtain by player after his bets
+     * @param type $idMatch
+     */
     protected function calculPoint($idMatch) {
 	$matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
 	$betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
@@ -364,7 +367,7 @@ class MatchController implements ControllerProviderInterface {
         $matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
         
         //if pool is completed we create following match with pool teams
-        if($matchTeam->getIdmatchs()->getIdmatchs() < 49 && $this->isPoolCompleted($matchTeam->getIdteams()->getPool())) {            
+        if($matchTeam->getIdmatchs()->getType() == "QUALIFICATION" && $this->isPoolCompleted($matchTeam->getIdteams()->getPool())) {            
             //We get pool winner and second for final tour
             $matchsWinner = $matchPrerequisiteRepository->find(array('idpoolwinner' => $matchTeam->getIdteams()->getPool()));
             $matchsSecond = $matchPrerequisiteRepository->find(array('idpoolsecond' => $matchTeam->getIdteams()->getPool()));
@@ -383,7 +386,7 @@ class MatchController implements ControllerProviderInterface {
             
             $matchTeamRepository->save($matchTeam2);
             
-        } else if ($matchTeam->getIdmatchs()->getIdmatchs() >= 49){
+        } else if ($matchTeam->getIdmatchs()->getType() != "QUALIFICATION"){
             $finalMatch = $matchPrerequisiteRepository->find(array('idmatchs2' => $matchTeam->getIdmatchs()));
             if(!isset($finalMatch) || $finalMatch === null) {
                 $finalMatch = $matchPrerequisiteRepository->find(array('idmatchs1' => $matchTeam->getIdmatchs()));
@@ -411,7 +414,10 @@ class MatchController implements ControllerProviderInterface {
         }
         return false;
     }
-    
+    /**
+     * Get previous en nexts matchs
+     * @return view with 3 previous and 3 nexts matchs
+     */
     public function nextAndPreviousMatchs() {
        $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
        $nextMatchList = $matchRepository->findNext(date("Y-m-d"), "m.date", 3); 
