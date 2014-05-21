@@ -2,11 +2,13 @@
 
 {% block body %}
 <div id="content">
-    <h3>FBT</h3>
+    <h1>Pronostics</h1>
 
     
     {% if is_granted('ROLE_USER') %}
-    <p>{% trans %}welcome{% endtrans %} {{ app.security.token.user.username }} !</p>
+        
+    {% else %}
+        {{ render(url('login'))}}
     {% endif %}
 </div>
 {% endblock %}

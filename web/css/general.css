@@ -1,0 +1,122 @@
+
+body {
+    background-attachment: fixed;
+    background-image: url("../img/background.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+body nav {
+}
+body #container {
+    background-color: rgba(255, 255, 255, 0.9);
+    margin: 0 auto;
+    position: relative;
+    width: 1024px;
+}
+body #container h1 {
+    font-family: "Century Gothic",CenturyGothic,Geneva,AppleGothic,sans-serif;
+    font-size: 5em;
+    margin: 0;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+}
+body.accueil #container .loginForm {
+    margin: 50px 0 0;
+}
+body.accueil #container .matchsAccueil {
+    margin: 100px 0 0;
+    padding: 0 0 50px;
+}
+body.accueil #container .matchsAccueil h3 {
+    margin: 20px 20px 20px 100px;
+}
+body.accueil #container .matchsAccueil table {
+    margin: 0 auto;
+}
+body.accueil #container .matchsAccueil table tr td {
+    padding: 10px;
+}
+body.accueil2 h2 {
+    color: #D33EE5;
+    font-family: "Century Gothic",CenturyGothic,Geneva,AppleGothic,sans-serif;
+    font-size: 2em;
+    margin: -20px 0 50px 50%;
+    padding: 0;
+    text-align: left;
+    width: 50%;
+}
+body.accueil2 #container .summary {
+    margin: 100px 0 0;
+}
+body.accueil2 #container .summary h3 {
+    margin: 20px 20px 20px 100px;
+}
+body.accueil2 #container .summary table {
+    margin: 0 0 0 100px;
+}
+body.accueil2 #container .summary table tr td {
+    padding: 10px;
+}
+body.accueil2 #container .summary table tr td img {
+    width: 20px;
+}
+body.accueil2 #container .summary .generalRank p {
+    background-color: #DEA8DF;
+    border-radius: 10px;
+    height: 90px;
+    line-height: 90px;
+    margin: 20px 0 0 30px;
+    width: 90px;
+}
+body.accueil2 #container .summary .generalRank p span {
+    font-size: 4em;
+    margin-left: 20px;
+}
+body.accueil2 #container .matchsAccueil {
+    margin: 100px 0 0;
+    padding: 0 0 50px;
+}
+body.accueil2 #container .matchsAccueil h3 {
+    margin: 20px 20px 20px 100px;
+}
+body.accueil2 #container .matchsAccueil table {
+    margin: 0 auto;
+}
+body.accueil2 #container .matchsAccueil table tr td {
+    padding: 10px;
+}
+body.competitionDetail #container .playersInfos {
+    margin: 100px 0 0;
+    padding: 0 0 50px;
+}
+body.competitionDetail #container .playersInfos h3 {
+    margin: 20px 20px 20px 100px;
+}
+body.competitionDetail #container .playersInfos table {
+    line-height: 30px;
+    margin: 20px 20px 20px 100px;
+}
+body.competitionDetail #container .playersInfos table tr:hover {
+    background-color: #D1ECFF;
+}
+body.competitionDetail #container .playersInfos table tr td {
+    width: 150px;
+}
+body.competitionDetail #container .groupe {
+    margin: 100px 0 0;
+    padding: 0 0 50px;
+}
+body.competitionDetail #container h3 {
+    margin: 20px 20px 20px 100px;
+}
+body.competitionDetail #container .groupe table {
+    line-height: 40px;
+    margin: 20px 20px 20px 100px;
+}
+body.competitionDetail #container .groupe table tr:hover {
+    background-color: #D1ECFF;
+}
+body.competitionDetail #container .groupe table tr td {
+    width: 150px;
+}
