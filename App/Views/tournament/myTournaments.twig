@@ -9,12 +9,16 @@
                     {% for player in mytournament.players %}
                         {% if player.isaccepted == true %}
                             <td><a href="{{path('tournament.view', { idTournament : mytournament.idTournament } )}}">{{mytournament.name}} </a></td>
+                            <td><img src="{{ app.request.basepath }}/img/rank.png" alt="rank icon" title="rank icon" width="20px" height="20px"/></td>
+                            <td></td>
+                            <td><img src="{{ app.request.basepath }}/img/pts.png" alt="pts icon" title="pts icon" width="20px" height="20px"/></td>
+                            <td></td>
+                        {% else %}
+                            <td><a href="{{path('tournament.view', { idTournament : mytournament.idTournament } )}}">{{mytournament.name}} </a></td>
+                            <td>{% trans %}accept waiting{% endtrans %}</td>
                         {% endif %}
                     {% endfor %}  
-                    <td><img src="{{ app.request.basepath }}/img/rank.png" alt="rank icon" title="rank icon" width="20px" height="20px"/></td>
-                    <td></td>
-                    <td><img src="{{ app.request.basepath }}/img/pts.png" alt="pts icon" title="pts icon" width="20px" height="20px"/></td>
-                    <td></td>
+                    
                 </tr>
             {% endfor %}
         </table>

@@ -33,10 +33,13 @@
                            {% if team.pen is not null %}
                                 pen {{team.pen}} 
                            {% endif %}
-                            -
                         {% endif %}
                     </td> 
-
+                    {% if firstTeam == true %}
+                        <td>
+                            -
+                        </td>
+                    {% endif %}
                     {% set firstTeam = false %}
                 {% endfor %}
                 </tr>

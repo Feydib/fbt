@@ -52,12 +52,16 @@
                        {% if team.pen is not null %}
                             pen {{team.pen}} 
                        {% endif %}
-                        -
+                        
                     {% elseif firstTeam == true and (team.score is null or "now"|date('YmdHi')  < match.date|date('YmdHi') ) %}
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}} 
                     {% endif %}
                 </td> 
-                
+                {% if firstTeam == true %}
+                    <td>
+                            -
+                    </td>
+                {% endif %}
 
                 {% set firstTeam = false %}
             {% endfor %}
