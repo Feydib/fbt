@@ -30,6 +30,18 @@ class TeamsController implements ControllerProviderInterface {
     	
     	return $this->app['twig']->render('team/groups.twig', array('groupList' => $groupList, 'teamList' => $teamsList));
     }
+    
+    /**
+     * Get pool details
+     * @return view
+     */
+    public function poolResults() {
+        $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
+    	$teamsList = $teamRepository->findTeams(array(), null, 0, array("ranking" => "ASC"));
+    	$groupList = $teamRepository->findGroups();
+        
+        return $this->app["twig"]->render("match/pool.twig", array('groupList' => $groupList, 'teamsList' => $teamsList));
+    }
     	
     	
     public function connect(Application $app) {
@@ -39,6 +51,7 @@ class TeamsController implements ControllerProviderInterface {
         $team = $app['controllers_factory'];
         $team->match("/", 'App\Controller\TeamsController::index')->bind("team.index");
         $team->get('/group', array($this,"Groups"))->bind('team.groups');
+        $team->get('/pool', array($this,"poolResults"))->bind('team.pool');
        return $team;
     }
 

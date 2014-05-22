@@ -103,20 +103,20 @@ body.competitionDetail #container .playersInfos table tr:hover {
 body.competitionDetail #container .playersInfos table tr td {
     width: 150px;
 }
-body.competitionDetail #container .groupe {
+body.pool #container .groupe {
     margin: 100px 0 0;
     padding: 0 0 50px;
 }
-body.competitionDetail #container h3 {
+body.pool #container h3 {
     margin: 20px 20px 20px 100px;
 }
-body.competitionDetail #container .groupe table {
+body.pool #container .groupe table {
     line-height: 40px;
     margin: 20px 20px 20px 100px;
 }
-body.competitionDetail #container .groupe table tr:hover {
+body.pool #container .groupe table tr:hover {
     background-color: #D1ECFF;
 }
-body.competitionDetail #container .groupe table tr td {
+body.pool #container .groupe table tr td {
     width: 150px;
 }

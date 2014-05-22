@@ -37,6 +37,7 @@
                         <li class="active"><a href="{{ path('index.index') }}">{% trans %}home{% endtrans %}</a></li>
                         <li><a href="{{ path('tournament.index') }}">{% trans %}tournament{% endtrans %}</a></li>
                         <li><a href="{{ path('match.index') }}">{% trans %}pronostics{% endtrans %}</a></li>
+                        <li><a href="{{ path('team.pool') }}">{% trans %}pool{% endtrans %}</a></li>
                         {% if is_granted('ROLE_USER') %}
                             <li><a href="{{ path('deconnexion') }}">{% trans %}logout{% endtrans %}</a></li>
                         {% endif %}

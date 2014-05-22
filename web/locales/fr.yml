@@ -24,6 +24,7 @@ home : Accueil
 login : Se connecter
 logout : Se déconnecter
 signup : Créer un compte
+pool : Les Poules
 
 #Utilisateur
 username : Login
@@ -56,3 +57,15 @@ invite player : Inviter un joueur
 matchs list : Liste des matchs
 my pronostics : Mes pronostics
 matchs results : Résultats
+
+#pool
+played : J.
+win : G.
+draw : N.
+lost : P.
+gf : p. 
+ga : c;
+gav : Diff
+pts : Pts
+team : Equipe
+pool list : Liste des poules

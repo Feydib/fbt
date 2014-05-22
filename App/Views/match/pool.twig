@@ -1,0 +1,45 @@
+{% extends layout %}
+{% block bodyClass %}pool{% endblock %}
+{% block body %}
+<h1>{% trans %}pool list{% endtrans %}</h1>
+
+
+<div class="row groupe">
+    <div class="col-md-10">
+        {% for group in groupList %}
+            <h3>Groupe {{group.pool}}</h3>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>{% trans %}team{% endtrans %}</th>
+                    <th>{% trans %}played{% endtrans %}</th>
+                    <th>{% trans %}win{% endtrans %}</th>
+                    <th>{% trans %}draw{% endtrans %}</th>
+                    <th>{% trans %}lost{% endtrans %}</th>
+                    <th>{% trans %}gf{% endtrans %}</th>
+                    <th>{% trans %}ga{% endtrans %}</th>
+                    <th>{% trans %}gav{% endtrans %}</th>
+                    <th>{% trans %}pts{% endtrans %}</th>
+                </tr>
+                {% for team in teamsList %}
+                    {% if team.pool == group.pool %}
+                        <tr>
+                            <td>{{team.ranking}}</td>
+                            <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.countries.isoNum}}.png" alt="{{team.countries.nameFr}}" title ="{{team.countries.nameFr}}" />
+                                {{team.countries.isoAlpha3}}</td>
+                            <td>{{team.played}}</td>
+                            <td>{{team.win}}</td>
+                            <td>{{team.draw}}</td>
+                            <td>{{team.lost}}</td>
+                            <td>{{team.gf}}</td>
+                            <td>{{team.ga}}</td>
+                            <td>{{team.gav}}</td>
+                            <td>{{team.pts}}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

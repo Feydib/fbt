@@ -6,5 +6,6 @@ $app->mount("/login", new App\Controller\UserController($app['user_provider']));
 $app->mount("/tournaments", new App\Controller\TournamentController($app['user_provider']));
 $app->mount("/pronostics", new App\Controller\MatchController($app['user_provider']));
 $app->mount("/bet", new App\Controller\BetController($app['user_provider']));
+$app->mount("/team", new App\Controller\TeamsController($app['user_provider']));
 
 ?>
