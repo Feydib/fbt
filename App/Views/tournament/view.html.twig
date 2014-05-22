@@ -1,38 +1,75 @@
 {% extends layout %}
-
+{% block bodyClass %}competitionDetail{% endblock %}
 {% block body %}
-<div id="content">
-    <h1>{{tournament.name}}</h1>
-   
-<legend>{% trans %}ranking{% endtrans %}</legend>
-{% for player in tournament.players %}
-    {% if player.isaccepted == true %}
-        {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
-        {% if currentUserAdmin == true %}
-            {% if player.isadmin == true %}
-                <a href="{{path('tournament.removeAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
-            {% else %}
-                <a href="{{path('tournament.setAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
-            {% endif %}
-            <a href="{{path('tournament.remove', { idTournPlayers : player.idtournplayers} )}}">{% trans %}remove{% endtrans %}</a>
-        {% endif %}
-        <br/>
-    {% endif %}
-{% endfor %}
 
-<legend>{% trans %}add asking{% endtrans %}</legend>
-{% for player in tournament.players %}
-    {% if player.isaccepted == false %}
-        {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
-        {% if currentUserAdmin == true %}
-            <a href="{{path('tournament.accept', { idTournPlayers : player.idtournplayers} )}}">{% trans %}accept{% endtrans %}</a>
-        {% endif %}
-        <br/>
-    {% endif %}
-{% endfor %}
+<h1>{{tournament.name}}</h1>
 
-<legend>{% trans %} invite player {% endtrans %}</legend>
-{{ render(url('tournament.invite', { idTournament : tournament.idtournament}))}}
-
+ <div class="row playersInfos">
+    <div class="col-md-10">
+        <h3>{% trans %}ranking{% endtrans %} :</h3>
+        
+        <table>
+            <tbody>
+                <tr>
+                    <th>Joueur</th>
+                    <th>Prono. ok</th>
+                    <th>Prono. non ok</th>
+                    <th>Points</th>
+                </tr>
+                {% for player in tournament.players %}
+                    {% if player.isaccepted == true %}
+                        <tr>
+                            <td>{{player.idplayers.firstname}} {{player.idplayers.lastname}} </td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ render(url('bet.getPlayerTotalScore', { player : player.idplayers.idplayers}))}} {% trans %}pts{% endtrans %} </td>
+                        {% if currentUserAdmin == true %}
+                            <td>
+                            {% if player.isadmin == true %}
+                                <a href="{{path('tournament.removeAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
+                            {% else %}
+                                <a href="{{path('tournament.setAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
+                            {% endif %}
+                            <a href="{{path('tournament.remove', { idTournPlayers : player.idtournplayers} )}}">{% trans %}remove{% endtrans %}</a>
+                            </td>
+                        {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<div class="row playersInfos">
+    <div class="col-md-10">
+        <h3>{% trans %}add asking{% endtrans %}</h3>
+        <table>
+            <tbody>
+            {% for player in tournament.players %}
+                {% if player.isaccepted == false %}
+                    <tr>
+                        <td>
+                            {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
+                        </td>
+                    {% if currentUserAdmin == true %}
+                        <td>
+                            <a href="{{path('tournament.accept', { idTournPlayers : player.idtournplayers} )}}">{% trans %}accept{% endtrans %}</a>
+                        </td>
+                    {% endif %}
+                    </tr>
+                {% endif %}
+            {% endfor %}
+           </tbody>
+        </table>
+    </div>
+</div>
+           
+<div class="row playersInfos">
+    <div class="col-md-10">
+        <h3>{% trans %} invite player {% endtrans %}</h3>
+        {{ render(url('tournament.invite', { idTournament : tournament.idtournament}))}}
+    </div>
+</div>
+
 {% endblock %}

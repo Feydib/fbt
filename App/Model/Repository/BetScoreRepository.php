@@ -46,4 +46,25 @@ class BetScoreRepository extends EntityRepository
         $betScore = $this->findOneBy($crit);
         return $betScore ? $betScore : FALSE;
     }
+    
+        /**
+     * Returns a collection of betScore.
+     *
+     * @param array $crit
+     *   Crit for searching
+     *
+     * @return array A collection of score, keyed by id.
+     */
+    public function findSum($players)
+    {        
+        $qb = $this->_em->createQueryBuilder()
+                ->select('SUM(b.score)')
+                ->from('App\Model\Entity\BetScore', 'b')
+                ->where('b.idplayers = ?1')
+                ->setParameter(1, $players)
+                ;
+        
+        $query = $qb->getQuery();
+        return $query->getOneOrNullResult();
+    }
 }

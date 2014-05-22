@@ -84,6 +84,31 @@ class BetController implements ControllerProviderInterface {
 
         return $score;
     }
+    
+    public function getMatchPlayerScore($player, $idMatch) {
+        $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
+        $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
+        $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+        
+        $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+        $match = $matchRepository->find(array("idmatchs" => $idMatch));   
+        
+        $betScore = $betScoreRepository->find(array("idmatchs" => $match, "idplayers" => $user));
+        if ($betScore) {
+            $score = $betScore->getScore();
+        } else {
+            $score = "";
+        }
+        
+        return $score;
+    }
+    
+    public function getPlayerTotalScore($player) {
+        $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+        $score = $betScoreRepository->findSum($player);
+        
+        return $score[1];
+    }
 
     public function connect(Application $app) {
         $this->app = $app;
@@ -91,6 +116,9 @@ class BetController implements ControllerProviderInterface {
         $bet = $app['controllers_factory'];
         $bet->match("/bet/{idMatchTeam}", 'App\Controller\BetController::betForm')->bind("bet.betForm");
         $bet->post('/dobet', array($this,"doBet"))->bind('bet.doBet');
+        
+        $bet->get('/getScore/{player}/{idMatch}', array($this,"getMatchPlayerScore"))->bind('bet.getPlayerScore');
+        $bet->get('/getPlayerScore/{player}', array($this,"getPlayerTotalScore"))->bind('bet.getPlayerTotalScore');
 
         return $bet;
     }

@@ -57,9 +57,15 @@
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}} 
                     {% endif %}
                 </td> 
+                
 
                 {% set firstTeam = false %}
             {% endfor %}
+                <td> 
+                    {% if "now"|date('YmdHi') > match.date|date('YmdHi') and render(url('bet.getPlayerScore', {player : app.security.token.user.username, idMatch : match.idmatchs} )) != "" %}
+                        {{ render(url('bet.getPlayerScore', {player : app.security.token.user.username, idMatch : match.idmatchs} ))}} {% trans %}pts{% endtrans %}
+                    {% endif %}
+                </td> 
             </tr>
         {% endfor %}
     
