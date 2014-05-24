@@ -107,7 +107,13 @@ class BetController implements ControllerProviderInterface {
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
         $score = $betScoreRepository->findSum($player);
         
-        return $score[1];
+        if($score[1] !== null) {
+            $score = $score[1];
+        } else {
+            $score = 0;
+        }
+        
+        return $score;
     }
 
     public function connect(Application $app) {

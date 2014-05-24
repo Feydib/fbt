@@ -16,25 +16,19 @@
                     <th>Prono. non ok</th>
                     <th>Points</th>
                 </tr>
-                {% for player in tournament.players %}
-                    {% if player.isaccepted == true %}
-                        <tr>
-                            <td>{{player.idplayers.firstname}} {{player.idplayers.lastname}} </td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ render(url('bet.getPlayerTotalScore', { player : player.idplayers.idplayers}))}} {% trans %}pts{% endtrans %} </td>
-                        {% if currentUserAdmin == true %}
-                            <td>
-                            {% if player.isadmin == true %}
-                                <a href="{{path('tournament.removeAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
-                            {% else %}
-                                <a href="{{path('tournament.setAdmin', { idTournPlayers : player.idtournplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
-                            {% endif %}
-                            <a href="{{path('tournament.remove', { idTournPlayers : player.idtournplayers} )}}">{% trans %}remove{% endtrans %}</a>
-                            </td>
+                {% for player in tournamentplayers %}
+                    {% for tournplayer in tournament.players %}
+                        {% if tournplayer.idplayers == player and tournplayer.isaccepted == true %}
+                            <tr>
+                               <td>{{player.firstname}} {{player.lastname}} </td>
+                               <td></td>
+                               <td></td>
+                               <td> 
+                                   {{player.score}} {% trans %}pts{% endtrans %} 
+                               </td>
+                            </tr>
                         {% endif %}
-                        </tr>
-                    {% endif %}
+                    {% endfor %}
                 {% endfor %}
             </tbody>
         </table>

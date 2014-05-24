@@ -166,10 +166,8 @@ class TournamentController implements ControllerProviderInterface {
         $tounament = $tournamentRepository->find($idTournament);
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         
-        $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
-    	$teamsList = $teamRepository->findTeams(array(), null, 0, array("ranking" => "ASC"));
-    	$groupList = $teamRepository->findGroups();
-    	
+    	$players = $this->getTournamentPlayersAndScore($tounament);
+        
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
@@ -184,8 +182,48 @@ class TournamentController implements ControllerProviderInterface {
             $isadmin = false;
         }
 
-        return $this->app["twig"]->render("tournament/view.html.twig", array('tournament' => $tounament, 'currentUserAdmin' => $isadmin, 'groupList' => $groupList, 'teamsList' => $teamsList));
+        return $this->app["twig"]->render("tournament/view.html.twig", array('tournamentplayers' => $players, 'tournament' => $tounament, 'currentUserAdmin' => $isadmin));
     }
+    
+    /**
+     * return players and their total score
+     * @param \App\Model\Entity\Tournament $tournament
+     * @return array of players
+     */
+    private function getTournamentPlayersAndScore(Tournament $tournament) {
+        $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        $listBetScore = $betScoreRepository->findTournamentScores($tournament);
+        
+        $players = array();
+        foreach($listBetScore as $k => $v) {
+            $player = $v[0]->getIdplayers();
+            $player->setScore($v["score"]);
+            $players[] = $player;
+        }
+        
+        $tournPlayers = $tournPlayersRepository->findBy(array("idtournament" => $tournament));
+        //If a tounrament's user is not is list because his score is 0, we add it
+        foreach($tournPlayers as $tPlayers) {
+            if (!in_array($tPlayers->getIdplayers(), $players)) {
+                $player = $tPlayers->getIdplayers();
+                $player->setScore(0);
+                $players[] = $player;
+            }
+        }
+        
+        usort($players, array("App\Controller\TournamentController","cmp"));
+        
+        return $players;
+    }
+    
+    function cmp($a, $b) {
+        if ($a->getScore() == $b->getScore()) {
+            return 0;
+        }
+        return ($a->getScore() < $b->getScore()) ? 1 : -1;
+    }
+
     
     /**
      * accept a player in a tournament

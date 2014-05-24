@@ -3,6 +3,7 @@
 namespace App\Model\Repository;
 
 use App\Model\Entity\Betscore;
+use App\Model\Entity\Tournament;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -66,5 +67,30 @@ class BetScoreRepository extends EntityRepository
         
         $query = $qb->getQuery();
         return $query->getOneOrNullResult();
+    }
+    
+     /**
+     * Returns players and total score
+     *
+     * @param Tournament $tournament
+     *
+     * @return Tournament|false An entity object if found, false otherwise.
+     */
+    public function findTournamentScores(Tournament $tournament)
+    {
+        $qb = $this->_em->createQueryBuilder()
+                ->select('b, SUM(b.score) as score')
+                ->from('App\Model\Entity\Betscore', 'b')
+                ->leftJoin('b.players', 't')
+                ->where('t.idtournament = ?1')
+                ->groupBy('b.idplayers')
+                ->orderBy("score", "ASC")
+                ->setParameter(1, $tournament)
+                ;
+        
+        $query = $qb->getQuery();
+        $playerScore = $query->getResult();
+
+        return $playerScore;
     }
 }

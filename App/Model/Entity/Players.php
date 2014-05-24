@@ -82,8 +82,17 @@ class Players implements UserInterface
      * @Column(name="active", type="boolean", nullable=true)
      */
     private $active;
+    
+    private $score;
+    public function getScore() {
+        return $this->score;
+    }
 
-    public function getIdplayers() {
+    public function setScore($score) {
+        $this->score = $score;
+    }
+
+        public function getIdplayers() {
         return $this->idplayers;
     }
 

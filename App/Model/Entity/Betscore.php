@@ -46,8 +46,24 @@ class Betscore
      * })
      */
     private $idplayers;
+    
+        /**
+     * 
+     * @var players
+     *
+     *  @OneToMany(targetEntity="Tournplayers", mappedBy="idplayers", orphanRemoval=true)
+     *
+     */
+    private $players;
+    public function getPlayers() {
+        return $this->players;
+    }
 
-    public function getIdscore() {
+    public function setPlayers(players $players) {
+        $this->players = $players;
+    }
+
+        public function getIdscore() {
     	return $this->idscore;
     }
     
