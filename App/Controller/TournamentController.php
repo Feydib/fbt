@@ -325,14 +325,18 @@ class TournamentController implements ControllerProviderInterface {
             $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
             $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
             
-            $body = "Vous avez reçu une invitation de ".$user->getFirstname()." ".$user->getLastname()." à rejoindre le site de pronotiques FBT. <br/>"
-                    . "Veuillez cliquer sur le lien suivant pour vous inscrire <a href=".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('user.signup').">Inscription</a><br />"
-                    . "Une fois identifié sur celui-ci pour rejoindre la compétition <a href=".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('tournament.join', array('idTournament' => $datas['tournament'])).">Rejoindre</a>"
-                    . "";
+            $body = "Bonjour,<br/><br/>"
+            		. "Vous avez reçu une invitation de ".$user->getFirstname()." ".$user->getLastname()." à rejoindre le site de pronostiques FBT. <br/>"
+                    . "Pour vous inscrire, veuillez cliquer sur le lien suivant : <a href=".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('user.signup').">Inscription</a>.<br />"
+                    . "Une fois inscrit et identifié sur le site, vous pourrez rejoindre la compétition soit directement en cliquant sur <a href=".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('tournament.join', array('idTournament' => $datas['tournament'])).">Rejoindre</a>,"
+                    . "soit en allant dans l'onglet compétition.<br/><br/>"
+            		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>"
+            		. "A bientôt sur notre site.<br/>"
+            		. "Sportivement !";
             
             $message = \Swift_Message::newInstance()
                 ->setSubject('Invitation Prononostics')
-                ->setFrom(array('noreply@yoursite.com'))
+                ->setFrom(array('noreply@brebion.info' => $user->getFirstname()." ".$user->getLastname()." by FBT"))
                 ->setTo(array($datas['email']))
                 ->setBody($body, 'text/html');
 
