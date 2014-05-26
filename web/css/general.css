@@ -93,6 +93,7 @@ body.accueil #container .summary .generalRank p {
     line-height: 60px;
     margin: 0 0 0 30px;
     width: 60px;
+    float : left;
 }
 body.accueil #container .summary .generalRank p span {
     font-size: 3em;

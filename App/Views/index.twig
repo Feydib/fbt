@@ -4,12 +4,23 @@
 <div id="content">
     <h1>Pronostics</h1>
 
-    
-    {% if is_granted('ROLE_USER') %}
-        {{ render(url('tournament.mytournaments'))}}
-    {% else %}
-        {{ render(url('login'))}}
-    {% endif %}
+    <div class="row summary">
+        <div class="col-md-1"></div>
+            <div class="col-md-5">
+            {% if is_granted('ROLE_USER') %}
+                {{ render(url('tournament.mytournaments'))}}
+            {% else %}
+                {{ render(url('login'))}}
+            {% endif %}
+        </div>
+        <div class="col-md-5 generalRank">
+            <h3>{% trans %}general ranking{% endtrans %}</h3>
+            <p>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</p>
+            <p></p>
+            {{ render(url('bet.best'))}}
+            <div class="col-md-1"></div>
+        </div>
+    </div>
     {{ render(url('match.nextPrevious'))}}
 </div>
 {% endblock %}

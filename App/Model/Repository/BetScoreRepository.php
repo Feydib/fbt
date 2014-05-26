@@ -135,4 +135,28 @@ class BetScoreRepository extends EntityRepository
 
         return $playerScore;
     }
+    
+    /**
+     * Returns best players and total score
+     *
+     * @param Tournament $tournament
+     *
+     * @return Tournament|false An entity object if found, false otherwise.
+     */
+    public function findBestScores()
+    {
+        $qb = $this->_em->createQueryBuilder()
+                ->select('b, SUM(b.score) as score')
+                ->from('App\Model\Entity\Betscore', 'b')
+                ->leftJoin('b.players', 't')
+                ->groupBy('b.idplayers')
+                ->orderBy("score", "ASC")
+               // ->limit(10)
+                ;
+        
+        $query = $qb->getQuery();
+        $playerScore = $query->getResult();
+
+        return $playerScore;
+    }
 }

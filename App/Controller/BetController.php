@@ -115,6 +115,39 @@ class BetController implements ControllerProviderInterface {
         
         return $score;
     }
+    
+    public function getCurrentPlayerTotalScore() {
+        $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+        //We get logged user
+        $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
+        $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+        $score = $betScoreRepository->findSum($user);
+        
+        if($score[1] !== null) {
+            $score = $score[1];
+        } else {
+            $score = 0;
+        }
+        
+        return $score;
+    }
+    
+    public function getBestPlayerTotalScore() {
+        $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+        $betScorePlayers = $betScoreRepository->findBestScores();
+                
+        $players = array();
+        foreach($betScorePlayers as $k => $v) {
+            $player = $v[0]->getIdplayers();
+            $player->setScore($v["score"]);
+            $player->setRightpronostics(count($betScoreRepository->findRightPronostics($player)));
+            $player->setWrongpronostics(count($betScoreRepository->findWrongPronostics($player)));
+            
+            $players[] = $player;
+        }
+        
+        return $this->app['twig']->render('betscore/bestPlayers.twig', array("players" => $players));
+    }
 
     public function connect(Application $app) {
         $this->app = $app;
@@ -122,9 +155,10 @@ class BetController implements ControllerProviderInterface {
         $bet = $app['controllers_factory'];
         $bet->match("/bet/{idMatchTeam}", 'App\Controller\BetController::betForm')->bind("bet.betForm");
         $bet->post('/dobet', array($this,"doBet"))->bind('bet.doBet');
-        
+        $bet->get('/getScore/best', array($this,"getBestPlayerTotalScore"))->bind('bet.best');
         $bet->get('/getScore/{player}/{idMatch}', array($this,"getMatchPlayerScore"))->bind('bet.getPlayerScore');
         $bet->get('/getPlayerScore/{player}', array($this,"getPlayerTotalScore"))->bind('bet.getPlayerTotalScore');
+        $bet->get('/getCurrentPlayerScore', array($this,"getCurrentPlayerTotalScore"))->bind('bet.getCurrentPlayerTotalScore');
 
         return $bet;
     }

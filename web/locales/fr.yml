@@ -25,6 +25,9 @@ login : Se connecter
 logout : Se déconnecter
 signup : Créer un compte
 pool : Les Poules
+admin : Admin
+
+general ranking : Classement général
 
 #Utilisateur
 username : Login
