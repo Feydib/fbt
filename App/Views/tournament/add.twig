@@ -1,17 +1,18 @@
+
+    
 <form action="{{path('tournament.doadd')}}" method="post">
     {{ form_errors(form)}}
-      <div class="champ">
-        <label>{{ form_label(form.name, form.name.vars.name ) }}</label>
-        {{ form_widget(form.name) }}
-        {{ form_errors(form.name) }}
-      </div>
-      {# <div class="champ">
-        <label>{{ form_label(form.date, form.date.vars.name ) }}</label>
-        <div class="date">{{ form_widget(form.date) }}</div>
-        {{ form_errors(form.date) }}
-      </div>#}
-    {{ form_rest(form)}}
-    <input type="submit" class="btn" name="submit" />
+    <div class="col-md-4">
+        <div class="input-group">
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+            {{ form_rest(form)}}
+        </div>
+            
+    </div>
+    <div class="col-md-2">
+        <input type="submit" class="btn btn-info btn-block" name="submit" />
+    </div>  
 </form>
 
   

@@ -18,15 +18,13 @@
                             {% endif %}
                         {% endif %}
                     </td>
-                    <td>
                         {% if firstTeam == true %}
-                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                            <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                         {% endif %} 
-                        {{team.idteams.countries.isoAlpha3}}
+                         <td>{{team.idteams.countries.isoAlpha3}} </td>
                         {% if firstTeam == false %}
-                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                            <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                         {% endif %} 
-                    </td>
                     <td>
                         {% if firstTeam == true and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
                            {{team.score}}
@@ -57,15 +55,14 @@
 
                 {% for team in match.teams %}
 
-                    <td>
+
                         {% if firstTeam == true %}
-                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                            <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                         {% endif %} 
-                        {{team.idteams.countries.isoAlpha3}}
+                    <td>{{team.idteams.countries.isoAlpha3}}</td>
                         {% if firstTeam == false %}
-                            <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                            <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                         {% endif %} 
-                    </td>
                     {% if firstTeam == true %}
                         <td>
                             -

@@ -26,15 +26,13 @@
                         {{ render(url('match.scoreForm', { idMatchTeam : team.idmatchteam}))}}
                     {% endif %}
                 </td>
-                <td>  
                     {% if firstTeam == true %}
-                        <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                    <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                     {% endif %} 
-                    {{team.idteams.countries.isoAlpha3}}
+                    <td>{{team.idteams.countries.isoAlpha3}}</td>
                     {% if firstTeam == false %}
-                        <img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" />
+                        <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                     {% endif %} 
-                </td>
                 <td>
                     {% if firstTeam == true and team.score is not null %}
                        {{team.score}}

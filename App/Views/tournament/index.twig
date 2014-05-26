@@ -1,21 +1,29 @@
 {% extends layout %}
-
+{% block bodyClass %}competitions{% endblock %}
 {% block body %}
 <div id="content">
 
-    <legend>{% trans %} new tournament {% endtrans %}</legend>
-    {{ render(url('tournament.add')) }}
+
     
     {{ render(url('tournament.mytournaments'))}}
-    
-    <legend>{% trans %} tournaments list {% endtrans %}</legend>
-    <p>
-    {% for tournament in tournaments %}
-        {{tournament.name}} - {{tournament.year|date('d-M-Y')}} - 
-        <a href="{{path('tournament.join', { idTournament : tournament.idTournament } )}}">{% trans %}join{% endtrans %}</a>
-        <br/>
-    {% endfor %}
-    </p>
-    
+
+    <div class="row otherCompetitionsList">
+        <h3>{% trans %} tournaments list {% endtrans %} :</h3>
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            {% for tournament in tournaments %}
+            <div class="row compet">
+                <div class="col-md-6 name">{{tournament.name}}</div>
+                <div class="col-md-6 link">
+                    <a href="{{path('tournament.join', { idTournament : tournament.idTournament } )}}">{% trans %}join{% endtrans %}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    <div class="row addCompetition">
+        <h3>{% trans %} new tournament {% endtrans %}</h3>
+        <div class="col-md-1"></div>
+        {{ render(url('tournament.add')) }}
+    </div>
 </div>
 {% endblock %}
