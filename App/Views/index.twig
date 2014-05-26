@@ -4,6 +4,14 @@
 <div id="content">
     <h1>Pronostics</h1>
 
+    <div class="row summary ">
+        <div class="col-md-4 "></div>
+            <div class="col-md-5 generalRank">
+                <h3>{% trans %}general ranking{% endtrans %}</h3>
+                <p>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</p>
+                <p></p>
+            </div>
+    </div>
     <div class="row summary">
         <div class="col-md-1"></div>
             <div class="col-md-5">
@@ -14,9 +22,8 @@
             {% endif %}
         </div>
         <div class="col-md-5 generalRank">
-            <h3>{% trans %}general ranking{% endtrans %}</h3>
-            <p>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</p>
-            <p></p>
+            <h3>{% trans %}best players{% endtrans %}</h3>
+            
             {{ render(url('bet.best'))}}
             <div class="col-md-1"></div>
         </div>
