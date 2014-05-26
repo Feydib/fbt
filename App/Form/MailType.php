@@ -15,7 +15,7 @@ class MailType extends AbstractType {
         $builder->add('email', "email", array("constraints" => array(
             new Assert\NotBlank(),
             new Assert\Email()),
-            "attr" => array("placeholder" => "email"))
+            "attr" => array("placeholder" => "email", "class" => "form-control"))
         );
         $builder->add('tournament', 'hidden', array(
             'data' =>  $this->idTournament,

@@ -1,5 +1,5 @@
 {% extends layout %}
-{% block bodyClass %}competitionDetail{% endblock %}
+{% block bodyClass %}pool{% endblock %}
 {% block body %}
 
 <h1>{{tournament.name}}</h1>
@@ -20,12 +20,21 @@
                     {% for tournplayer in tournament.players %}
                         {% if tournplayer.idplayers == player and tournplayer.isaccepted == true %}
                             <tr>
-                               <td>{{player.firstname}} {{player.lastname}} </td>
-                               <td></td>
-                               <td></td>
-                               <td> 
-                                   {{player.score}} {% trans %}pts{% endtrans %} 
+                                <td>{{player.firstname}} {{player.lastname}} </td>
+                                <td>{{player.rightpronostics}}</td>
+                                <td>{{player.wrongpronostics}}</td>
+                                <td> 
+                                    {{player.score}} {% trans %}pts{% endtrans %} 
+                                <td>
+                                    {% if currentUserAdmin == true %}
+                                <td>
+                                {% if tournplayer.isadmin == true %}
+                                    <a href="{{path('tournament.removeAdmin', { idTournPlayers : tournplayer.idtournplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
+                                {% else %}
+                                    <a href="{{path('tournament.setAdmin', { idTournPlayers : tournplayer.idtournplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
+                                {% endif %}
                                </td>
+                               {% endif %}
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -38,30 +47,28 @@
 <div class="row playersInfos">
     <div class="col-md-10">
         <h3>{% trans %}add asking{% endtrans %}</h3>
-        <table>
-            <tbody>
             {% for player in tournament.players %}
+                <div class="row">
                 {% if player.isaccepted == false %}
-                    <tr>
-                        <td>
-                            {{player.idplayers.username}} - {{player.idplayers.firstname}} - {{player.idplayers.lastname}} 
-                        </td>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                    {{player.idplayers.firstname}} {{player.idplayers.lastname}} 
+                    </div>
                     {% if currentUserAdmin == true %}
-                        <td>
-                            <a href="{{path('tournament.accept', { idTournPlayers : player.idtournplayers} )}}">{% trans %}accept{% endtrans %}</a>
-                        </td>
+                        <div class="col-md-2">
+                            <a href="{{path('tournament.accept', { idTournPlayers : player.idtournplayers} )}}"><button class="btn btn-info btn-block" type="button">{% trans %}accept{% endtrans %}</button></a>
+                        </div>
                     {% endif %}
-                    </tr>
                 {% endif %}
+                </div>
             {% endfor %}
-           </tbody>
-        </table>
     </div>
 </div>
            
 <div class="row playersInfos">
     <div class="col-md-10">
         <h3>{% trans %} invite player {% endtrans %}</h3>
+        <div class="col-md-1"></div>
         {{ render(url('tournament.invite', { idTournament : tournament.idtournament}))}}
     </div>
 </div>

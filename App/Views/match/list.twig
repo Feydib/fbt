@@ -1,22 +1,24 @@
 {% extends layout %}
-
+{% block bodyClass %}pronostics{% endblock %}
 {% block body %}
 <div id="content">
 
-    <legend>{% trans %} matchs list {% endtrans %}</legend>
+    <h1>{% trans %} matchs list {% endtrans %}</h1>
 
     <form action="{{path('match.doScore')}}" method="post">
-    <table>
    
         {% for match in matchs %}
-            <tr>
-                <td>{{match.date|date('j/m/Y H:i')}}</td> 
-                <td>{{match.stadium}}</td> 
+            <div class="row match">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 matchForm">
+                    <table>
+                        <tbody>
+                            <tr>
                 {% set firstTeam = true %}
 
             {% for team in match.teams %}
 
-                <td>
+                <td class="ext">
                     {% if firstTeam == false and team.score is not null %}
                         {{team.score}}                   
                         {% if team.pen is not null %}
@@ -27,13 +29,13 @@
                     {% endif %}
                 </td>
                     {% if firstTeam == true %}
-                    <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
+                    <td class="int"><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                     {% endif %} 
-                    <td>{{team.idteams.countries.isoAlpha3}}</td>
+                    <td class="int">{{team.idteams.countries.isoAlpha3}}</td>
                     {% if firstTeam == false %}
-                        <td><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
+                    <td class="ext"><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                     {% endif %} 
-                <td>
+                <td class="int">
                     {% if firstTeam == true and team.score is not null %}
                        {{team.score}}
                        {% if team.pen is not null %}
@@ -51,11 +53,26 @@
                 {% endif %}
                 {% set firstTeam = false %}
             {% endfor %}
-            </tr>
+            <td> 
+                    {% if "now"|date('YmdHi') > match.date|date('YmdHi') and render(url('bet.getPlayerScore', {player : app.security.token.user.username, idMatch : match.idmatchs} )) != "" %}
+                        {{ render(url('bet.getPlayerScore', {player : app.security.token.user.username, idMatch : match.idmatchs} ))}} {% trans %}pts{% endtrans %}
+                    {% endif %}
+            </td> 
+                        </tr>
+                    </tbody>
+                </table>
+            <h4 class="matchInfos">{{match.stadium}} - {{match.date|date('j/m/Y H:i')}}</h4>
+            </div>
+        </div>
         {% endfor %}
     
-    </table>
-            <input type="submit" class="btn" name="submit" />
+  <div class="row saveButton">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-info btn-block" name="submit" />
+        </div>
+        <div class="col-md-5"></div>
+    </div>
     </form>
     
 </div>

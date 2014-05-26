@@ -5,7 +5,33 @@
 
 
     
-    {{ render(url('tournament.mytournaments'))}}
+    <div class="row myCompetitionsList">
+        <h3>{% trans %} my tournaments {% endtrans %} :</h3>
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            {% for tournament in myTournaments %}
+            <div class="row compet">
+                <div class="col-md-6 name">{{tournament.name}}</div>
+                <div class="col-md-6 link">
+                    {% for player in tournament.players %}
+                        {% if player.isaccepted == false %}
+                            {% trans %}accept waiting{% endtrans %}
+                        {% else %}
+                            <a href="{{path('tournament.view', { idTournament : tournament.idTournament } )}}">{% trans %}view{% endtrans %}</a>
+                        {% endif %}
+                        {% if player.isadmin == true %}
+                            <a href="{{path('tournament.delete', { idTournament : tournament.idTournament } )}}">{% trans %}delete{% endtrans %}</a>
+                        {% else %}
+                            <a href="{{path('tournament.leave', { idTournament : tournament.idTournament } )}}">{% trans %}leave{% endtrans %}</a>    
+                        {% endif %}
+
+                    {% endfor %}  
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 
     <div class="row otherCompetitionsList">
         <h3>{% trans %} tournaments list {% endtrans %} :</h3>

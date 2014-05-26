@@ -199,6 +199,9 @@ class TournamentController implements ControllerProviderInterface {
         foreach($listBetScore as $k => $v) {
             $player = $v[0]->getIdplayers();
             $player->setScore($v["score"]);
+            $player->setRightpronostics(count($betScoreRepository->findRightPronostics($player)));
+            $player->setWrongpronostics(count($betScoreRepository->findWrongPronostics($player)));
+            
             $players[] = $player;
         }
         
@@ -208,6 +211,8 @@ class TournamentController implements ControllerProviderInterface {
             if (!in_array($tPlayers->getIdplayers(), $players)) {
                 $player = $tPlayers->getIdplayers();
                 $player->setScore(0);
+                $player->setRightpronostics(0);
+                $player->setWrongpronostics(0);
                 $players[] = $player;
             }
         }

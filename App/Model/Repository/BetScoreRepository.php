@@ -51,8 +51,8 @@ class BetScoreRepository extends EntityRepository
         /**
      * Returns a collection of betScore.
      *
-     * @param array $crit
-     *   Crit for searching
+     * @param array $player
+     *   player for searching
      *
      * @return array A collection of score, keyed by id.
      */
@@ -67,6 +67,48 @@ class BetScoreRepository extends EntityRepository
         
         $query = $qb->getQuery();
         return $query->getOneOrNullResult();
+    }
+    
+    /**
+     * Returns a collection of betScore.
+     *
+     * @param array $player
+     *   player for searching
+     *
+     * @return array A collection of score, keyed by id.
+     */
+    public function findRightPronostics($players) {        
+        $qb = $this->_em->createQueryBuilder()
+                ->select('b')
+                ->from('App\Model\Entity\BetScore', 'b')
+                ->where('b.idplayers = ?1')
+                ->andWhere('b.score <> 0')
+                ->setParameter(1, $players)
+                ;
+        
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+    
+        /**
+     * Returns a collection of betScore.
+     *
+     * @param array $player
+     *   player for searching
+     *
+     * @return array A collection of score, keyed by id.
+     */
+    public function findWrongPronostics($players) {        
+        $qb = $this->_em->createQueryBuilder()
+                ->select('b')
+                ->from('App\Model\Entity\BetScore', 'b')
+                ->where('b.idplayers = ?1')
+                ->andWhere('b.score = 0')
+                ->setParameter(1, $players)
+                ;
+        
+        $query = $qb->getQuery();
+        return $query->getResult();
     }
     
      /**

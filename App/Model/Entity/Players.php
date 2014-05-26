@@ -84,6 +84,26 @@ class Players implements UserInterface
     private $active;
     
     private $score;
+    private $rightpronostics;
+    private $wrongpronostics;
+    
+    public function getRightpronostics() {
+        return $this->rightpronostics;
+    }
+
+    public function getWrongpronostics() {
+        return $this->wrongpronostics;
+    }
+
+    public function setRightpronostics($rightpronostics) {
+        $this->rightpronostics = $rightpronostics;
+    }
+
+    public function setWrongpronostics($wrongpronostics) {
+        $this->wrongpronostics = $wrongpronostics;
+    }
+
+        
     public function getScore() {
         return $this->score;
     }
