@@ -151,7 +151,7 @@ class BetScoreRepository extends EntityRepository
                 ->leftJoin('b.players', 't')
                 ->groupBy('b.idplayers')
                 ->orderBy("score", "ASC")
-               // ->limit(10)
+               ->setMaxResults(10)
                 ;
         
         $query = $qb->getQuery();
