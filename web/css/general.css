@@ -31,6 +31,17 @@ body.accueil #container .matchsAccueil {
 body.accueil #container .matchsAccueil h3 {
     margin: 20px 20px 20px 100px;
 }
+body.accueil #container .bestPlayers h3 {
+    margin: 0 0 30px;
+    padding: 0;
+}
+body.accueil #container .bestPlayers table {
+    margin: 0 auto;
+}
+body.accueil #container .bestPlayers table tr td, th {
+    padding: 2px 5px;
+    width: 100px;
+}
 body.accueil #container .matchsAccueil table {
     margin: 0 auto;
 }
@@ -50,10 +61,10 @@ body.accueil #container .summary {
     margin: 100px 0 0;
 }
 body.accueil #container .summary h3 {
-    margin: 20px 20px 20px 100px;
+    margin: 20px 20px 20px 0;
 }
 body.accueil #container .summary table {
-    margin: 0 0 0 100px;
+    margin: 0;
 }
 body.accueil #container .summary table tr td {
     padding: 10px;
@@ -61,17 +72,31 @@ body.accueil #container .summary table tr td {
 body.accueil #container .summary table tr td img {
     width: 20px;
 }
+body.accueil #container .bestPlayers h3 {
+    margin: 30px 0;
+    padding: 0;
+}
+body.accueil #container .bestPlayers table {
+    margin: 0 auto;
+}
+body.accueil #container .bestPlayers table tr td, th {
+    padding: 2px 5px;
+    width: 100px;
+}
+body.accueil #container .bestPlayers table tr:hover {
+    background-color: #D1ECFF;
+}
 body.accueil #container .summary .generalRank p {
     background-color: #DEA8DF;
     border-radius: 10px;
-    height: 90px;
-    line-height: 90px;
-    margin: 20px 0 0 30px;
-    width: 90px;
+    height: 60px;
+    line-height: 60px;
+    margin: 0 0 0 30px;
+    width: 60px;
 }
 body.accueil #container .summary .generalRank p span {
-    font-size: 4em;
-    margin-left: 20px;
+    font-size: 3em;
+    margin-left: 10px;
 }
 body.accueil #container .matchsAccueil {
     margin: 100px 0 0;
@@ -86,21 +111,21 @@ body.accueil #container .matchsAccueil table {
 body.accueil #container .matchsAccueil table tr td {
     padding: 10px;
 }
-body.competitionDetail #container .playersInfos {
+body.pool #container .playersInfos {
     margin: 100px 0 0;
     padding: 0 0 50px;
 }
-body.competitionDetail #container .playersInfos h3 {
+body.pool #container .playersInfos h3 {
     margin: 20px 20px 20px 100px;
 }
-body.competitionDetail #container .playersInfos table {
+body.pool #container .playersInfos table {
     line-height: 30px;
     margin: 20px 20px 20px 100px;
 }
-body.competitionDetail #container .playersInfos table tr:hover {
+body.pool #container .playersInfos table tr:hover {
     background-color: #D1ECFF;
 }
-body.competitionDetail #container .playersInfos table tr td {
+body.pool #container .playersInfos table tr td {
     width: 150px;
 }
 body.pool #container .groupe {
@@ -119,4 +144,44 @@ body.pool #container .groupe table tr:hover {
 }
 body.pool #container .groupe table tr td {
     width: 150px;
+}
+body.competitions #container .myCompetitionsList h3 {
+    margin: 20px 0 20px 80px;
+}
+body.competitions #container .compet:hover {
+    background-color: #D1ECFF;
+}
+body.competitions #container .compet .name {
+    text-align: left;
+}
+body.competitions #container .compet .link {
+    text-align: right;
+}
+body.competitions #container .otherCompetitionsList h3 {
+    margin: 20px 0 20px 80px;
+}
+body.competitions #container .addCompetition h3 {
+    margin: 20px 0 20px 80px;
+}
+body.competitions #container .addCompetition {
+    padding-bottom: 30px;
+}
+body.pronostics #container .match {
+    padding-bottom: 30px;
+}
+body.pronostics #container .match .matchForm tr td {
+    width: 90px;
+}
+body.pronostics #container .match .matchForm tr td.int {
+    text-align: left;
+}
+body.pronostics #container .match .matchForm tr td.ext {
+    text-align: right;
+}
+body.pronostics #container .match .matchForm h4 {
+    color: #3160BF;
+    font-size: 1em;
+}
+body.pronostics #container .saveButton {
+    padding-bottom: 50px;
 }
