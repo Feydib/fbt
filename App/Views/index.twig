@@ -3,7 +3,7 @@
 {% block body %}
 <div id="content">
     <h1>Pronostics</h1>
-
+    {% if is_granted('ROLE_USER') %}
     <div class="row summary ">
         <div class="col-md-4 "></div>
             <div class="col-md-5 generalRank">
@@ -12,16 +12,18 @@
                 <p></p>
             </div>
     </div>
-    <div class="row summary">
+    {% endif %}
+    <div class="row loginForm">
         <div class="col-md-1"></div>
-            <div class="col-md-5">
+        <div class="col-md-4">
             {% if is_granted('ROLE_USER') %}
                 {{ render(url('tournament.mytournaments'))}}
             {% else %}
                 {{ render(url('login'))}}
             {% endif %}
         </div>
-        <div class="col-md-5 generalRank">
+        <div class="col-md-2"></div>
+        <div class="col-md-5 bestPlayers">
             <h3>{% trans %}best players{% endtrans %}</h3>
             
             {{ render(url('bet.best'))}}

@@ -1,10 +1,7 @@
 
 
 {% block body %}
-    <div class="row loginForm">
-        <div class="col-md-4"></div>
         <form action="{{ path('connexion') }}" method="post">
-            <div class="col-md-4">
                 
                 <div class="input-group">
                     
@@ -23,11 +20,11 @@
                         <input type="submit" class="btn btn-info btn-block" value="{% trans %}connection{% endtrans %}" />
                     </div>
                 </div>
-            </div>
+
         </form>
         <div class="col-md-4"></div>
         {% if error %}
             <div class="error">{{ error }}</div>
         {% endif %}
-    </div>
+
 {% endblock %}
