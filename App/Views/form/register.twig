@@ -1,34 +1,45 @@
+
+<div class="col-md-4"></div>
+<div class="col-md-4">
 <form  action="{{ action }}" method="post">
     
-  <legend>{% trans  %}register{% endtrans %}</legend>
+  <h1>{% trans  %}register{% endtrans %}</h1>
   {{ form_errors(form)}}
-  <div class="champ">
-    {{ form_label(form.username, form.username.vars.name ) }}</label>
+  <div class="input-group">
+      <span class="input-group-addon"></span>
     {{ form_widget(form.username) }}
     {{ form_errors(form.username) }}
   </div>
-  <div class="champ">
-  {{ form_label(form.email, form.email.vars.name ) }}
+  <br>
+  <div class="input-group">
+      <span class="input-group-addon"></span>
   {{ form_widget(form.email) }}
   </div>
-  <div class="champ">
-  {{ form_label(form.lastname, form.lastname.vars.name ) }}
+  <br>
+  <div class="input-group">
+      <span class="input-group-addon"></span>
   {{ form_widget(form.lastname) }}
   </div>
-  <div class="champ">
-  {{ form_label(form.firstname, form.firstname.vars.name ) }}
+  <br>
+  <div class="input-group">
+      <span class="input-group-addon"></span>
   {{ form_widget(form.firstname) }}
   </div>
-  <div class="champ">
-  <label class="required" for="register_password_repeated_first">{% trans  %} password{% endtrans %}</label>
-  {{ form_widget(form.password_repeated.first) }}
+  <br>
+  <div class="input-group">
+    <span class="input-group-addon"></span>
+    {{ form_widget(form.password_repeated.first) }}
   </div>
-  <div class="champ">
-  <label class="required" for="register_password_repeated_second">{% trans  %}repeat{% endtrans %} {% trans  %} password{% endtrans %}</label>
-  {{ form_widget(form.password_repeated.second) }}
+  <br>
+  <div class="input-group">
+    <span class="input-group-addon"></span>
+    {{ form_widget(form.password_repeated.second) }}
   </div>
-  
+  <br>
 {{ form_rest(form)}}
-  
-  <input class="btn" type="submit" name="submit">
+  <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <input class="btn btn-info btn-block" type="submit" name="submit">
+    </div>
 </form>
+</div>

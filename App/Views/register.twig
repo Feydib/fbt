@@ -1,7 +1,7 @@
 {% extends layout %}
-
+{% block bodyClass %}register{% endblock %}
 {% block body %}
-<div id="register">
+<div class="row registerForm">
 {% include 'form/register.twig' with {'form': registrationForm, 'action': path('user.dosignup')} only %}
 </div>
 {% endblock %}

@@ -186,3 +186,9 @@ body.pronostics #container .match .matchForm h4 {
 body.pronostics #container .saveButton {
     padding-bottom: 50px;
 }
+body.register #container .registerForm {
+    margin: 50px 0 0;
+}
+body.register #container .registerForm button {
+    margin: 50px 0;
+}
