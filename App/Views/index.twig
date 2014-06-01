@@ -8,8 +8,8 @@
         <div class="col-md-4 "></div>
             <div class="col-md-5 generalRank">
                 <h3>{% trans %}general ranking{% endtrans %}</h3>
-                <p>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</p>
-                <p></p>
+                <p><b>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</b></p>
+                <p><b>{{ render(url('bet.getCurrentPlayerRanking')) }} e</b></p>
             </div>
     </div>
     {% endif %}

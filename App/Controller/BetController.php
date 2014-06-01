@@ -148,6 +148,30 @@ class BetController implements ControllerProviderInterface {
         
         return $this->app['twig']->render('betscore/bestPlayers.twig', array("players" => $players));
     }
+    
+    /**
+     * Find Current player ranking
+     * @return int
+     */
+    public function findRanking() {
+
+        $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+        
+        $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
+        $currentUser = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+        
+        $betScorePlayers = $betScoreRepository->findScores();
+        
+        $rank = 1;
+        foreach($betScorePlayers as $k => $v) {
+            $player = $v[0]->getIdplayers();
+            if ($player == $currentUser) {
+                return $rank;
+            }
+            $rank++;
+        }
+        return 0;
+    }
 
     public function connect(Application $app) {
         $this->app = $app;
@@ -159,7 +183,7 @@ class BetController implements ControllerProviderInterface {
         $bet->get('/getScore/{player}/{idMatch}', array($this,"getMatchPlayerScore"))->bind('bet.getPlayerScore');
         $bet->get('/getPlayerScore/{player}', array($this,"getPlayerTotalScore"))->bind('bet.getPlayerTotalScore');
         $bet->get('/getCurrentPlayerScore', array($this,"getCurrentPlayerTotalScore"))->bind('bet.getCurrentPlayerTotalScore');
-
+        $bet->get('/getCurrentPlayerRanking1', array($this,"findRanking"))->bind('bet.getCurrentPlayerRanking');
         return $bet;
     }
 

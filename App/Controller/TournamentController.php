@@ -22,6 +22,30 @@ class TournamentController implements ControllerProviderInterface {
         
         return $this->app["twig"]->render("tournament/myTournaments.twig", array("myTournaments" => $myTournaments));
     }
+    
+    public function findTournamentRanking($idTournament) {
+        $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+        $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        
+        $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
+        $currentUser = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+        
+        $tournament = $tournamentRepository->find($idTournament);
+        $betScorePlayers = $betScoreRepository->findTournamentScores($tournament);
+        
+        $tournPlayers = $tournPlayersRepository->findBy(array("idtournament" => $tournament));
+        
+        $rank = 1;
+        foreach($betScorePlayers as $k => $v) {
+            $player = $v[0]->getIdplayers();
+            if ($player == $currentUser) {
+                return $rank . 'e/' . count($tournPlayers);
+            }
+            $rank++;
+        }
+        return 0 . 'e/' . count($tournPlayers);
+    }
 
     public function index(Application $app) {
        //We list all tournament
@@ -370,6 +394,8 @@ class TournamentController implements ControllerProviderInterface {
         $tournament->get('/setadmin/{idTournPlayers}', array($this,"SetAdmin"))->bind('tournament.setAdmin');
         $tournament->get('/removeadmin/{idTournPlayers}', array($this,"RemoveAdmin"))->bind('tournament.removeAdmin');
         $tournament->get('/invite/{idTournament}', array($this,"Invite"))->bind('tournament.invite');
+        $tournament->get('/ranking/{idTournament}', array($this,"FindTournamentRanking"))->bind('tournament.ranking');
+        
         $tournament->post('/doinvite', array($this,"doInvite"))->bind('tournament.doInvite');
         return $tournament;
     }

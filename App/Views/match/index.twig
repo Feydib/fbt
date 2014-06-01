@@ -19,22 +19,26 @@
 
             {% for team in match.teams %}
 
-                <td class="ext">
-                    {% if firstTeam == false and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
-                        {{team.score}}  
+                
+                {% if firstTeam == false and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
+                    <td class="ext">
                         {% for bet in team.bet %}
                             {% if bet.idplayers.username == app.security.token.user.username %}
-                                ( {{bet.score}} )
+                                ( <b>{{bet.score}}</b> )
                             {% endif %}
                         {% endfor %}
+                        {{team.score}}  
                         
                         {% if team.pen is not null %}
                             pen {{team.pen}}
                         {% endif %}
-                    {% elseif firstTeam == false and (team.score is null or "now"|date('YmdHi')  < match.date|date('YmdHi') ) %}
+                    </td>
+                {% elseif firstTeam == false and (team.score is null or "now"|date('YmdHi')  < match.date|date('YmdHi') ) %}
+                    <td class="ext">
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}}
-                    {% endif %}
-                </td>
+                    </td>
+                {% endif %}
+                
                     {% if firstTeam == true %}
                     <td class="int"><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                     {% endif %} 
@@ -42,22 +46,25 @@
                     {% if firstTeam == false %}
                         <td class="ext"><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
                     {% endif %} 
-                <td class="int">
-                    {% if firstTeam == true and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
-                       {{team.score}}
+                
+                {% if firstTeam == true and ( team.score is not null or "now"|date('YmdHi')  > match.date|date('YmdHi') ) %}
+                    <td class="int">  
+                        {{team.score}}
                        {% for bet in team.bet %}
                             {% if bet.idplayers.username == app.security.token.user.username %}
-                                ( {{bet.score}} )
+                                ( <b>{{bet.score}}</b> )
                             {% endif %}
                        {% endfor %}
                        {% if team.pen is not null %}
                             pen {{team.pen}} 
                        {% endif %}
-                        
-                    {% elseif firstTeam == true and (team.score is null or "now"|date('YmdHi')  < match.date|date('YmdHi') ) %}
+                    </td>   
+                {% elseif firstTeam == true and (team.score is null or "now"|date('YmdHi')  < match.date|date('YmdHi') ) %}
+                    <td class="int">  
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}} 
-                    {% endif %}
-                </td> 
+                    </td>     
+                {% endif %}
+                
                 {% if firstTeam == true %}
                     <td>
                             -

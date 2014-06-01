@@ -1,4 +1,6 @@
-
+td, th {
+    padding: 5px;
+}
 body {
     background-attachment: fixed;
     background-image: url("../img/background.jpg");
@@ -94,6 +96,7 @@ body.accueil #container .summary .generalRank p {
     margin: 0 0 0 30px;
     width: 60px;
     float : left;
+    text-align: center;
 }
 body.accueil #container .summary .generalRank p span {
     font-size: 3em;
@@ -172,6 +175,7 @@ body.pronostics #container .match {
 }
 body.pronostics #container .match .matchForm tr td {
     width: 90px;
+    text-align: center;
 }
 body.pronostics #container .match .matchForm tr td.int {
     text-align: left;

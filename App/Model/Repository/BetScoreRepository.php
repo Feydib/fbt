@@ -126,8 +126,30 @@ class BetScoreRepository extends EntityRepository
                 ->leftJoin('b.players', 't')
                 ->where('t.idtournament = ?1')
                 ->groupBy('b.idplayers')
-                ->orderBy("score", "ASC")
+                ->orderBy("score", "DESC")
                 ->setParameter(1, $tournament)
+                ;
+        
+        $query = $qb->getQuery();
+        $playerScore = $query->getResult();
+
+        return $playerScore;
+    }
+    
+         /**
+     * Returns players and total score
+     *
+     * @param Tournament $tournament
+     *
+     * @return Tournament|false An entity object if found, false otherwise.
+     */
+    public function findScores()
+    {
+        $qb = $this->_em->createQueryBuilder()
+                ->select('b, SUM(b.score) as score')
+                ->from('App\Model\Entity\Betscore', 'b')
+                ->groupBy('b.idplayers')
+                ->orderBy("score", "DESC")
                 ;
         
         $query = $qb->getQuery();
@@ -148,9 +170,8 @@ class BetScoreRepository extends EntityRepository
         $qb = $this->_em->createQueryBuilder()
                 ->select('b, SUM(b.score) as score')
                 ->from('App\Model\Entity\Betscore', 'b')
-                ->leftJoin('b.players', 't')
                 ->groupBy('b.idplayers')
-                ->orderBy("score", "ASC")
+                ->orderBy("score", "DESC")
                ->setMaxResults(10)
                 ;
         
