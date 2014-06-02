@@ -34,7 +34,7 @@ class TournamentController implements ControllerProviderInterface {
         $tournament = $tournamentRepository->find($idTournament);
         $betScorePlayers = $betScoreRepository->findTournamentScores($tournament);
         
-        $tournPlayers = $tournPlayersRepository->findBy(array("idtournament" => $tournament));
+        $tournPlayers = $tournPlayersRepository->findBy(array("idtournament" => $tournament, "isaccepted" => true));
         
         $rank = 1;
         foreach($betScorePlayers as $k => $v) {
@@ -44,7 +44,7 @@ class TournamentController implements ControllerProviderInterface {
             }
             $rank++;
         }
-        return 0 . 'e/' . count($tournPlayers);
+        return count($tournPlayers) . 'e/' . count($tournPlayers);
     }
 
     public function index(Application $app) {

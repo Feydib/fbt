@@ -170,7 +170,7 @@ class BetController implements ControllerProviderInterface {
             }
             $rank++;
         }
-        return 0;
+        return count($userRepository->findAll());
     }
 
     public function connect(Application $app) {
