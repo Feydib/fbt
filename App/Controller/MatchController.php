@@ -341,7 +341,9 @@ class MatchController implements ControllerProviderInterface {
                     $matchTeamRepository->update($matchTeam);
                     //if ($idmatch == $idmatchprec) {
                     if (in_array($idmatch, $savedMatchs)) {
-                        $this->updateTeams($idmatch);
+                        if ($matchTeam->getIdmatchs()->getType() == "QUALIFICATION") {
+                            $this->updateTeams($idmatch);
+                        }
                         $this->completeNextMatchs($matchTeam);
                         $this->calculPoint($idmatch);
                     } else {
