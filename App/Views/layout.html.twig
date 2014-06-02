@@ -34,15 +34,15 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{ path('index.index') }}">{% trans %}home{% endtrans %}</a></li>
-                        <li><a href="{{ path('tournament.index') }}">{% trans %}tournament{% endtrans %}</a></li>
-                        <li><a href="{{ path('match.index') }}">{% trans %}pronostics{% endtrans %}</a></li>
-                        <li><a href="{{ path('team.pool') }}">{% trans %}pool{% endtrans %}</a></li>
+                        <li class="{% block homeClass %}{% endblock %}"><a href="{{ path('index.index') }}">{% trans %}home{% endtrans %}</a></li>
+                        <li class="{% block tournamentClass %}{% endblock %}"><a href="{{ path('tournament.index') }}">{% trans %}tournament{% endtrans %}</a></li>
+                        <li class="{% block matchClass %}{% endblock %}"><a href="{{ path('match.index') }}">{% trans %}pronostics{% endtrans %}</a></li>
+                        <li class="{% block poolClass %}{% endblock %}"><a href="{{ path('team.pool') }}">{% trans %}pool{% endtrans %}</a></li>
                         {% if is_granted('ROLE_USER') %}
                             <li><a href="{{ path('deconnexion') }}">{% trans %}logout{% endtrans %}</a></li>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{ path('match.matchToScore') }}">{% trans %}admin{% endtrans %}</a></li>
+                            <li class="{% block adminClass %}{% endblock %}"><a href="{{ path('match.matchToScore') }}">{% trans %}admin{% endtrans %}</a></li>
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
