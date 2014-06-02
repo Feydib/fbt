@@ -372,7 +372,7 @@ class MatchController implements ControllerProviderInterface {
             $matchsWinner = $matchPrerequisiteRepository->find(array('idpoolwinner' => $matchTeam->getIdteams()->getPool()));
             $matchsSecond = $matchPrerequisiteRepository->find(array('idpoolsecond' => $matchTeam->getIdteams()->getPool()));
             
-            $teamList = $teamRepository->findTeams(array('pool' => $matchTeam->getIdteams()->getPool()), null, 0, array("ranking" => "DESC"));
+            $teamList = $teamRepository->findTeams(array('pool' => $matchTeam->getIdteams()->getPool()), null, 0, array("ranking" => "ASC"));
 
             //create new matchs
             $matchTeam1 = new Matchteam();
