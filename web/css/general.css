@@ -149,6 +149,7 @@ body.pool #container .groupe table tr:hover {
 }
 body.pool #container .groupe table tr td {
     width: 150px;
+    padding : 0;
 }
 body.competitions #container .myCompetitionsList h3 {
     margin: 20px 0 20px 80px;
