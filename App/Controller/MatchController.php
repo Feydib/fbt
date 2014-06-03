@@ -64,8 +64,8 @@ class MatchController implements ControllerProviderInterface {
             $probw = 1/3 - ($diff)/100;
             $probl = 1/3 - ($rdiff)/100;
             $oddw = round(1/$probw , 1);
-            $oddl = round(1/$probl , 1);
-
+            $oddl = round(1/$probl , 1); 
+            
             //If match bet = match result, then calulate odds, else, odds = 0
             if ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
                 $odds = $oddw;
@@ -79,6 +79,9 @@ class MatchController implements ControllerProviderInterface {
             else {
                 $odds = 0;
             }
+            //Limit odd
+            $odds = ($odds > 7) ? 7 : $odds;
+            
             //Verify if bet score equal real score
             if ($scoreList[0] == $betscore[0] && $scoreList[1] == $betscore[1]) {
                 $coef = 2;
