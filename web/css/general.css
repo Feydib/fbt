@@ -131,6 +131,7 @@ body.pool #container .playersInfos table tr:hover {
 }
 body.pool #container .playersInfos table tr td {
     width: 150px;
+    padding : 0;
 }
 body.pool #container .groupe {
     margin: 100px 0 0;
