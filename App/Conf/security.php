@@ -27,6 +27,8 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 $app['security.access_rules'] = array(
     array('^.*/admin.*$', 'ROLE_ADMIN'),
     array('^/login.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+    array('^/contact.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+    array('^/docontact.*$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
     array('^/$', 'IS_AUTHENTICATED_ANONYMOUSLY'),
     array('^/.*$', 'ROLE_USER'),
     

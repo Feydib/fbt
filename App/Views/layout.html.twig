@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">FIFA World Cup 2014</a>
+                    <a class="navbar-brand" href="http://fr.fifa.com/worldcup/">FIFA World Cup 2014</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,6 +44,7 @@
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="{% block adminClass %}{% endblock %}"><a href="{{ path('match.matchToScore') }}">{% trans %}admin{% endtrans %}</a></li>
                         {% endif %}
+                        <li class="{% block contactClass %}{% endblock %}"><a href="{{ path('index.contact') }}">{% trans %}contact{% endtrans %}</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <!--<li><a href="#">Link</a></li>

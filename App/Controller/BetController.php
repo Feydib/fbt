@@ -166,11 +166,11 @@ class BetController implements ControllerProviderInterface {
         foreach($betScorePlayers as $k => $v) {
             $player = $v[0]->getIdplayers();
             if ($player == $currentUser) {
-                return $rank .'/' . count($userRepository->findAll());
+                return $rank .'e/' . count($userRepository->findAll());
             }
             $rank++;
         }
-        return count($userRepository->findAll());
+        return count($userRepository->findAll()).'e/' .count($userRepository->findAll());
     }
 
     public function connect(Application $app) {
