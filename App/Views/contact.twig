@@ -1,0 +1,8 @@
+{% extends layout %}
+{% block bodyClass %}register{% endblock %}
+{% block contactClass %}active{% endblock %}
+{% block body %}
+<div class="row registerForm">
+{% include 'form/contact.twig' with {'form': form} only %}
+</div>
+{% endblock %}

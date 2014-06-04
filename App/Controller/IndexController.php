@@ -19,7 +19,7 @@ class IndexController implements ControllerProviderInterface {
      */
     public function contact(Application $app) {
         $contactForm = $app['form.factory']->create(new \App\Form\ContactType());
-        return $app['twig']->render('form/contact.twig', array("form" => $contactForm->createView()));
+        return $app['twig']->render('contact.twig', array("form" => $contactForm->createView()));
     }
     
     public function doContact(Application $app) {
@@ -33,13 +33,13 @@ class IndexController implements ControllerProviderInterface {
                 $body = "Nom : ".$datas['lastname']."<br/>"
                         . "Prenom : ".$datas['firstname']."<br/>"
                         . "Mail : ".$datas['email']."<br/><br/>"
-                        . "Mail : ".$datas['comments']."<br/>"
+                        . "Message : <br/>".$datas['comments']."<br/>"
                         ;
                 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Formulaire de contact')
                     ->setFrom(array('noreply@brebion.info'))
-                    ->setTo(array("npenloup@gmail.com"))
+                    ->setTo(array($app['config']['mail']['adress']))
                     ->setBody(nl2br($body), 'text/html');
 
                 $app['mailer']->send($message);
@@ -47,7 +47,7 @@ class IndexController implements ControllerProviderInterface {
                 return $app->redirect($app['url_generator']->generate('index.contact'));
           } 
           $app['session']->getFlashBag()->add('error', $app['translator']->trans('The form contains errors'));
-          return $app['twig']->render('form/contact.twig', array('form' => $contactForm->createView()));
+          return $app['twig']->render('contact.twig', array('form' => $contactForm->createView()));
         }
 
     

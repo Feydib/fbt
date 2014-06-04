@@ -6,3 +6,5 @@ database:
     user: root
     password: 
     charset: utf8
+mail:
+    adress : test@test.fr
