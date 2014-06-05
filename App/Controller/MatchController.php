@@ -10,7 +10,7 @@ use App\Model\Entity\Matchteam;
 use App\Model\Entity\Matchs;
 use App\Model\Entity\Betmatchs;
 use App\Model\Entity\Players;
-
+use \Symfony\Component\HttpFoundation\Response;
 use App\Model\Entity\Teams;
 
 class MatchController implements ControllerProviderInterface {
@@ -290,6 +290,38 @@ class MatchController implements ControllerProviderInterface {
        return $app["twig"]->render("match/list.twig", array('matchs' => $matchList));
     }
     
+    /**
+     * Match which we can put result
+     * @param \Silex\Application $app
+     * @return type
+     */
+    public function playerMatchBet($idplayers) {
+       $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
+       $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+       
+       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC')); 
+       
+       $playersRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
+       $players = $playersRepository->getUserById($idplayers);
+       
+       $playersTournaments = $tournamentRepository->findMyTournaments($players);
+       $currentUser = $playersRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+       $currentUserTournaments = $tournamentRepository->findMyTournaments($currentUser);
+       
+       $inSameTournament = false;
+       foreach($playersTournaments as $tournament) {
+           if(in_array($tournament, $currentUserTournaments)) {
+               $inSameTournament = true;
+           }
+       }
+       
+       if (!$inSameTournament) {
+           return new Response("Access Denied", 404);
+       }
+
+       return  $this->app["twig"]->render("match/otherPlayersMatchs.twig", array('matchs' => $matchList, 'players' => $players));
+    }
+    
         /**
      * Form to bet on a match
      * @param \Silex\Application $app
@@ -436,6 +468,7 @@ class MatchController implements ControllerProviderInterface {
         $this->app = $app;
         $match = $app['controllers_factory'];
         $match->match("/", 'App\Controller\MatchController::index')->bind("match.index");
+        $match->get("/match/{idplayers}",  array($this,"playerMatchBet"))->bind("match.playerMatchBet");
         $match->get("/admin/match",  array($this,"matchToScore"))->bind("match.matchToScore");
         $match->get("/admin/match/score/{idMatchTeam}", array($this,"scoreForm") )->bind("match.scoreForm");
         $match->get("/admin/match/pen/{idMatchTeam}", array($this,"penForm") )->bind("match.penForm");

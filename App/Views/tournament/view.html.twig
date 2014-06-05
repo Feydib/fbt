@@ -21,7 +21,7 @@
                     {% for tournplayer in tournament.players %}
                         {% if tournplayer.idplayers == player and tournplayer.isaccepted == true %}
                             <tr>
-                                <td>{{player.firstname|capitalize }} {{player.lastname|capitalize }} </td>
+                                <td><a href="{{path('match.playerMatchBet', { idplayers : tournplayer.idplayers.idplayers} )}}">{{player.firstname|capitalize }} {{player.lastname|capitalize }} </a></td>
                                 <td>{{player.rightpronostics}}</td>
                                 <td>{{player.wrongpronostics}}</td>
                                 <td> 

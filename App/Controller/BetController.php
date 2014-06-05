@@ -90,7 +90,7 @@ class BetController implements ControllerProviderInterface {
         $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
         
-        $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+        $user = $userRepository->getUserByUsername($player);
         $match = $matchRepository->find(array("idmatchs" => $idMatch));   
         
         $betScore = $betScoreRepository->find(array("idmatchs" => $match, "idplayers" => $user));
