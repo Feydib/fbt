@@ -43,6 +43,9 @@ class IndexController implements ControllerProviderInterface {
                     ->setBody(nl2br($body), 'text/html');
 
                 $app['mailer']->send($message);
+                
+                //add flash success
+                $this->app['session']->getFlashBag()->add('success', $this->app['translator']->trans('message send'));
 
                 return $app->redirect($app['url_generator']->generate('index.contact'));
           } 

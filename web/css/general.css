@@ -201,3 +201,43 @@ body.register #container .registerForm {
 body.register #container .registerForm button {
     margin: 50px 0;
 }
+
+/**********************************************************
+**************** CSS FLASH MESSAGE **********************/
+/* tableau du message d'erreur */
+div.message {
+    margin: 0 auto; /* alignement (centrer) */
+    width:100%; /* dimension */
+    margin-bottom:10px; /* marge en dessous du tableau */
+    border-radius: 15px;
+    padding-left:15px; /* décallage du texte pour éviter la superposition du texte sur l'images */
+    height:32px; /* hauteur de la cellule */
+    font-weight:bold; /* text en gras */
+}
+
+div.message p{
+    margin-top : 5px;
+    padding-left : 35px;
+    height : 24px;
+    border-radius: 15px;
+}
+
+div.error{
+    border:1px solid #f46767; 
+    background:#FFBABA; 
+    color : #D8000C;
+}
+     
+div.error p{
+    background:#FFBABA url('../img/error.png') no-repeat;
+}
+
+div.success{
+    border:1px solid #9F6000; 
+    background:#FEEFB3; 
+    color : #9F6000;
+}
+     
+div.success p{
+    background:#FEEFB3 url('../img/icon_check.png') no-repeat;
+}

@@ -57,6 +57,9 @@ class BetController implements ControllerProviderInterface {
                     $betMatchRepository->save($betMatch);
                 }
             }
+            
+            //add flash success
+            $this->app['session']->getFlashBag()->add('success', $this->app['translator']->trans('Save succeed'));
         }
        
         return $this->app->redirect($this->app["url_generator"]->generate("match.index"));

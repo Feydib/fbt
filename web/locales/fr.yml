@@ -49,6 +49,8 @@ username already exists : Login déjà existant
 Invalid credentials.: Pseudo ou mot de passe incorect
 The form contains errors : Le formulaire contient des erreurs
 Your account was successfully created, please login : Votre compte a bien été créé, vous pouvez vous connecter
+save succeed : Sauvegarde effectuée
+message send : Message envoyé
 
 #Tournament
 tournament : Compétition
