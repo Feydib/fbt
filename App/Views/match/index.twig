@@ -34,7 +34,7 @@
                             pen {{team.pen}}
                         {% endif %}
                     </td>
-                {% elseif firstTeam == false and (team.score is null or "now"|date('YmdHi')  < (match.date|date_modify("-15 minute")|date('YmdHi')) ) %}
+                {% elseif firstTeam == false and ( "now"|date('YmdHi')  < (match.date|date_modify("-15 minute")|date('YmdHi')) ) %}
                     <td class="ext">
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}}
                     </td>
@@ -59,7 +59,7 @@
                             pen {{team.pen}} 
                        {% endif %}
                     </td>   
-                {% elseif firstTeam == true and (team.score is null or "now"|date('YmdHi')  < match.date|date_modify("-15 minute")|date('YmdHi') ) %}
+                {% elseif firstTeam == true and ("now"|date('YmdHi')  < match.date|date_modify("-15 minute")|date('YmdHi') ) %}
                     <td class="int">  
                         {{ render(url('bet.betForm', { idMatchTeam : team.idmatchteam}))}} 
                     </td>     

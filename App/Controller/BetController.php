@@ -29,12 +29,13 @@ class BetController implements ControllerProviderInterface {
         $matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
         $betMatchRepository = $this->app['em']->getRepository('App\Model\Entity\Betmatchs');
         $matchTeamList = $matchTeamRepository->find(null, 0, array("score" => NULL)); 
- 
-        //var_dump($matchTeamList);
+         
         foreach($matchTeamList as $matchTeam) {
-            //var_dump($matchTeamIdList->getIdmatchteam());
-            $matchTeamIdList[] = $matchTeam->getIdmatchteam();
+            if (strtotime("-15 minutes",$matchTeam->getIdmatchs()->getDate()->getTimestamp()) > time()) {
+                $matchTeamIdList[] = $matchTeam->getIdmatchteam();
+            }
         }
+
         
         $betForm = $this->app['form.factory']->create(new \App\Form\BetType($matchTeamIdList));
         $betForm->bind($this->app['request']);
@@ -46,20 +47,22 @@ class BetController implements ControllerProviderInterface {
                 $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
                 
                 $betMatch = $betMatchRepository->find(array("idmatchteam" => $matchTeam, "idplayers" => $user ));
-                if ($betMatch) {
-                    $betMatch->setScore($datas["score".$matchTeam->getIdmatchteam()]);
-                    $betMatchRepository->update($betMatch);
-                } else {
-                    $betMatch = new Betmatchs();
-                    $betMatch->setIdmatchteam($matchTeam);
-                    $betMatch->setIdplayers($user);
-                    $betMatch->setScore($datas["score".$matchTeam->getIdmatchteam()]);
-                    $betMatchRepository->save($betMatch);
+                if (in_array($matchTeam->getIdmatchteam(), $matchTeamIdList)) {
+                    if ($betMatch) {
+                        $betMatch->setScore($datas["score".$matchTeam->getIdmatchteam()]);
+                        $betMatchRepository->update($betMatch);
+                    } else {
+                        $betMatch = new Betmatchs();
+                        $betMatch->setIdmatchteam($matchTeam);
+                        $betMatch->setIdplayers($user);
+                        $betMatch->setScore($datas["score".$matchTeam->getIdmatchteam()]);
+                        $betMatchRepository->save($betMatch);
+                    }
                 }
             }
             
             //add flash success
-            $this->app['session']->getFlashBag()->add('success', $this->app['translator']->trans('Save succeed'));
+            $this->app['session']->getFlashBag()->add('success', $this->app['translator']->trans('save succeed'));
         }
        
         return $this->app->redirect($this->app["url_generator"]->generate("match.index"));
