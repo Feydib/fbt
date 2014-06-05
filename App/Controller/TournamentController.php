@@ -350,7 +350,7 @@ class TournamentController implements ControllerProviderInterface {
     }
     
     /**
-     * remove admin right on a tournament
+     * Invite new players
      * @param int $idTournPlayers
      */
     public function invite($idTournament) {
@@ -359,7 +359,7 @@ class TournamentController implements ControllerProviderInterface {
     }
     
     /**
-     * remove admin right on a tournament
+     * Send a mail to invite new players
      * @param int $idTournPlayers
      */
     public function doInvite() {
@@ -372,11 +372,16 @@ class TournamentController implements ControllerProviderInterface {
             $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
             $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
             
+            //We get current tournament name
+            $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+            $tourn = $tournamentRepository->find($datas['tournament']);
+            $name = $tourn->getName();
+            
             $body = "Bonjour,<br/><br/>"
-            		. "Vous avez reçu une invitation de ".$user->getFirstname()." ".$user->getLastname()." à rejoindre le site de pronostiques FBT. <br/>"
-                    . "Pour vous inscrire, veuillez cliquer sur le lien suivant : <a href=".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('user.signup').">Inscription</a>.<br />"
-                    . "Une fois inscrit et identifié sur le site, vous pourrez rejoindre la compétition soit directement en cliquant sur <a href=".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('tournament.join', array('idTournament' => $datas['tournament'])).">Rejoindre</a>,"
-                    . "soit en allant dans l'onglet compétition.<br/><br/>"
+            		. "Vous avez reçu une invitation de ".$user->getFirstname()." ".$user->getLastname()." à rejoindre la compétition '".$name."' sur le site de pronostiques FBT. <br/>"
+                    . "Pour vous inscrire, veuillez cliquer sur le lien suivant : <a href='http://".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('user.signup')."'>Inscription</a>.<br />"
+                    . "Une fois inscrit et identifié sur le site, vous pourrez rejoindre la compétition soit directement en cliquant sur <a href='http://".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('tournament.join', array('idTournament' => $datas['tournament']))."'>Rejoindre</a>,"
+                    . "soit en allant dans l'onglet compétition et en cliquant sur '".$name."'.<br/><br/>"
             		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>"
             		. "A bientôt sur notre site.<br/>"
             		. "Sportivement !";
