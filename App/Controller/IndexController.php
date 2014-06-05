@@ -39,7 +39,7 @@ class IndexController implements ControllerProviderInterface {
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Formulaire de contact')
                     ->setFrom(array('noreply@brebion.info'))
-                    ->setTo(array($app['config']['mail']['adress']))
+                    ->setTo(array($app['config']['mail']['adress'])) 
                     ->setBody(nl2br($body), 'text/html');
 
                 $app['mailer']->send($message);

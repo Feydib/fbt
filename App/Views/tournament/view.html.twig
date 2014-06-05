@@ -6,7 +6,7 @@
 <h1>{{tournament.name}}</h1>
 
  <div class="row playersInfos">
-    <div class="col-md-10">
+    <div class="col-md-12">
         <h3>{% trans %}ranking{% endtrans %} :</h3>
         
         <table>
@@ -21,7 +21,7 @@
                     {% for tournplayer in tournament.players %}
                         {% if tournplayer.idplayers == player and tournplayer.isaccepted == true %}
                             <tr>
-                                <td>{{player.firstname}} {{player.lastname}} </td>
+                                <td>{{player.firstname|capitalize }} {{player.lastname|capitalize }} </td>
                                 <td>{{player.rightpronostics}}</td>
                                 <td>{{player.wrongpronostics}}</td>
                                 <td> 
@@ -30,8 +30,10 @@
                                     {% if currentUserAdmin == true %}
                                 <td>
                                 {% if tournplayer.isadmin == true %}
+                                    <a href="{{path('tournament.refuse', { idTournPlayers : tournplayer.idtournplayers} )}}">{% trans %}remove{% endtrans %}</a><br/>
                                     <a href="{{path('tournament.removeAdmin', { idTournPlayers : tournplayer.idtournplayers} )}}">{% trans %}removeAdmin{% endtrans %}</a>
                                 {% else %}
+                                    <a href="{{path('tournament.refuse', { idTournPlayers : tournplayer.idtournplayers} )}}">{% trans %}remove{% endtrans %}</a><br/>
                                     <a href="{{path('tournament.setAdmin', { idTournPlayers : tournplayer.idtournplayers} )}}">{% trans %}setAdmin{% endtrans %}</a>
                                 {% endif %}
                                </td>
@@ -53,11 +55,14 @@
                 {% if player.isaccepted == false %}
                     <div class="col-md-1"></div>
                     <div class="col-md-4">
-                    {{player.idplayers.firstname}} {{player.idplayers.lastname}} 
+                    {{player.idplayers.firstname|capitalize}} {{player.idplayers.lastname|capitalize}} 
                     </div>
                     {% if currentUserAdmin == true %}
                         <div class="col-md-2">
                             <a href="{{path('tournament.accept', { idTournPlayers : player.idtournplayers} )}}"><button class="btn btn-info btn-block" type="button">{% trans %}accept{% endtrans %}</button></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="{{path('tournament.refuse', { idTournPlayers : player.idtournplayers} )}}"><button class="btn btn-info btn-block" type="button">{% trans %}refuse{% endtrans %}</button></a>
                         </div>
                     {% endif %}
                 {% endif %}

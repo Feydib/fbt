@@ -274,6 +274,24 @@ class TournamentController implements ControllerProviderInterface {
     }
     
     /**
+     * refuse a player in a tournament
+     * @param int $idTournPlayers
+     */
+    public function refuse($idTournPlayers) {
+        $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
+        //We find TournPlayers to accept
+        $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
+        //We get current user and we check he's admin of tournament to accept
+        $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
+        $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
+        $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
+        if($currentToPlayer && $currentToPlayer->getIsadmin()) {
+            $tournPlayersRepository->remove($tournPlayer);
+        }
+        return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
+    }
+    
+    /**
      * remove a player from a tournament
      * @param int $idTournPlayers
      */
@@ -390,6 +408,7 @@ class TournamentController implements ControllerProviderInterface {
         $tournament->get('/leave/{idTournament}', array($this,"Leave"))->bind('tournament.leave');
         $tournament->get('/view/{idTournament}', array($this,"View"))->bind('tournament.view');
         $tournament->get('/accept/{idTournPlayers}', array($this,"Accept"))->bind('tournament.accept');
+        $tournament->get('/refuse/{idTournPlayers}', array($this,"Refuse"))->bind('tournament.refuse');
         $tournament->get('/remove/{idTournPlayers}', array($this,"Remove"))->bind('tournament.remove');
         $tournament->get('/setadmin/{idTournPlayers}', array($this,"SetAdmin"))->bind('tournament.setAdmin');
         $tournament->get('/removeadmin/{idTournPlayers}', array($this,"RemoveAdmin"))->bind('tournament.removeAdmin');

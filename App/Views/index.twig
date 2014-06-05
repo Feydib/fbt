@@ -16,13 +16,16 @@
     {% endif %}
     <div class="row loginForm">
         <div class="col-md-1"></div>
-        <div class="col-md-4">
+        
             {% if is_granted('ROLE_USER') %}
+                <div class="col-md-6">
                 {{ render(url('tournament.mytournaments'))}}
+                </div>
             {% else %}
+                <div class="col-md-4">
                 {{ render(url('login'))}}
+                </div>
             {% endif %}
-        </div>
         <div class="col-md-2"></div>
         <div class="col-md-5 bestPlayers">
             <h3>{% trans %}best players{% endtrans %}</h3>

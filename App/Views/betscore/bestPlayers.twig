@@ -11,7 +11,7 @@
                 </tr>
                 {% for player in players %}
                     <tr>
-                        <td>{{player.firstname}} {{player.lastname}} </td>
+                        <td>{{player.firstname|capitalize}} {{player.lastname|capitalize}} </td>
                         <td>{{player.score}}</td>
                         <td>{{player.rightpronostics}}</td>
                         <td>{{player.wrongpronostics}}</td>
