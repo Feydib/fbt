@@ -24,6 +24,10 @@ class TournPlayersRepository extends EntityRepository
         return $toPlayers ? $toPlayers : FALSE;
     }
 
+    public function findTournAdmins($tournament) {
+    	$toAdmins = $this->findBy(array( "idtournament" => $tournament, 'isadmin' => true));
+    	return $toAdmins ? $toAdmins : FALSE;
+    }
 
     /**
      * Saves tournament to the database.

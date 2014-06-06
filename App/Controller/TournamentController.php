@@ -147,6 +147,9 @@ class TournamentController implements ControllerProviderInterface {
     public function join($idTournament) {
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
         
+        $tourn = $tournamentRepository->find($idTournament);
+        $tournname = $tourn->getName();
+        
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         $tournPlayer = new Tournplayers();
         $tournPlayer->setIdtournament($tournamentRepository->find($idTournament));    
@@ -157,9 +160,27 @@ class TournamentController implements ControllerProviderInterface {
         $tournPlayer->setIdPlayers($user);
         $tournPlayer->setIsAdmin(false);
         $tournPlayer->setIsaccepted(false);
-            
         $tournPlayersRepository->save($tournPlayer);
         
+        //$admins = $tournPlayersRepository->findAdminsMail($idTournament);
+        $admins = $tournPlayersRepository->findTournAdmins($idTournament);
+       
+        foreach ($admins as $admin) {
+        	$mails[] = $admin->getIdplayers()->getMail();
+        }
+        
+        $body = "Bonjour,<br/><br/>"
+        . "Vous avez une nouvelle demande de ".$user->getFirstname()." ".$user->getLastname()." pour rejoindre la compétition '".$tournname."'.<br/>"
+        . "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+        
+        $message = \Swift_Message::newInstance()
+        ->setSubject('Demande d\'ajout à votre compétition')
+        ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
+        //->setTo(array($datas['email']))
+        ->setTo($mails)
+        ->setBody($body, 'text/html');
+        
+        $this->app['mailer']->send($message);
         
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.index"));
     }
