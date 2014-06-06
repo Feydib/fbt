@@ -71,8 +71,12 @@ win : G.
 draw : N.
 lost : P.
 gf : p. 
-ga : c;
+ga : c.
 gav : Diff
 pts : Pts
 team : Equipe
 pool list : Liste des poules
+
+#Message d'introduction
+introduction : Vous pouvez ici créer votre propre compétition de pronostics pour jouer entre amis, entre collègues ou même en famille.</br>Une fois votre compétition créée, vous pourrez les inviter en renseignant simplement leur adresse mail.</br>Chaque compétition est indépendante et pour la rejoindre, il faudra que l'administrateur vous accepte.</br>Une fois accepté, vous pourrez voir les autres compétiteurs et votre classement au sein de cette compétition.</br></br>Pour jouer, il vous suffit de renseigner votre pronostics pour chacun des matchs de la coupe du monde et de les valider.</br>Ne vous inquiétez pas, durant toute la durée de la coupe du monde et jusqu'à 15 minutes du début de match, vous pourrez compléter ou modifier vos pronostiques.</br></br>Vous demandez sûrement : Et comment on gagne des points ?</br>Chaque fois que vous trouverez le gagnant ou le match nul ! Vos points seront plus importants selon le risque que vous prenez (équipe plus faible qui gagne) et si vous trouvez le nombre de buts marqués par chaque équipe. Ainsi pour chaque match vous pourrez gagner entre 12 et 140 points !</br></br>Il ne me reste qu'à vous souhaiter une bonne compétition et une bonne coupe du monde !
+    
