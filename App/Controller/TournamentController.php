@@ -176,7 +176,6 @@ class TournamentController implements ControllerProviderInterface {
         $message = \Swift_Message::newInstance()
         ->setSubject('Demande d\'ajout à votre compétition')
         ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
-        //->setTo(array($datas['email']))
         ->setTo($mails)
         ->setBody($body, 'text/html');
         
@@ -286,6 +285,10 @@ class TournamentController implements ControllerProviderInterface {
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         //We find TournPlayers to accept
         $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
+        //We find the tournament name
+        $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+        $tourn = $tournamentRepository->find($tournPlayer->getIdtournament()->getIdtournament());
+        $tournname = $tourn->getName();
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
@@ -293,6 +296,19 @@ class TournamentController implements ControllerProviderInterface {
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $tournPlayer->setIsaccepted(true); 
             $tournPlayersRepository->save($tournPlayer);
+            
+            //Send a mail to user
+            $body = "Bonjour ".$tournPlayer->getIdplayers()->getFirstname().",<br/><br/>"
+            . "Votre demande pour rejoindre la compétition '".$tournname."' a été acceptée.<br/>"
+            . "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+            
+            $message = \Swift_Message::newInstance()
+            ->setSubject('Demande d\'ajout acceptée')
+            ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
+            ->setTo($user->getMail())
+            ->setBody($body, 'text/html');
+            
+            $this->app['mailer']->send($message);
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
     }
@@ -305,12 +321,29 @@ class TournamentController implements ControllerProviderInterface {
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         //We find TournPlayers to accept
         $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
+        //We find the tournament name
+        $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+        $tourn = $tournamentRepository->find($tournPlayer->getIdtournament()->getIdtournament());
+        $tournname = $tourn->getName();
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $tournPlayersRepository->remove($tournPlayer);
+            
+            //Send a mail to user
+            $body = "Bonjour ".$tournPlayer->getIdplayers()->getFirstname().",<br/><br/>"
+            . "Votre demande pour rejoindre la compétition '".$tournname."' a été refusée.<br/>"
+            . "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+            
+            $message = \Swift_Message::newInstance()
+            ->setSubject('Demande d\'ajout refusée')
+            ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
+            ->setTo($user->getMail())
+            ->setBody($body, 'text/html');
+            
+            $this->app['mailer']->send($message);
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
     }
