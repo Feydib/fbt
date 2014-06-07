@@ -305,7 +305,7 @@ class TournamentController implements ControllerProviderInterface {
             $message = \Swift_Message::newInstance()
             ->setSubject('Demande d\'ajout acceptée')
             ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
-            ->setTo($user->getMail())
+            ->setTo($tournPlayer->getIdplayers()->getMail())
             ->setBody($body, 'text/html');
             
             $this->app['mailer']->send($message);
@@ -340,7 +340,7 @@ class TournamentController implements ControllerProviderInterface {
             $message = \Swift_Message::newInstance()
             ->setSubject('Demande d\'ajout refusée')
             ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
-            ->setTo($user->getMail())
+            ->setTo($tournPlayer->getIdplayers()->getMail())
             ->setBody($body, 'text/html');
             
             $this->app['mailer']->send($message);
