@@ -5,7 +5,8 @@
 <div id="content">
 
     <h1>{% trans %} matchs list {% endtrans %}</h1>
-    () -> {% trans %} my pronostics{% endtrans %}
+    <h4> {% trans %} my pronostics{% endtrans %}</br>{% trans %} tip{% endtrans %}</h4>
+    
      <form action="{{path('bet.doBet')}}" method="post">
    
         {% for match in matchs %}

@@ -154,6 +154,9 @@ body.pool #container .groupe table tr td {
     width: 150px;
     padding : 0;
 }
+body.competitions #container .myCompetitionsIntro p {
+    margin: 20px 0 20px 80px;
+}
 body.competitions #container .myCompetitionsList h3 {
     margin: 20px 0 20px 80px;
 }
