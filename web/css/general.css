@@ -45,7 +45,14 @@ body.accueil #container .bestPlayers table {
 }
 body.accueil #container .bestPlayers table tr td, th {
     padding: 2px 5px;
-    width: 100px;
+    width: 80px;
+}
+body.accueil #container .first {
+    padding: 2px 5px;
+    width: 200px;
+}
+body.accueil #container .bestPlayers table tr:hover {
+    background-color: #D1ECFF;
 }
 body.accueil #container .matchsAccueil table {
     margin: 0 auto;
@@ -63,7 +70,7 @@ body.accueil h2 {
     width: 50%;
 }
 body.accueil #container .summary {
-    margin: 100px 0 0;
+    margin: 20px 0 0;
 }
 body.accueil #container .summary h3 {
     margin: 20px 20px 20px 0;
@@ -76,20 +83,6 @@ body.accueil #container .summary table tr td {
 }
 body.accueil #container .summary table tr td img {
     width: 20px;
-}
-body.accueil #container .bestPlayers h3 {
-    margin: 30px 0;
-    padding: 0;
-}
-body.accueil #container .bestPlayers table {
-    margin: 0 auto;
-}
-body.accueil #container .bestPlayers table tr td, th {
-    padding: 2px 5px;
-    width: 100px;
-}
-body.accueil #container .bestPlayers table tr:hover {
-    background-color: #D1ECFF;
 }
 body.accueil #container .summary .generalRank p {
     background-color: #DEA8DF;

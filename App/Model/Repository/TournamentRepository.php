@@ -47,7 +47,7 @@ class TournamentRepository extends EntityRepository
         $tournamentData = $this->findOneBy(array( "idtournament" => $id));
         return $tournamentData ? $tournamentData : FALSE;
     }
-
+    
     /**
      * Returns a tournament matching the supplied id.
      *

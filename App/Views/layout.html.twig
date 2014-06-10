@@ -4,21 +4,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>{% block title %}{% trans %}site_title{% endtrans %}{% endblock %}</title>
             {% block stylesheets %}{% endblock %}
-            <!-- Styles pour jScrollPane -->
-            <script charset="utf-8" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    		
+            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+            <!--<link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.min.css" rel="stylesheet">
+            	<link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap-theme.css" rel="stylesheet">-->
+            <link rel="stylesheet" href="{{ app.request.basepath }}/css/general.css">
+            
             
             <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     		<!--[if lt IE 9]>
-      		<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/html5shiv.js"></script>
-      		<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/respond.min.js"></script>
+      			<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/html5shiv.js"></script>
+      			<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/respond.min.js"></script>
     		<![endif]-->
-    		
-            <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
-            <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.min.css" rel="stylesheet">
-            <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap-theme.css" rel="stylesheet">
-            <script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/bootstrap.js"></script>
-            <link rel="stylesheet" href="{{ app.request.basepath }}/css/general.css">
+            
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
         <header>
@@ -75,5 +76,10 @@
         </section>
         <footer>
         </footer>
+        
+        <!--<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/bootstrap.js"></script>-->
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <!-- Styles pour jScrollPane -->
+        <script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/jquery.min.js"></script>
     </body>
 </html>

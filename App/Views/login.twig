@@ -14,13 +14,19 @@
                     <input id="password" type="password" name="_password" class="form-control" placeholder="{% trans %}password{% endtrans %}">
                 </div>
                     <br/>
-                <div class="row">
-                    <div class="col-md-6"><a href="{{ path('user.signup') }}">{% trans %}signup{% endtrans %}</a></div>
-                    <div class="col-md-6">
+				<div class="row">
+					<div class="col-md-8">
+						<a href="{{ path('user.signup') }}">{% trans %}signup{% endtrans %}</a>
+                		<br/>
+                		<a href="{{ path('user.resetpassword') }}">{% trans %}reset{% endtrans %}</a>
+                	</div>
+                	<div class="col-md-4">
                         <input type="submit" class="btn btn-info btn-block" value="{% trans %}connection{% endtrans %}" />
                     </div>
                 </div>
-
+                <br/>
+                
+               
         </form>
         <div class="col-md-4"></div>
         {% if error %}

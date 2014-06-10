@@ -1,6 +1,8 @@
 site_title : Pronostics
 
 submit : valider
+login : Se connecter
+reset : J'ai oublié mon mot de passe
 connection : Connexion
 welcome : Bienvenue
 save done : Sauvegarde effectuée
@@ -21,7 +23,6 @@ pronostics : Pronostics
 
 #Menu
 home : Accueil
-login : Se connecter
 logout : Se déconnecter
 signup : Créer un compte
 pool : Les Poules
@@ -41,6 +42,7 @@ repeat : Répéter
 name : Nom
 
 register : Enregistrement
+reset password : Nouveau mot de passe
 confirm : Confirmer
 
 #Message d'erreur 
@@ -51,6 +53,9 @@ The form contains errors : Le formulaire contient des erreurs
 Your account was successfully created, please login : Votre compte a bien été créé, vous pouvez vous connecter
 save succeed : Sauvegarde effectuée
 message send : Message envoyé
+mail does not exist : Le mail n'existe pas
+user and mail do not match : Le pseudo et le mot de passe ne concordent pas
+Your password was successfully reset, check your mail : Votre mot de passe a été réinitialisé, il a été envoyé par mail
 
 #Tournament
 tournament : Compétition

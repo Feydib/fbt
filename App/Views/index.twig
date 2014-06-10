@@ -6,17 +6,17 @@
     <h1>Pronostics</h1>
     {% if is_granted('ROLE_USER') %}
     <div class="row summary ">
-        <div class="col-md-4 "></div>
-            <div class="col-md-5 generalRank">
-                <h3>{% trans %}general ranking{% endtrans %}</h3>
-                <p><b>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</b></p>
-                <p><b>{{ render(url('bet.getCurrentPlayerRanking')) }}</b></p>
-            </div>
+        <div class="col-md-4 ">
+        </div>
+        <div class="col-md-5 generalRank">
+            <h3>{% trans %}general ranking{% endtrans %}</h3>
+            <p><b>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</b></p>
+            <p><b>{{ render(url('bet.getCurrentPlayerRanking')) }}</b></p>
+        </div>
     </div>
     {% endif %}
     <div class="row loginForm">
-        <div class="col-md-1"></div>
-        
+        <div class="col-md-1"></div>        
             {% if is_granted('ROLE_USER') %}
                 <div class="col-md-6">
                 {{ render(url('tournament.mytournaments'))}}
@@ -26,7 +26,7 @@
                 {{ render(url('login'))}}
                 </div>
             {% endif %}
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
         <div class="col-md-5 bestPlayers">
             <h3>{% trans %}best players{% endtrans %}</h3>
             

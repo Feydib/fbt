@@ -28,6 +28,15 @@ class UserRepository extends EntityRepository
     	return $user;
     }
     
+    public function getUserByMail($mail)
+    {
+    	$user = $this->findOneBy(array('mail' => $mail));
+    	if (empty($user)) {
+    		return false;
+    	}
+    	return $user;
+    }
+    
     /**
      * Saves the user to the database.
      *

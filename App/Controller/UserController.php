@@ -10,6 +10,7 @@ use App\Model\Entity\Players;
 
 class UserController implements ControllerProviderInterface {
     
+	private $app;
     
     /**
      * Rout list for this controller
@@ -17,11 +18,14 @@ class UserController implements ControllerProviderInterface {
      * @return \Silex\Application
      */
     public function connect(Application $app) {
+    	$this->app = $app;
         // créer un nouveau controller basé sur la route par défaut
         $user = $app['controllers_factory'];
         $user->match("/login", 'App\Controller\UserController::login')->bind("login");
         $user->get('/signup', array($this,"signup"))->bind('user.signup');
+        $user->get('/reset', array($this,"resetpassword"))->bind('user.resetpassword');
         $user->post('/dosignup', array($this,"doSignUp"))->bind('user.dosignup');
+        $user->post('/doreset', array($this,"doresetpassword"))->bind('user.doresetpassword');
 
         return $user;
     }
@@ -50,6 +54,16 @@ class UserController implements ControllerProviderInterface {
         return $app['twig']->render('register.twig', array("registrationForm" => $registrationForm->createView()));
     }
 
+    /**
+     * This method render the password reset form
+     * @param \Silex\Application $app
+     * @return type
+     */
+    function resetPassword(Application $app) {
+    	$resetPasswordForm = $this->app['form.factory']->create(new \App\Form\ResetPasswordType());
+    	return $app['twig']->render('password.twig', array("resetPasswordForm" => $resetPasswordForm->createView()));
+    }
+    
     /**
      * This method is used for register a new user 
      * @param \Silex\Application $app
@@ -93,6 +107,58 @@ class UserController implements ControllerProviderInterface {
       } 
       $app['session']->getFlashBag()->add('error', $app['translator']->trans('The form contains errors'));
       return $app['twig']->render('register.twig', array('registrationForm' => $registrationForm->createView()));
+    }
+    
+    function doResetPassword (Application $app) {
+    	//Generate a new random password
+    	$newNonEncodedPassword = '';
+    	//Initialize a random desired length
+    	$length = rand(8, 12);
+    	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    	$newNonEncodedPassword = substr(str_shuffle($chars),0,$length);
+    	
+    	//we get the register form
+    	$resetPasswordForm = $app['form.factory']->create(new \App\Form\ResetPasswordType());
+    	$resetPasswordForm->bind($app['request']);
+    	$datas = $resetPasswordForm->getData();
+    	
+    	$userRepository = $app['em']->getRepository('App\Model\Entity\Players');
+    	if (!$userRepository->getUserByMail($datas['email'])) {
+    		$app['session']->getFlashBag()->add('error', $app['translator']->trans('mail does not exist'));
+    	}
+    	else {
+    		$user = $userRepository->getUserByMail($datas['email']) ;
+	    	/*echo $newNonEncodedPassword."</br>";
+	    	echo self::encodePassword('', '',$newNonEncodedPassword,$app)."</br>";
+	    	echo $user->getUsername();
+	    	exit;*/
+	    	if ($user->getUsername() != $datas['username']) {
+	    		$app['session']->getFlashBag()->add('error', $app['translator']->trans('user and mail do not match'));
+	    	}
+	    	else {
+	    		//add flash success
+	    		$app['session']->getFlashBag()->add('success', $app['translator']->trans('Your password was successfully reset, check your mail'));
+	    		
+	    		$user->setPassword(self::encodePassword('', '',$newNonEncodedPassword,$app));
+	    		//we save the password in BDD
+	    		$userRepository->save($user);
+	    		
+	    		//Send a mail with new password
+	    		$body = "Bonjour ".$user->getFirstName(). ",<br/><br/>"
+	    		. "Suite à votre demande de réinitialisation, voici votre nouveau mot de passe.</br>"
+	    		. "Password : ".$newNonEncodedPassword."</br>"
+	    		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+	    		 
+	    		$message = \Swift_Message::newInstance()
+	    		->setSubject('Votre nouveau mot de passe')
+	    		->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
+	    		->setTo($datas['email'])
+	    		->setBody($body, 'text/html');
+	    		$this->app['mailer']->send($message);
+	    		
+	    	}
+    	}
+    	return $this->app->redirect($this->app['url_generator']->generate('index.index'));
     }
 
     /**
