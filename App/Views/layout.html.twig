@@ -47,6 +47,7 @@
                         <li class="{% block poolClass %}{% endblock %}"><a href="{{ path('team.pool') }}">{% trans %}pool{% endtrans %}</a></li>
                         {% if is_granted('ROLE_USER') %}
                             <li><a href="{{ path('deconnexion') }}">{% trans %}logout{% endtrans %}</a></li>
+                            <li><a href="{{ path('user.account') }}">{% trans %}my account{% endtrans %}</a></li>
                         {% endif %}
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="{% block adminClass %}{% endblock %}"><a href="{{ path('match.matchToScore') }}">{% trans %}admin{% endtrans %}</a></li>

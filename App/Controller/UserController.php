@@ -25,9 +25,24 @@ class UserController implements ControllerProviderInterface {
         $user->get('/signup', array($this,"signup"))->bind('user.signup');
         $user->get('/reset', array($this,"resetpassword"))->bind('user.resetpassword');
         $user->post('/dosignup', array($this,"doSignUp"))->bind('user.dosignup');
+        $user->post('/doUpdateAccount', array($this,"doUpdateAccount"))->bind('user.doupdateaccount');
         $user->post('/doreset', array($this,"doresetpassword"))->bind('user.doresetpassword');
+        $user->get('/account', array($this,"account"))->bind('user.account');
 
         return $user;
+    }
+    
+    /**
+     * This method render the registration form
+     * @param \Silex\Application $app
+     * @return type
+     */
+    public function account(Application $app) {
+        $playersRepository = $app['em']->getRepository('App\Model\Entity\Players');
+        $currentUser = $playersRepository->getUserByUsername($app['security']->getToken()->getUser()->getUsername());
+        
+        $registrationForm = $app['form.factory']->create(new \App\Form\RegisterType($currentUser));
+        return $app['twig']->render('account.twig', array("registrationForm" => $registrationForm->createView()));
     }
 
     /**
@@ -62,6 +77,44 @@ class UserController implements ControllerProviderInterface {
     function resetPassword(Application $app) {
     	$resetPasswordForm = $this->app['form.factory']->create(new \App\Form\ResetPasswordType());
     	return $app['twig']->render('password.twig', array("resetPasswordForm" => $resetPasswordForm->createView()));
+    }
+
+    
+    /**
+     * This method is used for update a existing user 
+     * @param \Silex\Application $app
+     * @return type
+     */
+    function doUpdateAccount(Application $app) {
+        $userRepository = $app['em']->getRepository('App\Model\Entity\Players');
+        $currentUser = $userRepository->getUserByUsername($app['security']->getToken()->getUser()->getUsername());
+        //we get the register form
+        $registrationForm = $app['form.factory']->create(new \App\Form\RegisterType($currentUser));
+        $registrationForm->bind($app['request']);
+        //we check if the form is valid
+        if ($registrationForm->isValid()){
+            $datas = $registrationForm->getData();
+            
+            
+            
+            //if form is always valid after new verifications
+            if ( $registrationForm->isValid() && $currentUser->getIdplayers() == $datas['id']){
+                if ($datas['password_repeated'] !== null && $datas['password_repeated'] != "") {
+                    $currentUser->setPassword(self::encodePassword($currentUser, null,$datas['password_repeated'],$app));
+                }
+                $currentUser->setMail($datas['email']);
+                $currentUser->setFirstname($datas['firstname']);
+                $currentUser->setLastname($datas['lastname']);
+
+                //we save the user in BDD
+                $userRepository->save($currentUser);
+                //add flash success
+                $app['session']->getFlashBag()->add('success', $app['translator']->trans('Your account was successfully created, please login'));
+                return $app['twig']->render('account.twig', array('registrationForm' => $registrationForm->createView()));
+            }  
+      } 
+      $app['session']->getFlashBag()->add('error', $app['translator']->trans('The form contains errors'));
+      return $app['twig']->render('account.twig', array('registrationForm' => $registrationForm->createView()));
     }
     
     /**
