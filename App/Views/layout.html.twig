@@ -7,18 +7,17 @@
     		
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
             <!--<link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.min.css" rel="stylesheet">
             	<link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap-theme.css" rel="stylesheet">-->
             <link rel="stylesheet" href="{{ app.request.basepath }}/css/general.css">
+            <script src="{{ app.request.basepath }}/js/bootstrap.min.js"></script>
+            <script src="{{ app.request.basepath }}/js/jsContent.js"></script>
             
-            
-            <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    		<!--[if lt IE 9]>
-      			<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/html5shiv.js"></script>
-      			<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/respond.min.js"></script>
-    		<![endif]-->
+            <!--[if lt IE 10]>
+                <script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/placeholderIE.js"></script>
+            <![endif]-->
+
             
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
