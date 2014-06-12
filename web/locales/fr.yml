@@ -21,6 +21,7 @@ removeAdmin : Supp. admin
 accept : Accepter
 remove : Supprimer
 pronostics : Pronostics
+save error : Erreur lors de la sauvegarde, veuillez réésayer
 
 #Menu
 home : Accueil
