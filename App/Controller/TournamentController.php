@@ -157,29 +157,36 @@ class TournamentController implements ControllerProviderInterface {
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
 
-        $tournPlayer->setIdPlayers($user);
-        $tournPlayer->setIsAdmin(false);
-        $tournPlayer->setIsaccepted(false);
-        $tournPlayersRepository->save($tournPlayer);
-        
-        //$admins = $tournPlayersRepository->findAdminsMail($idTournament);
-        $admins = $tournPlayersRepository->findTournAdmins($idTournament);
+       //We search user's tournaments
+       $myTournaments = $tournamentRepository->findMyTournaments($user);
        
-        foreach ($admins as $admin) {
-        	$mails[] = $admin->getIdplayers()->getMail();
-        }
-        
-        $body = "Bonjour,<br/><br/>"
-        . "Vous avez une nouvelle demande de ".$user->getFirstname()." ".$user->getLastname()." pour rejoindre la compétition '".$tournname."'.<br/>"
-        . "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
-        
-        $message = \Swift_Message::newInstance()
-        ->setSubject('Demande d\'ajout à votre compétition')
-        ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
-        ->setTo($mails)
-        ->setBody($body, 'text/html');
-        
-        $this->app['mailer']->send($message);
+       //We build tournament list with tournaments which are not already joined
+        if (!in_array($tourn, $myTournaments)) {
+                $tournPlayer->setIdPlayers($user);
+                $tournPlayer->setIsAdmin(false);
+                $tournPlayer->setIsaccepted(false);
+                $tournPlayersRepository->save($tournPlayer);
+
+                $admins = $tournPlayersRepository->findTournAdmins($idTournament);
+
+                foreach ($admins as $admin) {
+                        $mails[] = $admin->getIdplayers()->getMail();
+                }
+
+                $body = "Bonjour,<br/><br/>"
+                . "Vous avez une nouvelle demande de ".$user->getFirstname()." ".$user->getLastname()." pour rejoindre la compétition '".$tournname."'.<br/>"
+                . "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+
+                $message = \Swift_Message::newInstance()
+                ->setSubject('Demande d\'ajout à votre compétition')
+                ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
+                ->setTo($mails)
+                ->setBody($body, 'text/html');
+
+                $this->app['mailer']->send($message);
+           
+       }
+
         
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.index"));
     }

@@ -5,9 +5,7 @@
  */
 
 
-$(document).ready(function(){
-    alert("test");
-    
+$(document).ready(function(){   
     $('[placeholder]').focus(function() {
         var input = $(this);
         if (input.val() == input.attr('placeholder')) {
