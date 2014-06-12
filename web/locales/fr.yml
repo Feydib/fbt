@@ -12,6 +12,7 @@ leave : Quitter
 view : Voir
 delete : Supprimer
 date : Date
+players : Joueur(s)
 
 add asking : Demande d'ajout
 ranking : Classement
