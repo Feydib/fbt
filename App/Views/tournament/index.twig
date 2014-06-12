@@ -16,7 +16,7 @@
         <div class="col-md-10">
             {% for tournament in myTournaments %}
             <div class="row compet">
-                <div class="col-md-6 name">{{tournament.name}} - <i>{{tournament.players|length}} {% trans %}players{% endtrans %}</i></div>
+                <div class="col-md-6 name">{{tournament.name}}</div>
                 <div class="col-md-6 link">
                     {% for player in tournament.players %}
                         {% if player.isaccepted == false %}
