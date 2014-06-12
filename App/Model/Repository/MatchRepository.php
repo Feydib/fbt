@@ -94,7 +94,7 @@ class MatchRepository extends EntityRepository
                 ->from('App\Model\Entity\Matchs', 'm')
                 ->where('m.date < ?1')
                 ->setParameter(1, $date)
-                ->orderBy($sort)
+                ->orderBy($sort, "DESC")
                 ->setMaxResults($limit)
                 ;
         
