@@ -160,7 +160,7 @@ class TournamentController implements ControllerProviderInterface {
        //We search user's tournaments
        $myTournaments = $tournamentRepository->findMyTournaments($user);
        
-       //We build tournament list with tournaments which are not already joined
+       //User can join tournaments which are not already joined
         if (!in_array($tourn, $myTournaments)) {
                 $tournPlayer->setIdPlayers($user);
                 $tournPlayer->setIsAdmin(false);
