@@ -66,8 +66,12 @@ class MatchController implements ControllerProviderInterface {
             $oddw = round(1/$probw , 1);
             $oddl = round(1/$probl , 1); 
             
+            //Verify if betscore is not null
+            if ($betscore[0] === null || $betscore[1] ===null ) {
+            	$odds = 0;
+            }
             //If match bet = match result, then calulate odds, else, odds = 0
-            if ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
+            elseif ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
                 $odds = $oddw;
             }
             elseif ( ($scoreList[0] == $scoreList[1] && $betscore[0] == $betscore[1]) ) {
@@ -423,7 +427,8 @@ class MatchController implements ControllerProviderInterface {
             
             $matchTeamRepository->save($matchTeam2);
             
-        } else if ($matchTeam->getIdmatchs()->getType() != "QUALIFICATION"){
+        } else if (!in_array($matchTeam->getIdmatchs()->getType(),array("QUALIFICATION","PETITE_FINALE","FINALE")))
+        /*else if ($matchTeam->getIdmatchs()->getType() != "QUALIFICATION")*/{
             $finalMatch = $matchPrerequisiteRepository->find(array('idmatchs2' => $matchTeam->getIdmatchs()));
             if(!isset($finalMatch) || $finalMatch === null) {
                 $finalMatch = $matchPrerequisiteRepository->find(array('idmatchs1' => $matchTeam->getIdmatchs()));
