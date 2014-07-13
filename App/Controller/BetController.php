@@ -63,6 +63,8 @@ class BetController implements ControllerProviderInterface {
             
             //add flash success
             $this->app['session']->getFlashBag()->add('success', $this->app['translator']->trans('save succeed'));
+        } else {
+            $this->app['session']->getFlashBag()->add('error', $this->app['translator']->trans('save error'));
         }
        
         return $this->app->redirect($this->app["url_generator"]->generate("match.index"));
