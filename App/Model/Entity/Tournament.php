@@ -32,9 +32,9 @@ class Tournament
      * @Column(name="year", type="datetime", nullable=true)
      */
     private $year;
-    
+
     /**
-     * 
+     *
      * @var players
      *
      *  @OneToMany(targetEntity="Tournplayers", mappedBy="idtournament", orphanRemoval=true)
@@ -42,8 +42,21 @@ class Tournament
      */
     private $players;
 
+    /**
+     * @var \FbtLeague
+     * @OneToOne(targetEntity="League")
+     * @JoinColumns({
+     *   @JoinColumn(name="idLeague", referencedColumnName="idLeague")
+     * })
+     */
+    private $idleague;
+
     public function getIdtournament() {
         return $this->idtournament;
+    }
+
+    public function getIdleague() {
+        return $this->idleague;
     }
 
     public function getName() {
@@ -56,6 +69,10 @@ class Tournament
 
     public function setIdtournament($idtournament) {
         $this->idtournament = $idtournament;
+    }
+
+    public function setIdteams($idleague) {
+        $this->idleague = $idleague;
     }
 
     public function setName($name) {

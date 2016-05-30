@@ -97,8 +97,21 @@ class Teams
      */
     private $countries;
 
+    /**
+     * @var \FbtLeague
+     * @OneToOne(targetEntity="League")
+     * @JoinColumns({
+     *   @JoinColumn(name="League_id", referencedColumnName="idLeague")
+     * })
+     */
+    private $idleague;
+
     public function getIdteams() {
         return $this->idteams;
+    }
+
+    public function getIdleague() {
+        return $this->idleague;
     }
 
     public function getPool() {

@@ -45,5 +45,4 @@ class Football
         $this->countries = $countries;
     }
 
-
 }
