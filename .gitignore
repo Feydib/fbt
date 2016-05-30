@@ -17,3 +17,6 @@ app/config/parameters.yml
 #SQL dumps
 mysql/Dump*
 mysql/*.bak
+
+#Eclipse project
+.project
