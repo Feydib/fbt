@@ -90,13 +90,15 @@ class TournamentController implements ControllerProviderInterface {
         $addTournamentForm = $this->app['form.factory']->create(new \App\Form\TournamentType());
         $addTournamentForm->bind($this->app['request']);
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+        $leagueRepository = $this->app['em']->getRepository('App\Model\Entity\League');
 
         if ($addTournamentForm->isValid()){
             $datas = $addTournamentForm->getData();
 
             $tournament = new Tournament();
             $lid = $app['session']->get('idleague');
-            $tournament->setIdleague($lid);
+            $league = $leagueRepository->findLeague(array('idleague' => $lid));
+            $tournament->setIdleague($league);
             $tournament->setName($datas['name']);
             $tournament->setYear(new \DateTime);
 
