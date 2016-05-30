@@ -86,7 +86,7 @@ class TournamentController implements ControllerProviderInterface {
     /**
      * Adding a new tournament
      */
-    public function doAdd() {
+    public function doAdd(Application $app) {
         $addTournamentForm = $this->app['form.factory']->create(new \App\Form\TournamentType());
         $addTournamentForm->bind($this->app['request']);
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
