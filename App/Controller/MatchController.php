@@ -15,6 +15,8 @@ use App\Model\Entity\Teams;
 
 class MatchController implements ControllerProviderInterface {
 
+	private $app;
+
     /**
      * Méthod to calcul points obtain by player after his bets
      * @param type $idMatch
@@ -64,8 +66,8 @@ class MatchController implements ControllerProviderInterface {
             $probw = 1/3 - ($diff)/100;
             $probl = 1/3 - ($rdiff)/100;
             $oddw = round(1/$probw , 1);
-            $oddl = round(1/$probl , 1); 
-            
+            $oddl = round(1/$probl , 1);
+
             //Verify if betscore is not null
             if ($betscore[0] === null || $betscore[1] ===null ) {
             	$odds = 0;
@@ -85,7 +87,7 @@ class MatchController implements ControllerProviderInterface {
             }
             //Limit odd
             $odds = ($odds > 7) ? 7 : $odds;
-            
+
             //Verify if bet score equal real score
             if ($scoreList[0] == $betscore[0] && $scoreList[1] == $betscore[1]) {
                 $coef = 2;
@@ -119,7 +121,7 @@ class MatchController implements ControllerProviderInterface {
         $team1 = $matchTeam1->getIdteams();
         $matchTeam2 = $matchTeamList[1];
         $team2 = $matchTeam2->getIdteams();
-        
+
         if ($matchTeam1->getScore() > $matchTeam2->getScore()) {
             return $matchTeam1->getIdteams();
         } else if ($matchTeam1->getScore() < $matchTeam2->getScore()) {
@@ -132,7 +134,7 @@ class MatchController implements ControllerProviderInterface {
             }
         }
     }
-    
+
     /**
      * Method to update pool ranking
      * @param type $pool
@@ -142,7 +144,7 @@ class MatchController implements ControllerProviderInterface {
         $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
         $matchteamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
         $arrayTeams = $teamRepository->findTeams(array("pool" => $pool), null, 0, array("pts" => "DESC", "gav" => "DESC", "gf" => "DESC", "ga" => "ASC"));
-        
+
         //var_dump($arrayTeams);
         $ranking = 1;
         $teamEqual = null;
@@ -152,20 +154,20 @@ class MatchController implements ControllerProviderInterface {
                 // if team is Equal with prévious, his ranking is already updated
                 if($team !== $teamToCompare && $team !== $teamEqual) {
                     //if teams' results are totally equal
-                    if($team->getPts() == $teamToCompare->getPts() 
+                    if($team->getPts() == $teamToCompare->getPts()
                             && $team->getGav() == $teamToCompare->getGav()
                             && $team->getGf() == $teamToCompare->getGf()
                             && $team->getGa() == $teamToCompare->getGa()) {
                         $equal = true;
                         $teamEqual = $teamToCompare;
-                    } 
+                    }
                 }
-            } 
+            }
             if ($team !== $teamEqual) {
                 if (!$equal) {
                     $team->setRanking($ranking++);
                 } else {
-                    
+
                     //when we have to compare match result in 2 teams
                     $matchTeamList = $matchteamRepository->find(null, 0, array("idteams" => $team));
                     foreach($matchTeamList as $matchteam){
@@ -175,7 +177,7 @@ class MatchController implements ControllerProviderInterface {
                         $matchTeam1 = $matchteamRepository->findOne(array("idteams" => $team, "idmatchs" => $matchToCompare));
                         $matchTeam2 = $matchteamRepository->findOne(array("idteams" => $teamEqual, "idmatchs" => $matchToCompare));
                         if ($matchTeam2 !== null) {
-                            
+
                             $matchTeamArray = $matchteamRepository->find(null, 0, array("idmatchs" => $match));
                             if ($matchTeamArray[0]->getScore() > $matchTeamArray[1]->getScore()) {
                                 //we update equals team ranking
@@ -215,7 +217,7 @@ class MatchController implements ControllerProviderInterface {
     /**
      * Update teams after set score
      * @param \App\Model\Entity\Matchs $idMatch
-     */    
+     */
     private function updateTeams(Matchs $idMatch) {
         $matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
         $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
@@ -225,8 +227,8 @@ class MatchController implements ControllerProviderInterface {
         $team1 = $matchTeam1->getIdteams();
         $matchTeam2 = $matchTeamList[1];
         $team2 = $matchTeam2->getIdteams();
-	
-        //We set points and goalaverage 
+
+        //We set points and goalaverage
         if ($matchTeam1->getScore() > $matchTeam2->getScore()) {
             $team1->setPts($team1->getPts() + 3);
             $team1->setGf($matchTeam1->getScore() + $team1->getGf());
@@ -234,7 +236,7 @@ class MatchController implements ControllerProviderInterface {
             $team1->setGav($team1->getGav() + ($matchTeam1->getScore() - $matchTeam2->getScore()));
             $team1->setPlayed($team1->getPlayed() + 1);
             $team1->setWin($team1->getWin() + 1);
-            
+
             $team2->setPts($team2->getPts() + 0);
             $team2->setGf($matchTeam2->getScore() + $team2->getGf());
             $team2->setGa($matchTeam1->getScore() + $team2->getGa());
@@ -248,7 +250,7 @@ class MatchController implements ControllerProviderInterface {
             $team1->setGav($team1->getGav() + ($matchTeam1->getScore() - $matchTeam2->getScore()));
             $team1->setPlayed($team1->getPlayed() + 1);
             $team1->setLost($team1->getLost() + 1);
-            
+
             $team2->setPts($team2->getPts() + 3);
             $team2->setGf($matchTeam2->getScore() + $team2->getGf());
             $team2->setGa($matchTeam1->getScore() + $team2->getGa());
@@ -261,7 +263,7 @@ class MatchController implements ControllerProviderInterface {
             $team1->setGa($matchTeam2->getScore() + $team1->getGa());
             $team1->setPlayed($team1->getPlayed() + 1);
             $team1->setDraw($team1->getDraw() + 1);
-            
+
             $team2->setPts($team2->getPts() + 1);
             $team2->setGf($matchTeam2->getScore() + $team2->getGf());
             $team2->setGa($matchTeam1->getScore() + $team2->getGa());
@@ -271,29 +273,27 @@ class MatchController implements ControllerProviderInterface {
         //we update teams
         $teamRepository->update($team1);
         $teamRepository->update($team2);
-        
-        $this->updatePoolRanking($team1->getPool());
-    }   
-        
-    public function index(Application $app) {
-       $matchRepository = $app['em']->getRepository('App\Model\Entity\Matchs');
-       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC')); 
 
-       return $app["twig"]->render("match/index.twig", array('matchs' => $matchList));
+        $this->updatePoolRanking($team1->getPool());
     }
-    
+
+    public function index(Application $app) {
+		$matchRepository = $app['em']->getRepository('App\Model\Entity\Matchs');
+		$matchList = $matchRepository->find(array('idleague' => $app['session']->get('idleague')), null, 0 , array('date' => 'ASC'));
+		return $app["twig"]->render("match/index.twig", array('matchs' => $matchList));
+    }
+
     /**
      * Match which we can put result
      * @param \Silex\Application $app
      * @return type
      */
     public function matchToScore(Application $app) {
-       $matchRepository = $app['em']->getRepository('App\Model\Entity\Matchs');
-       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC')); 
-
-       return $app["twig"]->render("match/list.twig", array('matchs' => $matchList));
+		$matchRepository = $app['em']->getRepository('App\Model\Entity\Matchs');
+		$matchList = $matchRepository->find(array('idleague' => $app['session']->get('idleague')), null, 0 , array('date' => 'ASC'));
+		return $app["twig"]->render("match/list.twig", array('matchs' => $matchList));
     }
-    
+
     /**
      * Match which we can put result
      * @param \Silex\Application $app
@@ -302,30 +302,30 @@ class MatchController implements ControllerProviderInterface {
     public function playerMatchBet($idplayers) {
        $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
        $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-       
-       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC')); 
-       
+
+       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC'));
+
        $playersRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
        $players = $playersRepository->getUserById($idplayers);
-       
+
        $playersTournaments = $tournamentRepository->findMyTournaments($players);
        $currentUser = $playersRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
        $currentUserTournaments = $tournamentRepository->findMyTournaments($currentUser);
-       
+
        $inSameTournament = false;
        foreach($playersTournaments as $tournament) {
            if(in_array($tournament, $currentUserTournaments)) {
                $inSameTournament = true;
            }
        }
-       
+
        if (!$inSameTournament) {
            return new Response("Access Denied", 404);
        }
 
        return  $this->app["twig"]->render("match/otherPlayersMatchs.twig", array('matchs' => $matchList, 'players' => $players));
     }
-    
+
         /**
      * Form to bet on a match
      * @param \Silex\Application $app
@@ -335,7 +335,7 @@ class MatchController implements ControllerProviderInterface {
         $betForm = $app['form.factory']->create(new \App\Form\ScoreType($idMatchTeam));
         return $app['twig']->render('match/scoreForm.twig', array("form" => $betForm->createView()));
     }
-    
+
     /**
      * Form to bet on a match
      * @param \Silex\Application $app
@@ -345,7 +345,7 @@ class MatchController implements ControllerProviderInterface {
         $betForm = $app['form.factory']->create(new \App\Form\PenType($idMatchTeam));
         return $app['twig']->render('match/scoreForm.twig', array("form" => $betForm->createView()));
     }
-    
+
     /**
      * Form to update a match
      * @param \Silex\Application $app
@@ -353,12 +353,12 @@ class MatchController implements ControllerProviderInterface {
      */
     public function doScore() {
         $matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
-        $matchTeamList = $matchTeamRepository->find(null, 0, array("score" => NULL)); 
- 
+        $matchTeamList = $matchTeamRepository->find(null, 0, array("score" => NULL));
+
         foreach($matchTeamList as $matchTeam) {
             $matchTeamIdList[] = $matchTeam->getIdmatchteam();
         }
-        
+
         $betForm = $this->app['form.factory']->create(new \App\Form\ScoreType($matchTeamIdList));
         $betForm->bind($this->app['request']);
         if ($betForm->isValid()){
@@ -369,14 +369,14 @@ class MatchController implements ControllerProviderInterface {
             	$idmatch = $matchTeam->getIdmatchs();
             	$score = false;
                 if ( $datas["score".$matchTeam->getIdmatchteam()] !== "-" && $datas["score".$matchTeam->getIdmatchteam()] !== null) {
-                    $matchTeam->setScore($datas["score".$matchTeam->getIdmatchteam()]); 
+                    $matchTeam->setScore($datas["score".$matchTeam->getIdmatchteam()]);
                     $score = true;
                 }
                 if ( $datas["pen".$matchTeam->getIdmatchteam()] !== "-" && $datas["pen".$matchTeam->getIdmatchteam()] !== null) {
                     $matchTeam->setPen($datas["pen".$matchTeam->getIdmatchteam()]);
                 }
                 if ($score) {
-                    
+
                     $matchTeamRepository->update($matchTeam);
                     //if ($idmatch == $idmatchprec) {
                     if (in_array($idmatch, $savedMatchs)) {
@@ -389,15 +389,15 @@ class MatchController implements ControllerProviderInterface {
                         $savedMatchs[] = $idmatch;
                         $idmatchprec = $idmatch ;
                     }
-                     
+
                 }
-                
-                
+
+
             }
         }
         return $this->app->redirect($this->app["url_generator"]->generate("match.matchToScore"));
     }
-    
+
     /**
      * Method to create match which depond on other matchs like final
      * @param $matchTeam matchteam played
@@ -406,13 +406,13 @@ class MatchController implements ControllerProviderInterface {
         $matchPrerequisiteRepository = $this->app['em']->getRepository('App\Model\Entity\MatchPrerequisite');
         $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
         $matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
-        
+
         //if pool is completed we create following match with pool teams
-        if($matchTeam->getIdmatchs()->getType() == "QUALIFICATION" && $this->isPoolCompleted($matchTeam->getIdteams()->getPool())) {            
+        if($matchTeam->getIdmatchs()->getType() == "QUALIFICATION" && $this->isPoolCompleted($matchTeam->getIdteams()->getPool())) {
             //We get pool winner and second for final tour
             $matchsWinner = $matchPrerequisiteRepository->find(array('idpoolwinner' => $matchTeam->getIdteams()->getPool()));
             $matchsSecond = $matchPrerequisiteRepository->find(array('idpoolsecond' => $matchTeam->getIdteams()->getPool()));
-            
+
             $teamList = $teamRepository->findTeams(array('pool' => $matchTeam->getIdteams()->getPool()), null, 0, array("ranking" => "ASC"));
 
             //create new matchs
@@ -420,20 +420,20 @@ class MatchController implements ControllerProviderInterface {
             $matchTeam1->setIdmatchs($matchsWinner->getIdmatchs());
             $matchTeam1->setIdteams($teamList[0]);
             $matchTeamRepository->save($matchTeam1);
-            
+
             $matchTeam2 = new Matchteam();
             $matchTeam2->setIdmatchs($matchsSecond->getIdmatchs());
             $matchTeam2->setIdteams($teamList[1]);
-            
+
             $matchTeamRepository->save($matchTeam2);
-            
+
         } else if (!in_array($matchTeam->getIdmatchs()->getType(),array("QUALIFICATION","PETITE_FINALE","FINALE")))
         /*else if ($matchTeam->getIdmatchs()->getType() != "QUALIFICATION")*/{
             $finalMatch = $matchPrerequisiteRepository->find(array('idmatchs2' => $matchTeam->getIdmatchs()));
             if(!isset($finalMatch) || $finalMatch === null) {
                 $finalMatch = $matchPrerequisiteRepository->find(array('idmatchs1' => $matchTeam->getIdmatchs()));
             }
-            
+
             //create new matchs
             $matchTeam3 = new Matchteam();
             $matchTeam3->setIdmatchs($finalMatch->getIdmatchs());
@@ -441,7 +441,7 @@ class MatchController implements ControllerProviderInterface {
             $matchTeamRepository->save($matchTeam3);
         }
     }
-    
+
     /**
      * We veridy that the pool is completed
      * @param \App\Controller\Integer $pool
@@ -462,8 +462,8 @@ class MatchController implements ControllerProviderInterface {
      */
     public function nextAndPreviousMatchs() {
        $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
-       $nextMatchList = $matchRepository->findNext(date("Y-m-d"), "m.date", 3); 
-       $previousMatchList = $matchRepository->findPrevious(date("Y-m-d"), "m.date", 3); 
+       $nextMatchList = $matchRepository->findNext(date("Y-m-d"), "m.date", 3);
+       $previousMatchList = $matchRepository->findPrevious(date("Y-m-d"), "m.date", 3);
 
        return $this->app["twig"]->render("match/recap.twig", array('matchsPrevious' => $previousMatchList, 'matchsNext' => $nextMatchList));
     }
@@ -471,6 +471,7 @@ class MatchController implements ControllerProviderInterface {
     public function connect(Application $app) {
         // créer un nouveau controller basé sur la route par défaut
         $this->app = $app;
+
         $match = $app['controllers_factory'];
         $match->match("/", 'App\Controller\MatchController::index')->bind("match.index");
         $match->get("/match/{idplayers}",  array($this,"playerMatchBet"))->bind("match.playerMatchBet");
@@ -479,11 +480,11 @@ class MatchController implements ControllerProviderInterface {
         $match->get("/admin/match/pen/{idMatchTeam}", array($this,"penForm") )->bind("match.penForm");
         $match->get("/recap", array($this,"nextAndPreviousMatchs") )->bind("match.nextPrevious");
         $match->post('/admin/match/doScore', array($this,"doScore"))->bind('match.doScore');
-        
+
         //$match->get("/admin/match/test/{pool}", array($this,"updatePoolRanking") )->bind("match.updatePoolRanking");
         return $match;
     }
-    
-    
+
+
 
 }

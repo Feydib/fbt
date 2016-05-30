@@ -20,7 +20,7 @@ class MatchRepository extends EntityRepository
         $this->_em->remove($tournPlayer);
         $this->_em->flush();
     }
-    
+
     /**
      * Saves players tournament to the database.
      *
@@ -44,12 +44,12 @@ class MatchRepository extends EntityRepository
      *
      * @return array A collection of matchs, keyed by id.
      */
-    public function find($crit=array(), $limit = null, $offset = 0, $orderBy = array())
-    {        
+    public function find($crit = array(), $limit = null, $offset = 0, $orderBy = array())
+    {
         $matchs = $this->findBy($crit, $orderBy, $limit, $offset);
         return $matchs;
     }
-    
+
     /**
      * Returns a collection of Matchs.
      *
@@ -71,11 +71,11 @@ class MatchRepository extends EntityRepository
                 ->orderBy($sort)
                 ->setMaxResults($limit)
                 ;
-        
+
         $query = $qb->getQuery();
         return $query->getResult();
     }
-    
+
      /**
      * Returns a collection of Matchs.
      *
@@ -97,7 +97,7 @@ class MatchRepository extends EntityRepository
                 ->orderBy($sort, "DESC")
                 ->setMaxResults($limit)
                 ;
-        
+
         $query = $qb->getQuery();
         return $query->getResult();
     }

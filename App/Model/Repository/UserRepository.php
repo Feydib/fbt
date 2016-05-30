@@ -3,12 +3,13 @@
 namespace App\Model\Repository;
 
 use App\Model\Entity\Players;
+use App\Model\Entity\Tournplayers;
 use Doctrine\ORM\EntityRepository;
 use DateTime;
 /**
  * User repository
  */
-class UserRepository extends EntityRepository 
+class UserRepository extends EntityRepository
 {
     /**
      * @var \Doctrine\DBAL\Connection
@@ -27,7 +28,7 @@ class UserRepository extends EntityRepository
     	$user = $this->findOneBy(array('idplayers' => $idPlayer));
     	return $user;
     }
-    
+
     public function getUserByMail($mail)
     {
     	$user = $this->findOneBy(array('mail' => $mail));
@@ -36,7 +37,22 @@ class UserRepository extends EntityRepository
     	}
     	return $user;
     }
-    
+
+    public function getUserByLeague($idleague = NULL) {
+    	//TODO -> SQL request SELECT * FROM FBT.FBT_TournPlayers as tp inner join FBT_Players as p on tp.idPlayers=p.idPlayers inner join FBT_Tournament as t on tp.idTournament=t.idTournament where t.idLeague = 1 group by tp.idPlayers;
+    	$qb = $this->_em->createQueryBuilder()
+    	->select ('p.idplayers')
+    	->from('App\Model\Entity\Tournplayers','tp')
+    	->join('tp.idplayers', 'p')
+    	->join('tp.idtournament', 't')
+    	->Where('t.idleague = ?1')
+    	->groupBy('tp.idplayers')
+    	->setParameter(1,$idleague)
+    	;
+    	$query = $qb->getQuery();
+    	return $query->getResult() ? $query->getResult() : FALSE;
+    }
+
     /**
      * Saves the user to the database.
      *
@@ -73,14 +89,14 @@ class UserRepository extends EntityRepository
 
         return $user;
     }
-    
- 
+
+
     /**
      * We verify if the email already exist
      * @param type $email
      * @return boolean
      */
-    function emailExists($email) { 
+    function emailExists($email) {
         $usersData = $this->findOneBy(array( "mail" => $email));
         if (!empty($usersData)) {
             return true;

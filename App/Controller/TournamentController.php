@@ -10,34 +10,36 @@ use App\Model\Entity\Tournplayers;
 use App\Model\Entity\Teams;
 
 class TournamentController implements ControllerProviderInterface {
-    
+
     private $app;
-    
+
     public function myTournaments() {
+    	$lid = $this->app['session']->get('idleague');
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-        
+
         //We get logged user
         $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         //We search user's tournaments
-        $myTournaments = $tournamentRepository->findMyTournaments($user);
-        
+        $myTournaments = $tournamentRepository->findMyTournaments($user,$lid);
+
         return $this->app["twig"]->render("tournament/myTournaments.twig", array("myTournaments" => $myTournaments));
     }
-    
+
     public function findTournamentRanking($idTournament) {
+    	$lid = $this->app['session']->get('idleague');
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
-        
+
         $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
         $currentUser = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        
-        $tournament = $tournamentRepository->find($idTournament);
+
+        $tournament = $tournamentRepository->find(array ('idtournament' => $idTournament, 'idleague' => $lid));
         $betScorePlayers = $betScoreRepository->findTournamentScores($tournament);
-        
+
         $tournPlayers = $tournPlayersRepository->findBy(array("idtournament" => $tournament, "isaccepted" => true));
-        
+
         $rank = 1;
         foreach($betScorePlayers as $k => $v) {
             $player = $v[0]->getIdplayers();
@@ -50,28 +52,29 @@ class TournamentController implements ControllerProviderInterface {
     }
 
     public function index(Application $app) {
-       //We list all tournament
-       $tournamentRepository = $app['em']->getRepository('App\Model\Entity\Tournament');
-       $tournamentList = $tournamentRepository->findAllTournaments();
-       //We get logged user
-       $userRepository =$app['em']->getRepository('App\Model\Entity\Players');
-       $user = $userRepository->getUserByUsername($app['security']->getToken()->getUser()->getUsername());
-       //We search user's tournaments
-       $myTournaments = $tournamentRepository->findMyTournaments($user);
-       
-       //We build tournament list with tournaments which are not already joined
-       $tournamentNotJoined = array();
-       foreach($tournamentList as $tournament) {
+    	$lid = $app['session']->get('idleague');
+		//We list all tournament
+		$tournamentRepository = $app['em']->getRepository('App\Model\Entity\Tournament');
+		$tournamentList = $tournamentRepository->findAllTournaments(array('idleague' => $lid));
+		//We get logged user
+		$userRepository =$app['em']->getRepository('App\Model\Entity\Players');
+		$user = $userRepository->getUserByUsername($app['security']->getToken()->getUser()->getUsername());
+		//We search user's tournaments
+		$myTournaments = $tournamentRepository->findMyTournaments($user, $lid);
+
+		//We build tournament list with tournaments which are not already joined
+		$tournamentNotJoined = array();
+		foreach($tournamentList as $tournament) {
            if (!in_array($tournament, $myTournaments)) {
                $tournamentNotJoined[] = $tournament;
            }
-       }
+		}
 
-       return $app["twig"]->render("tournament/index.twig", array('tournaments' => $tournamentNotJoined, "myTournaments" => $myTournaments));
+		return $app["twig"]->render("tournament/index.twig", array('tournaments' => $tournamentNotJoined, "myTournaments" => $myTournaments));
     }
-    
-    
-    
+
+
+
     /**
      * Create a form to add a tournament
      */
@@ -79,7 +82,7 @@ class TournamentController implements ControllerProviderInterface {
         $addTournamentForm = $this->app['form.factory']->create(new \App\Form\TournamentType());
         return $this->app['twig']->render('tournament/add.twig', array("form" => $addTournamentForm->createView()));
     }
-    
+
     /**
      * Adding a new tournament
      */
@@ -87,19 +90,21 @@ class TournamentController implements ControllerProviderInterface {
         $addTournamentForm = $this->app['form.factory']->create(new \App\Form\TournamentType());
         $addTournamentForm->bind($this->app['request']);
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-        
+
         if ($addTournamentForm->isValid()){
             $datas = $addTournamentForm->getData();
-            
+
             $tournament = new Tournament();
+            $lid = $app['session']->get('idleague');
+            $tournament->setIdleague($lid);
             $tournament->setName($datas['name']);
             $tournament->setYear(new \DateTime);
-                        
+
             $tournamentRepository->save($tournament);
-            
+
             $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
             $tournPlayer = new Tournplayers();
-            $tournPlayer->setIdtournament($tournament);    
+            $tournPlayer->setIdtournament($tournament);
 
             $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
             $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
@@ -107,16 +112,16 @@ class TournamentController implements ControllerProviderInterface {
             $tournPlayer->setIdPlayers($user);
             $tournPlayer->setIsAdmin(true);
             $tournPlayer->setIsaccepted(true);
-            
+
             $tournPlayersRepository->save($tournPlayer);
-                    
+
             $this->app['session']->getFlashBag()->add('success', $this->app['translator']->trans('save done'));
         } else {
             $this->app['session']->getFlashBag()->add('error', $this->app['translator']->trans('The form contains errors'));
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.index"));
     }
-    
+
     /**
      * Delete a tournament
      * @param int $idTournament
@@ -125,41 +130,42 @@ class TournamentController implements ControllerProviderInterface {
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        $tounament = $tournamentRepository->find($idTournament);
-        
+        $tounament = $tournamentRepository->find(array('idtournament' => $idTournament));
+
         //We find tournament to delete
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         $tournPlayer = $tournPlayersRepository->findTournPlayers($user, $tounament);
-        
+
         //User can delete a tournament if he is admin of this tournament
         if($tournPlayer && $tournPlayer->getIsadmin()) {
             $tournamentRepository->delete($tounament);
         }
-        
+
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.index"));
-        
+
     }
-    
+
     /**
      * Join a tournament
      * @param int $idTournament
      */
     public function join($idTournament) {
+    	$lid = $app['session']->get('idleague');
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-        
-        $tourn = $tournamentRepository->find($idTournament);
+
+        $tourn = $tournamentRepository->find(array('idtournament' => $idTournament));
         $tournname = $tourn->getName();
-        
+
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         $tournPlayer = new Tournplayers();
-        $tournPlayer->setIdtournament($tournamentRepository->find($idTournament));    
+        $tournPlayer->setIdtournament($tournamentRepository->find(array('idtournament' => $idTournament)));
 
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
 
        //We search user's tournaments
-       $myTournaments = $tournamentRepository->findMyTournaments($user);
-       
+       $myTournaments = $tournamentRepository->findMyTournaments($user, $lid);
+
        //User can join tournaments which are not already joined
         if (!in_array($tourn, $myTournaments)) {
                 $tournPlayer->setIdPlayers($user);
@@ -184,13 +190,13 @@ class TournamentController implements ControllerProviderInterface {
                 ->setBody($body, 'text/html');
 
                 $this->app['mailer']->send($message);
-           
+
        }
 
-        
+
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.index"));
     }
-    
+
     /**
      * Leave a tournament
      * @param int $idTournament
@@ -199,29 +205,29 @@ class TournamentController implements ControllerProviderInterface {
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
-        
+
         //We get current user
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         //We find tournament to leave
-        $tournPlayer = $tournPlayersRepository->findTournPlayers($user, $tournamentRepository->find($idTournament));
+        $tournPlayer = $tournPlayersRepository->findTournPlayers($user, $tournamentRepository->find(array('idtournament' => $idTournament)));
         //We remove entry for currect user in tournament
         $tournPlayersRepository->remove($tournPlayer);
-        
+
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.index"));
     }
-    
+
     /**
      * View a tournament
      * @param int $idTournament
      */
     public function view($idTournament) {
-    	
+
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-        $tounament = $tournamentRepository->find($idTournament);
+        $tounament = $tournamentRepository->find(array('idtournament' => $idTournament));
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
-        
+
     	$players = $this->getTournamentPlayersAndScore($tounament);
-        
+
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
@@ -238,27 +244,28 @@ class TournamentController implements ControllerProviderInterface {
 
         return $this->app["twig"]->render("tournament/view.html.twig", array('tournamentplayers' => $players, 'tournament' => $tounament, 'currentUserAdmin' => $isadmin));
     }
-    
+
     /**
      * return players and their total score
      * @param \App\Model\Entity\Tournament $tournament
      * @return array of players
      */
     private function getTournamentPlayersAndScore(Tournament $tournament) {
+    	$lid = $this->app['session']->get('idleague');
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
         $tournPlayersRepository = $this->app['em']->getRepository('App\Model\Entity\Tournplayers');
-        $listBetScore = $betScoreRepository->findTournamentScores($tournament);
-        
+        $listBetScore = $betScoreRepository->findTournamentScores($tournament,$lid);
+
         $players = array();
         foreach($listBetScore as $k => $v) {
             $player = $v[0]->getIdplayers();
             $player->setScore($v["score"]);
-            $player->setRightpronostics(count($betScoreRepository->findRightPronostics($player)));
-            $player->setWrongpronostics(count($betScoreRepository->findWrongPronostics($player)));
-            
+            $player->setRightpronostics(count($betScoreRepository->findRightPronostics($player,$lid)));
+            $player->setWrongpronostics(count($betScoreRepository->findWrongPronostics($player,$lid)));
+
             $players[] = $player;
         }
-        
+
         $tournPlayers = $tournPlayersRepository->findBy(array("idtournament" => $tournament));
         //If a tounrament's user is not is list because his score is 0, we add it
         foreach($tournPlayers as $tPlayers) {
@@ -270,12 +277,12 @@ class TournamentController implements ControllerProviderInterface {
                 $players[] = $player;
             }
         }
-        
+
         usort($players, array("App\Controller\TournamentController","cmp"));
-        
+
         return $players;
     }
-    
+
     function cmp($a, $b) {
         if ($a->getScore() == $b->getScore()) {
             return 0;
@@ -283,7 +290,7 @@ class TournamentController implements ControllerProviderInterface {
         return ($a->getScore() < $b->getScore()) ? 1 : -1;
     }
 
-    
+
     /**
      * accept a player in a tournament
      * @param int $idTournPlayers
@@ -294,32 +301,32 @@ class TournamentController implements ControllerProviderInterface {
         $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
         //We find the tournament name
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-        $tourn = $tournamentRepository->find($tournPlayer->getIdtournament()->getIdtournament());
+        $tourn = $tournamentRepository->find(array('idtournament' => $tournPlayer->getIdtournament()->getIdtournament()));
         $tournname = $tourn->getName();
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
-            $tournPlayer->setIsaccepted(true); 
+            $tournPlayer->setIsaccepted(true);
             $tournPlayersRepository->save($tournPlayer);
-            
+
             //Send a mail to user
             $body = "Bonjour ".$tournPlayer->getIdplayers()->getFirstname().",<br/><br/>"
             . "Votre demande pour rejoindre la compétition '".$tournname."' a été acceptée.<br/>"
             . "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
-            
+
             $message = \Swift_Message::newInstance()
             ->setSubject('Demande d\'ajout acceptée')
             ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
             ->setTo($tournPlayer->getIdplayers()->getMail())
             ->setBody($body, 'text/html');
-            
+
             $this->app['mailer']->send($message);
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
     }
-    
+
     /**
      * refuse a player in a tournament
      * @param int $idTournPlayers
@@ -330,7 +337,7 @@ class TournamentController implements ControllerProviderInterface {
         $tournPlayer = $tournPlayersRepository->findTournPlayersById($idTournPlayers);
         //We find the tournament name
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-        $tourn = $tournamentRepository->find($tournPlayer->getIdtournament()->getIdtournament());
+        $tourn = $tournamentRepository->find(array('idtournament' => $tournPlayer->getIdtournament()->getIdtournament()));
         $tournname = $tourn->getName();
         //We get current user and we check he's admin of tournament to accept
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
@@ -338,23 +345,23 @@ class TournamentController implements ControllerProviderInterface {
         $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
             $tournPlayersRepository->remove($tournPlayer);
-            
+
             //Send a mail to user
             $body = "Bonjour ".$tournPlayer->getIdplayers()->getFirstname().",<br/><br/>"
             . "Votre demande pour rejoindre la compétition '".$tournname."' a été refusée.<br/>"
             . "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
-            
+
             $message = \Swift_Message::newInstance()
             ->setSubject('Demande d\'ajout refusée')
             ->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
             ->setTo($tournPlayer->getIdplayers()->getMail())
             ->setBody($body, 'text/html');
-            
+
             $this->app['mailer']->send($message);
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
     }
-    
+
     /**
      * remove a player from a tournament
      * @param int $idTournPlayers
@@ -368,13 +375,13 @@ class TournamentController implements ControllerProviderInterface {
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
-            $tournPlayer->setIsaccepted(false); 
+            $tournPlayer->setIsaccepted(false);
             $tournPlayersRepository->save($tournPlayer);
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
     }
-    
-        
+
+
     /**
      * set admin right on a tournament
      * @param int $idTournPlayers
@@ -388,7 +395,7 @@ class TournamentController implements ControllerProviderInterface {
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
-            $tournPlayer->setIsadmin(true); 
+            $tournPlayer->setIsadmin(true);
             $tournPlayersRepository->save($tournPlayer);
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
@@ -407,12 +414,12 @@ class TournamentController implements ControllerProviderInterface {
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
         $currentToPlayer = $tournPlayersRepository->findTournPlayers($user, $tournPlayer->getIdtournament());
         if($currentToPlayer && $currentToPlayer->getIsadmin()) {
-            $tournPlayer->setIsadmin(false); 
+            $tournPlayer->setIsadmin(false);
             $tournPlayersRepository->save($tournPlayer);
         }
         return $this->app->redirect($this->app["url_generator"]->generate("tournament.view", array('idTournament' => $tournPlayer->getIdtournament()->getIdtournament())));
     }
-    
+
     /**
      * Invite new players
      * @param int $idTournPlayers
@@ -421,7 +428,7 @@ class TournamentController implements ControllerProviderInterface {
         $inviteForm = $this->app['form.factory']->create(new \App\Form\MailType($idTournament));
         return $this->app['twig']->render('form/mail.twig', array("form" => $inviteForm->createView()));
     }
-    
+
     /**
      * Send a mail to invite new players
      * @param int $idTournPlayers
@@ -431,16 +438,16 @@ class TournamentController implements ControllerProviderInterface {
         $inviteForm->bind($this->app['request']);
         if ($inviteForm->isValid()){
             $datas = $inviteForm->getData();
-            
+
             //We get current user
             $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
             $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-            
+
             //We get current tournament name
             $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
-            $tourn = $tournamentRepository->find($datas['tournament']);
+            $tourn = $tournamentRepository->find(array('idtournament' => $datas['tournament']));
             $tournname = $tourn->getName();
-            
+
             $body = "Bonjour,<br/><br/>"
             		. "Vous avez reçu une invitation de ".$user->getFirstname()." ".$user->getLastname()." à rejoindre la compétition '".$tournname."' sur le site de pronostiques FBT. <br/>"
                     . "Pour vous inscrire, veuillez cliquer sur le lien suivant : <a href='http://".$_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('user.signup')."'>Inscription</a>.<br />"
@@ -449,7 +456,7 @@ class TournamentController implements ControllerProviderInterface {
             		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>"
             		. "A bientôt sur notre site.<br/>"
             		. "Sportivement !";
-            
+
             $message = \Swift_Message::newInstance()
                 ->setSubject('Invitation Prononostics')
                 ->setFrom(array('noreply@brebion.info' => $user->getFirstname()." ".$user->getLastname()." by FBT"))
@@ -461,10 +468,10 @@ class TournamentController implements ControllerProviderInterface {
         }
         return $this->app->redirect($this->app["url_generator"]->generate('tournament.view', array('idTournament' => $datas['tournament'])));
     }
-    
+
     public function connect(Application $app) {
-        $this->app =$app;
-        
+        $this->app = $app;
+
         // créer un nouveau controller basé sur la route par défaut
         $tournament = $app['controllers_factory'];
         $tournament->match("/", 'App\Controller\TournamentController::index')->bind("tournament.index");
@@ -482,7 +489,7 @@ class TournamentController implements ControllerProviderInterface {
         $tournament->get('/removeadmin/{idTournPlayers}', array($this,"RemoveAdmin"))->bind('tournament.removeAdmin');
         $tournament->get('/invite/{idTournament}', array($this,"Invite"))->bind('tournament.invite');
         $tournament->get('/ranking/{idTournament}', array($this,"FindTournamentRanking"))->bind('tournament.ranking');
-        
+
         $tournament->post('/doinvite', array($this,"doInvite"))->bind('tournament.doInvite');
         return $tournament;
     }

@@ -2,9 +2,9 @@
 database:
     driver: pdo_mysql
     host: localhost
-    dbname: fbt
+    dbname: FBT
     user: root
-    password: 
+    password: sa
     charset: utf8
 mail:
     adress : test@test.fr

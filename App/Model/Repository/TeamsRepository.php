@@ -35,7 +35,7 @@ class TeamsRepository extends EntityRepository
         $this->_em->merge($team);
         $this->_em->flush();
     }
-    
+
     /**
      * Deletes the tournament.
      *
@@ -63,20 +63,23 @@ class TeamsRepository extends EntityRepository
     /**
      * Returns a collection of groups
      *
-     * @param 
+     * @param integer $lid
+     * 	 League ID of groups to be returned
      * @return array A collection of group.
      */
-    public function findGroups()
+    public function findGroups($lid)
     {
     	$qb = $this->_em->createQueryBuilder()
     		->select('t.pool')
     		->from('App\Model\Entity\Teams', 't')
-    		->groupBy('t.pool');
-    		;	
+    		->where('t.idleague = ?1')
+    		->groupBy('t.pool')
+    		->setParameter(1, $lid)
+    		;
     	$query = $qb->getQuery();
     	return $query->getResult();
     }
-    
+
     /**
      * Returns a collection of Team.
      *
@@ -90,13 +93,13 @@ class TeamsRepository extends EntityRepository
      * @return array A collection of teams, keyed by team id.
      */
     public function findTeams($crit=array(), $limit = null, $offset = 0, $orderBy = array())
-    {        
+    {
         $teams = $this->findBy($crit, $orderBy, $limit, $offset);
         return $teams;
     }
-    
+
     /**
-     * Get teams wich are not finished their pool.
+     * Get teams which does not have finished their pool.
      *
      * @param integer $limit
      * @return Returns a collection of Team.
@@ -109,11 +112,11 @@ class TeamsRepository extends EntityRepository
                 ->andWhere('t.pool = ?1')
                 ->setParameter(1, $pool)
                 ;
-        
+
         $query = $qb->getQuery();
         $teams = $query->getResult();
         return $teams;
-        
+
     }
 
     /**
@@ -131,12 +134,12 @@ class TeamsRepository extends EntityRepository
     	->where('t.idteams = ?1')
     	->setParameter(1, $idteam)
     	;
-    	
+
     	$query = $qb->getQuery();
     	$rank = $query->getResult();
     	return $rank[0]['worldrank'];
     }
-        
+
     /**
      * Instantiates a Team entity and sets its properties using db data.
      *
@@ -148,6 +151,7 @@ class TeamsRepository extends EntityRepository
     protected function buildTeam($teamData)
     {
         $team = new Team();
+        $team->setIdleague($teamData['idleague']);
         $team->setpool($teamData['pool']);
         $team->setcountries($teamData['countries']);
 
@@ -166,8 +170,9 @@ class TeamsRepository extends EntityRepository
     {
     //TODO create update method
         $team = new Team();
-        $team->setpool($teamData['pool']);
-        $team->setcountries($teamData['countries']);
+        $team->setIdleague($teamData['idleague']);
+        $team->setPool($teamData['pool']);
+        $team->setCountries($teamData['countries']);
 
         return $team;
     }

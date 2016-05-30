@@ -16,7 +16,7 @@
     </div>
     {% endif %}
     <div class="row loginForm">
-        <div class="col-md-1"></div>        
+        <div class="col-md-1"></div>
             {% if is_granted('ROLE_USER') %}
                 <div class="col-md-6">
                 {{ render(url('tournament.mytournaments'))}}
@@ -29,7 +29,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-5 bestPlayers">
             <h3>{% trans %}best players{% endtrans %}</h3>
-            
+
             {{ render(url('bet.best'))}}
             <div class="col-md-1"></div>
         </div>

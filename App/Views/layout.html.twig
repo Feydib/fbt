@@ -4,26 +4,28 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>{% block title %}{% trans %}site_title{% endtrans %}{% endblock %}</title>
             {% block stylesheets %}{% endblock %}
-    		
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+            <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+            	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+            	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-submenu.min.css">-->
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-            <!--<link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.min.css" rel="stylesheet">
-            	<link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap-theme.css" rel="stylesheet">-->
+            <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="{{ app.request.basepath }}/css/bootstrap-theme.css" rel="stylesheet">
             <link rel="stylesheet" href="{{ app.request.basepath }}/css/general.css">
             <link href="{{ app.request.basepath }}/css/mobile.css" media="screen and (max-width: 1025px)" rel="stylesheet">
             <script src="{{ app.request.basepath }}/js/bootstrap.min.js"></script>
+            <script src="{{ app.request.basepath }}/js/bootstrap.js"></script>
             <script src="{{ app.request.basepath }}/js/jsContent.js"></script>
-            
+
             <!--[if lt IE 10]>
                 <script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/placeholderIE.js"></script>
             <![endif]-->
 
-            
+
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
         <header>
-            
+
         </header>
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -35,7 +37,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="http://fr.fifa.com/worldcup/">FIFA World Cup 2014</a>
+                    <a class="navbar-brand" href="http://www.uefa.com/uefaeuro/">UEFA Euro 2016</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -45,6 +47,9 @@
                         <li class="{% block tournamentClass %}{% endblock %}"><a href="{{ path('tournament.index') }}">{% trans %}tournament{% endtrans %}</a></li>
                         <li class="{% block matchClass %}{% endblock %}"><a href="{{ path('match.index') }}">{% trans %}pronostics{% endtrans %}</a></li>
                         <li class="{% block poolClass %}{% endblock %}"><a href="{{ path('team.pool') }}">{% trans %}pool{% endtrans %}</a></li>
+                        <li class="{% block contactClass %}{% endblock %}"><a href="{{ path('index.contact') }}">{% trans %}contact{% endtrans %}</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
                         {% if is_granted('ROLE_USER') %}
                             <li><a href="{{ path('deconnexion') }}">{% trans %}logout{% endtrans %}</a></li>
                             <li><a href="{{ path('user.account') }}">{% trans %}my account{% endtrans %}</a></li>
@@ -52,32 +57,28 @@
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="{% block adminClass %}{% endblock %}"><a href="{{ path('match.matchToScore') }}">{% trans %}admin{% endtrans %}</a></li>
                         {% endif %}
-                        <li class="{% block contactClass %}{% endblock %}"><a href="{{ path('index.contact') }}">{% trans %}contact{% endtrans %}</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <!--<li><a href="#">Link</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">League <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+	                            <li><a href="{{ path('index.league', { lid : 1 } ) }}">FIFA World Cup 2014</a></li>
+	                            <li><a href="{{ path('index.league', { lid : 2 } ) }}">UEFA Euro 2016</a></li>
                             </ul>
-                        </li>-->
-                        <span style="color:#777777;font-style: italic; font-size: 9px">Powered by Fabrice Brebion & Nicolas Penloup<br/>Designed by Jeremie Vallee</span>
+                        </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
         <section id="container">
             {% include 'flash-message.twig' %}
-            {% block body %}{% endblock %}	
+            {% block body %}{% endblock %}
         </section>
         <footer>
+        	<div class="navbar navbar-default navbar-fixed-bottom">
+        		<div class="container">
+		        	<span style="color:#777777;font-style: italic; font-size: 9px">Powered by Fabrice Brebion & Nicolas Penloup - Designed by Jeremie Vallee</span>
+	        	</div>
+	        </div>
         </footer>
-        
+
         <!--<script charset="utf-8" type="text/javascript" src="{{ app.request.basepath }}/js/bootstrap.js"></script>-->
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
         <!-- Styles pour jScrollPane -->

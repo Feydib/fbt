@@ -38,16 +38,16 @@ class TournamentRepository extends EntityRepository
     /**
      * Returns a tournament matching the supplied id.
      *
-     * @param integer $id
+     * @param array $crit
      *
      * @return Tournament|false An entity object if found, false otherwise.
      */
-    public function find($id)
+    public function find($crit = array())
     {
-        $tournamentData = $this->findOneBy(array( "idtournament" => $id));
+        $tournamentData = $this->findOneBy($crit);
         return $tournamentData ? $tournamentData : FALSE;
     }
-    
+
     /**
      * Returns a tournament matching the supplied id.
      *
@@ -55,23 +55,27 @@ class TournamentRepository extends EntityRepository
      *
      * @return Tournament|false An entity object if found, false otherwise.
      */
-    public function findMyTournaments(Players $players)
-    {
+    public function findMyTournaments(Players $players, $league){
+    	$parameters = array (
+    		'player' => $players,
+    		'league' => $league
+    		);
         $qb = $this->_em->createQueryBuilder()
                 ->select('t')
                 ->addSelect('to')
                 ->from('App\Model\Entity\Tournament', 't')
                 ->leftJoin('t.players', 'to')
-                ->where('to.idplayers = ?1')
-                ->setParameter(1, $players)
+                ->where('to.idplayers = :player')
+                ->andwhere('t.idleague = :league')
+                ->setParameters($parameters)
                 ;
-        
+
         $query = $qb->getQuery();
         $tournaments = $query->getResult();
 
         return $tournaments;
     }
-    
+
     /**
      * Returns a collection of Tournament.
      *
@@ -84,13 +88,13 @@ class TournamentRepository extends EntityRepository
      *
      * @return array A collection of users, keyed by user id.
      */
-    public function findAllTournaments()
-    {        
-        $tournaments = $this->findAll();
+    public function findAllTournaments($crit=array())
+    {
+        $tournaments = $this->findBy($crit);
         return $tournaments;
     }
-    
-    
+
+
     /**
      * Instantiates a Tournament entity and sets its properties using db data.
      *
@@ -103,6 +107,7 @@ class TournamentRepository extends EntityRepository
     {
         $tournament = new Tournament();
         $tournament->setIdtournament($tournamentData['idTournament']);
+        $tournament->setIdleague($tournamentData['idLeague']);
         $tournament->setName($tournamentData['name']);
         $tournament->setYear(new DateTime($tournamentData['year']));
 

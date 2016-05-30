@@ -8,6 +8,9 @@ use App\Model\Entity\Betmatchs;
 
 class BetController implements ControllerProviderInterface {
 
+	private $app;
+	private $lid;
+
     /**
      * Form to bet on a match
      * @param \Silex\Application $app
@@ -15,11 +18,10 @@ class BetController implements ControllerProviderInterface {
      */
     public function betForm(Application $app, $idMatchTeam) {
         //var_dump($idMatchTeam);
-        //var_dump($this->getPronostic($app, $idMatchTeam));
         $betForm = $app['form.factory']->create(new \App\Form\BetType($idMatchTeam, $this->getPronostic($app, $idMatchTeam)));
         return $app['twig']->render('match/betForm.twig', array("form" => $betForm->createView()));
     }
-    
+
     /**
      * Form to bet on a match
      * @param \Silex\Application $app
@@ -28,15 +30,14 @@ class BetController implements ControllerProviderInterface {
     public function doBet() {
         $matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
         $betMatchRepository = $this->app['em']->getRepository('App\Model\Entity\Betmatchs');
-        $matchTeamList = $matchTeamRepository->find(null, 0, array("score" => NULL)); 
-         
+        $matchTeamList = $matchTeamRepository->find(null, 0, array("score" => NULL));
+
         foreach($matchTeamList as $matchTeam) {
             if (strtotime("-15 minutes",$matchTeam->getIdmatchs()->getDate()->getTimestamp()) > time()) {
                 $matchTeamIdList[] = $matchTeam->getIdmatchteam();
             }
         }
 
-        
         $betForm = $this->app['form.factory']->create(new \App\Form\BetType($matchTeamIdList));
         $betForm->bind($this->app['request']);
         if ($betForm->isValid()){
@@ -45,7 +46,7 @@ class BetController implements ControllerProviderInterface {
             foreach($matchTeamList as $matchTeam) {
                 $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
                 $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-                
+
                 $betMatch = $betMatchRepository->find(array("idmatchteam" => $matchTeam, "idplayers" => $user ));
                 if (in_array($matchTeam->getIdmatchteam(), $matchTeamIdList)) {
                     if ($betMatch) {
@@ -60,16 +61,16 @@ class BetController implements ControllerProviderInterface {
                     }
                 }
             }
-            
+
             //add flash success
             $this->app['session']->getFlashBag()->add('success', $this->app['translator']->trans('save succeed'));
         } else {
             $this->app['session']->getFlashBag()->add('error', $this->app['translator']->trans('save error'));
         }
-       
+
         return $this->app->redirect($this->app["url_generator"]->generate("match.index"));
     }
-    
+
     /**
      * Get bet score if players bet on this matchteam
      * @param \Silex\Application $app
@@ -80,9 +81,9 @@ class BetController implements ControllerProviderInterface {
         $userRepository = $app['em']->getRepository('App\Model\Entity\Players');
         $matchTeamRepository = $app['em']->getRepository('App\Model\Entity\Matchteam');
         $betMatchRepository = $app['em']->getRepository('App\Model\Entity\Betmatchs');
-        
+
         $user = $userRepository->getUserByUsername($app['security']->getToken()->getUser()->getUsername());
-        $matchTeam = $matchTeamRepository->find(null, 0, array("idmatchteam" => $matchTeam));   
+        $matchTeam = $matchTeamRepository->find(null, 0, array("idmatchteam" => $matchTeam));
         $betMatch = $betMatchRepository->find(array("idmatchteam" => $matchTeam, "idplayers" => $user ));
         if ($betMatch) {
             $score = $betMatch->getScore();
@@ -92,71 +93,71 @@ class BetController implements ControllerProviderInterface {
 
         return $score;
     }
-    
+
     public function getMatchPlayerScore($player, $idMatch) {
         $userRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
         $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
-        
+
         $user = $userRepository->getUserByUsername($player);
-        $match = $matchRepository->find(array("idmatchs" => $idMatch));   
-        
+        $match = $matchRepository->find(array("idmatchs" => $idMatch));
+
         $betScore = $betScoreRepository->find(array("idmatchs" => $match, "idplayers" => $user));
         if ($betScore) {
             $score = $betScore->getScore();
         } else {
             $score = "";
         }
-        
+
         return $score;
     }
-    
+
     public function getPlayerTotalScore($player) {
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
-        $score = $betScoreRepository->findSum($player);
-        
+        $score = $betScoreRepository->findSum($player,$this->lid);
+
         if($score[1] !== null) {
             $score = $score[1];
         } else {
             $score = 0;
         }
-        
+
         return $score;
     }
-    
+
     public function getCurrentPlayerTotalScore() {
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
         //We get logged user
         $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
         $user = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        $score = $betScoreRepository->findSum($user);
-        
+        $score = $betScoreRepository->findSum($user,$this->lid);
+
         if($score[1] !== null) {
             $score = $score[1];
         } else {
             $score = 0;
         }
-        
+
         return $score;
     }
-    
+
     public function getBestPlayerTotalScore() {
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
-        $betScorePlayers = $betScoreRepository->findBestScores();
-                
+        $betScorePlayers = $betScoreRepository->findBestScores($this->lid);
+
         $players = array();
         foreach($betScorePlayers as $k => $v) {
             $player = $v[0]->getIdplayers();
             $player->setScore($v["score"]);
-            $player->setRightpronostics(count($betScoreRepository->findRightPronostics($player)));
-            $player->setWrongpronostics(count($betScoreRepository->findWrongPronostics($player)));
-            
+            $player->setRightpronostics(count($betScoreRepository->findRightPronostics($player,$this->lid)));
+            $player->setWrongpronostics(count($betScoreRepository->findWrongPronostics($player,$this->lid)));
+
             $players[] = $player;
         }
-        
+
         return $this->app['twig']->render('betscore/bestPlayers.twig', array("players" => $players));
     }
-    
+
     /**
      * Find Current player ranking
      * @return int
@@ -164,25 +165,27 @@ class BetController implements ControllerProviderInterface {
     public function findRanking() {
 
         $betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
-        
+
         $userRepository =$this->app['em']->getRepository('App\Model\Entity\Players');
         $currentUser = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-        
-        $betScorePlayers = $betScoreRepository->findScores();
-        
+
+        $betScorePlayers = $betScoreRepository->findScores($this->lid);
+
         $rank = 1;
+        $totalUsers = count($userRepository->getUserByLeague($this->lid));
         foreach($betScorePlayers as $k => $v) {
             $player = $v[0]->getIdplayers();
             if ($player == $currentUser) {
-                return $rank .'e/' . count($userRepository->findAll());
+                return $rank .'e/' . $totalUsers;
             }
             $rank++;
         }
-        return count($userRepository->findAll()).'e/' .count($userRepository->findAll());
+        return $totalUsers.'/' .$totalUsers;
     }
 
     public function connect(Application $app) {
         $this->app = $app;
+        $this->lid = $app['session']->get('idleague');
         // créer un nouveau controller basé sur la route par défaut
         $bet = $app['controllers_factory'];
         $bet->match("/bet/{idMatchTeam}", 'App\Controller\BetController::betForm')->bind("bet.betForm");
@@ -191,7 +194,7 @@ class BetController implements ControllerProviderInterface {
         $bet->get('/getScore/{player}/{idMatch}', array($this,"getMatchPlayerScore"))->bind('bet.getPlayerScore');
         $bet->get('/getPlayerScore/{player}', array($this,"getPlayerTotalScore"))->bind('bet.getPlayerTotalScore');
         $bet->get('/getCurrentPlayerScore', array($this,"getCurrentPlayerTotalScore"))->bind('bet.getCurrentPlayerTotalScore');
-        $bet->get('/getCurrentPlayerRanking1', array($this,"findRanking"))->bind('bet.getCurrentPlayerRanking');
+        $bet->get('/getCurrentPlayerRanking', array($this,"findRanking"))->bind('bet.getCurrentPlayerRanking');
         return $bet;
     }
 
