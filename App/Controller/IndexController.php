@@ -70,7 +70,6 @@ class IndexController implements ControllerProviderInterface {
     	$this->app = $app;
     	// If no id league not set in session, set it with a default value
     	if (!$app['session']->get('idleague')) {
-    		echo "IDLEAGUE=null";
     		// TODO get thet latest League id
     		$this->app['session']->set('idleague',2);
     	}
