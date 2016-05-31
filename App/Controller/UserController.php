@@ -95,17 +95,16 @@ class UserController implements ControllerProviderInterface {
         if ($registrationForm->isValid()){
             $datas = $registrationForm->getData();
 
-
+            //username must be unique if we try to change it
+            if ($currentUser->getUsername() != $datas['username'] && $userRepository->usernameExists($datas['username']) == true){
+                $registrationForm->addError(new FormError($app['translator']->trans('username already exists')));
+            }
 
             //if form is always valid after new verifications
             if ( $registrationForm->isValid() && $currentUser->getIdplayers() == $datas['id']){
-                if ($datas['password_repeated'] !== null && $datas['password_repeated'] != "") {
-                    $currentUser->setPassword(self::encodePassword($currentUser, null,$datas['password_repeated'],$app));
-                }
-                //username must be unique
-            	if ($userRepository->usernameExists($datas['username']) == true){
-                	$registrationForm->addError(new FormError($app['translator']->trans('username already exists')));
-            	}
+	        if ($datas['password_repeated'] !== null && $datas['password_repeated'] != "") {
+	            $currentUser->setPassword(self::encodePassword($currentUser, null,$datas['password_repeated'],$app));
+	        }
                 $currentUser->setUsername($datas['username']);
                 $currentUser->setMail($datas['email']);
                 $currentUser->setFirstname($datas['firstname']);
