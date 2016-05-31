@@ -1,7 +1,7 @@
 site_title : Pronostics
 
-submit : valider
-login : Se connecter
+submit : Valider
+login : Connexion
 reset : J'ai oublié mon mot de passe
 connection : Connexion
 welcome : Bienvenue
@@ -25,7 +25,7 @@ save error : Erreur lors de la sauvegarde, veuillez réésayer
 
 #Menu
 home : Accueil
-logout : Se déconnecter
+logout : Déconnexion
 signup : Créer un compte
 pool : Les Poules
 admin : Admin
@@ -36,7 +36,7 @@ general ranking : Classement général
 best players : Meilleurs joueurs
 
 #Utilisateur
-username : Login
+username : Pseudo
 password : Mot de passe
 email : Email
 firstname : Prénom
@@ -49,11 +49,12 @@ reset password : Nouveau mot de passe
 confirm : Confirmer
 
 #Message d'erreur
-email already exists : Le Mail existe déjà
-username already exists : Login déjà existant
+email already exists : Mail existant
+username already exists : Pseudo existant
 Invalid credentials.: Pseudo ou mot de passe incorect
 The form contains errors : Le formulaire contient des erreurs
 Your account was successfully created, please login : Votre compte a bien été créé, vous pouvez vous connecter
+Your account was successfully updated, please logout and login again : Votre compte a bien été mis a jour, déconnectez puis reconnectez vous
 save succeed : Sauvegarde effectuée
 message send : Message envoyé
 mail does not exist : Le mail n'existe pas

@@ -102,6 +102,11 @@ class UserController implements ControllerProviderInterface {
                 if ($datas['password_repeated'] !== null && $datas['password_repeated'] != "") {
                     $currentUser->setPassword(self::encodePassword($currentUser, null,$datas['password_repeated'],$app));
                 }
+                //username must be unique
+            	if ($userRepository->usernameExists($datas['username']) == true){
+                	$registrationForm->addError(new FormError($app['translator']->trans('username already exists')));
+            	}
+                $currentUser->setUsername($datas['username']);
                 $currentUser->setMail($datas['email']);
                 $currentUser->setFirstname($datas['firstname']);
                 $currentUser->setLastname($datas['lastname']);
@@ -109,7 +114,7 @@ class UserController implements ControllerProviderInterface {
                 //we save the user in BDD
                 $userRepository->save($currentUser);
                 //add flash success
-                $app['session']->getFlashBag()->add('success', $app['translator']->trans('Your account was successfully created, please login'));
+                $app['session']->getFlashBag()->add('success', $app['translator']->trans('Your account was successfully updated, please logout and login again'));
                 return $app['twig']->render('account.twig', array('registrationForm' => $registrationForm->createView()));
             }
       }
