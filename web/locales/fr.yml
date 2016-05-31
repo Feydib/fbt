@@ -48,7 +48,7 @@ register : Enregistrement
 reset password : Nouveau mot de passe
 confirm : Confirmer
 
-#Message d'erreur
+#Messages
 email already exists : Mail existant
 username already exists : Pseudo existant
 Invalid credentials.: Pseudo ou mot de passe incorect
@@ -60,6 +60,7 @@ message send : Message envoyé
 mail does not exist : Le mail n'existe pas
 user and mail do not match : Le pseudo et le mot de passe ne concordent pas
 Your password was successfully reset, check your mail : Votre mot de passe a été réinitialisé, il a été envoyé par mail
+Welcome %username% : Bienvenue %username% !
 
 #Tournament
 tournament : Compétition

@@ -28,6 +28,7 @@ class UserController implements ControllerProviderInterface {
         $user->post('/doUpdateAccount', array($this,"doUpdateAccount"))->bind('user.doupdateaccount');
         $user->post('/doreset', array($this,"doresetpassword"))->bind('user.doresetpassword');
         $user->get('/account', array($this,"account"))->bind('user.account');
+        $user->get('/check/{salt}', array($this,"doCheckSignUp"))->bind('user.dochecksignup');
 
         return $user;
     }
@@ -150,24 +151,62 @@ class UserController implements ControllerProviderInterface {
                 $user = new Players();
                 $user->setUsername($datas['username']);
                 $user->setRole("ROLE_USER");
-                $user->setSalt(uniqid(mt_rand()));
+                $salt = uniqid(mt_rand());
+                $user->setSalt($salt);
                 $user->setPassword(self::encodePassword($user, $datas['username'],$datas['password_repeated'],$app));
                 $user->setMail($datas['email']);
                 $user->setFirstname($datas['firstname']);
                 $user->setLastname($datas['lastname']);
-                $user->setActive(true);
+                $user->setActive(false);
                 $user->setRdate(new \DateTime);
 
                 //we save the user in BDD
                 $userRepository->save($user);
                 //add flash success
-                $app['session']->getFlashBag()->add('success', $app['translator']->trans('Your account was successfully created, please login'));
+                $app['session']->getFlashBag()->add('success', $app['translator']->trans('Your account was successfully created but need to be activated.Please check your mail'));
+
+                /** Send a mail with the salt key for activation **/
+				$url = $_SERVER['SERVER_NAME'].$this->app['url_generator']->generate('user.dochecksignup',array('salt' => $salt)); //Server URL to validate account
+
+                $body = "Bonjour ". $datas['firstname']. " " . $datas['lastname'] . ",<br/><br/>"
+    			. "Pour activer votre compte, veuillez cliquer sur le lien ci-dessous. </br>"
+    			. "<a href='http://" . $url . "'>'http://" . $url . "'</a>"
+
+				. "Rappel de vos informations :"
+    			. "Pseudo : ".$datas['username']." </br>"
+    			. "Password : Vous le connaissez </br>"
+
+    			. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+
+    			$message = \Swift_Message::newInstance()
+    			->setSubject('Activation de votre compte')
+    			->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
+    			->setTo($datas['email'])
+    			->setBody($body, 'text/html');
+    			$this->app['mailer']->send($message);
+
                 return $app->redirect($app['url_generator']->generate('index.index'));
             }
       }
       $app['session']->getFlashBag()->add('error', $app['translator']->trans('The form contains errors'));
       return $app['twig']->render('register.twig', array('registrationForm' => $registrationForm->createView()));
     }
+
+	function doCheckSignUp (Application $app, $salt) {
+		$userRepository = $app['em']->getRepository('App\Model\Entity\Players');
+		$user = $userRepository->getUser(array('salt' => $salt));
+		//Compare $salt with the user salt
+		if ( !$user ) {
+			$app['session']->getFlashBag()->add('error', $app['translator']->trans('This URL is not valid'));
+            return $app->redirect($app['url_generator']->generate('index.index'));
+		}
+		else {
+			$app['session']->getFlashBag()->add('success', $app['translator']->trans('Welcome %username%', array('%username%' =>$user->getUsername())));
+			$user->setActive(true);
+			$userRepository->save($user);
+            return $app->redirect($app['url_generator']->generate('index.index'));
+		}
+	}
 
     function doResetPassword (Application $app) {
     	//Generate a new random password
@@ -188,41 +227,30 @@ class UserController implements ControllerProviderInterface {
     	}
     	else {
     		$user = $userRepository->getUserByMail($datas['email']) ;
-	    	/*echo $newNonEncodedPassword."</br>";
-	    	echo self::encodePassword('', '',$newNonEncodedPassword,$app)."</br>";
-	    	echo $user->getUsername();
-	    	exit;*/
-	    	/*if ($user->getUsername() != $datas['username']) {
-	    		$app['session']->getFlashBag()->add('error', $app['translator']->trans('user and mail do not match'));
-	    	}
-	    	else {*/
-	    		//add flash success
-	    		$app['session']->getFlashBag()->add('success', $app['translator']->trans('Your password was successfully reset, check your mail'));
 
-	    		$user->setPassword(self::encodePassword('', '',$newNonEncodedPassword,$app));
-	    		//we save the password in BDD
-	    		$userRepository->save($user);
+    		//add flash success
+    		$app['session']->getFlashBag()->add('success', $app['translator']->trans('Your password was successfully reset, check your mail'));
 
-	    		//Send a mail with new password
-	    		$body = "Bonjour ".$user->getFirstName(). ",<br/><br/>"
-	    		. "Suite à votre demande de réinitialisation, voici votre nouveau mot de passe. </br>"
-<<<<<<< HEAD
-	    		. "Login : ".$user->getUsername()." </br>"
-	    		. "Password : ".$newNonEncodedPassword." </br>"
-=======
-	    		. "Login : ".$user->getUsername(). "</br>"
-	    		. "Password : ".$newNonEncodedPassword. "</br>"
->>>>>>> refs/remotes/origin/master
-	    		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+    		$user->setPassword(self::encodePassword('', '',$newNonEncodedPassword,$app));
+    		//we save the password in BDD
+    		$userRepository->save($user);
 
-	    		$message = \Swift_Message::newInstance()
-	    		->setSubject('Votre nouveau mot de passe')
-	    		->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
-	    		->setTo($datas['email'])
-	    		->setBody($body, 'text/html');
-	    		$this->app['mailer']->send($message);
+    		//Send a mail with new password
+    		$body = "Bonjour ".$user->getFirstName(). ",<br/><br/>"
+    		. "Suite à votre demande de réinitialisation, voici votre nouveau mot de passe. </br>"
 
-	    	//}
+    		. "Login : ".$user->getUsername()." </br>"
+    		. "Password : ".$newNonEncodedPassword." </br>"
+
+    		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
+
+    		$message = \Swift_Message::newInstance()
+    		->setSubject('Votre nouveau mot de passe')
+    		->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
+    		->setTo($datas['email'])
+    		->setBody($body, 'text/html');
+    		$this->app['mailer']->send($message);
+
     	}
     	return $this->app->redirect($this->app['url_generator']->generate('index.index'));
     }
