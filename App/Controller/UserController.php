@@ -9,9 +9,9 @@ use App\Model\Entity\Players;
 
 
 class UserController implements ControllerProviderInterface {
-    
+
 	private $app;
-    
+
     /**
      * Rout list for this controller
      * @param \Silex\Application $app
@@ -31,7 +31,7 @@ class UserController implements ControllerProviderInterface {
 
         return $user;
     }
-    
+
     /**
      * This method render the registration form
      * @param \Silex\Application $app
@@ -40,7 +40,7 @@ class UserController implements ControllerProviderInterface {
     public function account(Application $app) {
         $playersRepository = $app['em']->getRepository('App\Model\Entity\Players');
         $currentUser = $playersRepository->getUserByUsername($app['security']->getToken()->getUser()->getUsername());
-        
+
         $registrationForm = $app['form.factory']->create(new \App\Form\RegisterType($currentUser));
         return $app['twig']->render('account.twig', array("registrationForm" => $registrationForm->createView()));
     }
@@ -57,7 +57,7 @@ class UserController implements ControllerProviderInterface {
                     'last_username' => $app['session']->get('_security.last_username'),
                 ));
     }
-    
+
 
     /**
      * This method render the registration form
@@ -79,9 +79,9 @@ class UserController implements ControllerProviderInterface {
     	return $app['twig']->render('password.twig', array("resetPasswordForm" => $resetPasswordForm->createView()));
     }
 
-    
+
     /**
-     * This method is used for update a existing user 
+     * This method is used for update a existing user
      * @param \Silex\Application $app
      * @return type
      */
@@ -94,9 +94,9 @@ class UserController implements ControllerProviderInterface {
         //we check if the form is valid
         if ($registrationForm->isValid()){
             $datas = $registrationForm->getData();
-            
-            
-            
+
+
+
             //if form is always valid after new verifications
             if ( $registrationForm->isValid() && $currentUser->getIdplayers() == $datas['id']){
                 if ($datas['password_repeated'] !== null && $datas['password_repeated'] != "") {
@@ -111,14 +111,14 @@ class UserController implements ControllerProviderInterface {
                 //add flash success
                 $app['session']->getFlashBag()->add('success', $app['translator']->trans('Your account was successfully created, please login'));
                 return $app['twig']->render('account.twig', array('registrationForm' => $registrationForm->createView()));
-            }  
-      } 
+            }
+      }
       $app['session']->getFlashBag()->add('error', $app['translator']->trans('The form contains errors'));
       return $app['twig']->render('account.twig', array('registrationForm' => $registrationForm->createView()));
     }
-    
+
     /**
-     * This method is used for register a new user 
+     * This method is used for register a new user
      * @param \Silex\Application $app
      * @return type
      */
@@ -156,12 +156,12 @@ class UserController implements ControllerProviderInterface {
                 //add flash success
                 $app['session']->getFlashBag()->add('success', $app['translator']->trans('Your account was successfully created, please login'));
                 return $app->redirect($app['url_generator']->generate('index.index'));
-            }  
-      } 
+            }
+      }
       $app['session']->getFlashBag()->add('error', $app['translator']->trans('The form contains errors'));
       return $app['twig']->render('register.twig', array('registrationForm' => $registrationForm->createView()));
     }
-    
+
     function doResetPassword (Application $app) {
     	//Generate a new random password
     	$newNonEncodedPassword = '';
@@ -169,12 +169,12 @@ class UserController implements ControllerProviderInterface {
     	$length = rand(8, 12);
     	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     	$newNonEncodedPassword = substr(str_shuffle($chars),0,$length);
-    	
+
     	//we get the register form
     	$resetPasswordForm = $app['form.factory']->create(new \App\Form\ResetPasswordType());
     	$resetPasswordForm->bind($app['request']);
     	$datas = $resetPasswordForm->getData();
-    	
+
     	$userRepository = $app['em']->getRepository('App\Model\Entity\Players');
     	if (!$userRepository->getUserByMail($datas['email'])) {
     		$app['session']->getFlashBag()->add('error', $app['translator']->trans('mail does not exist'));
@@ -185,31 +185,31 @@ class UserController implements ControllerProviderInterface {
 	    	echo self::encodePassword('', '',$newNonEncodedPassword,$app)."</br>";
 	    	echo $user->getUsername();
 	    	exit;*/
-	    	if ($user->getUsername() != $datas['username']) {
+	    	/*if ($user->getUsername() != $datas['username']) {
 	    		$app['session']->getFlashBag()->add('error', $app['translator']->trans('user and mail do not match'));
 	    	}
-	    	else {
+	    	else {*/
 	    		//add flash success
 	    		$app['session']->getFlashBag()->add('success', $app['translator']->trans('Your password was successfully reset, check your mail'));
-	    		
+
 	    		$user->setPassword(self::encodePassword('', '',$newNonEncodedPassword,$app));
 	    		//we save the password in BDD
 	    		$userRepository->save($user);
-	    		
+
 	    		//Send a mail with new password
 	    		$body = "Bonjour ".$user->getFirstName(). ",<br/><br/>"
 	    		. "Suite à votre demande de réinitialisation, voici votre nouveau mot de passe.</br>"
 	    		. "Password : ".$newNonEncodedPassword."</br>"
 	    		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
-	    		 
+
 	    		$message = \Swift_Message::newInstance()
 	    		->setSubject('Votre nouveau mot de passe')
 	    		->setFrom(array('noreply@brebion.info' => "FBT - Admin"))
 	    		->setTo($datas['email'])
 	    		->setBody($body, 'text/html');
 	    		$this->app['mailer']->send($message);
-	    		
-	    	}
+
+	    	//}
     	}
     	return $this->app->redirect($this->app['url_generator']->generate('index.index'));
     }
