@@ -203,8 +203,9 @@ class UserController implements ControllerProviderInterface {
 
 	    		//Send a mail with new password
 	    		$body = "Bonjour ".$user->getFirstName(). ",<br/><br/>"
-	    		. "Suite à votre demande de réinitialisation, voici votre nouveau mot de passe.</br>"
-	    		. "Password : ".$newNonEncodedPassword."</br>"
+	    		. "Suite à votre demande de réinitialisation, voici votre nouveau mot de passe. </br>"
+	    		. "Login : ".$user->getUsername()." </br>"
+	    		. "Password : ".$newNonEncodedPassword." </br>"
 	    		. "Ce mail est envoyé automatiquement, merci de ne pas y répondre.<br/><br/>";
 
 	    		$message = \Swift_Message::newInstance()
