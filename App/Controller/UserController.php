@@ -99,6 +99,9 @@ class UserController implements ControllerProviderInterface {
             if ($currentUser->getUsername() != $datas['username'] && $userRepository->usernameExists($datas['username']) == true){
                 $registrationForm->addError(new FormError($app['translator']->trans('username already exists')));
             }
+            if ($currentUser->getMail() != $datas['email'] && $userRepository->emailExists($datas['email']) == true){
+                $registrationForm->addError(new FormError($app['translator']->trans('email already exists')));
+            }
 
             //if form is always valid after new verifications
             if ( $registrationForm->isValid() && $currentUser->getIdplayers() == $datas['id']){
