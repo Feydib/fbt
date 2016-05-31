@@ -17,7 +17,7 @@ class RegisterType extends AbstractType {
         $builder->add('username', "text", array("constraints" => array(
             new Assert\NotBlank(),
             new Assert\Length(array('min' => 3))),
-            "attr" => array("placeholder" => "pseudo", "class" => "form-control"))
+            "attr" => array("placeholder" => "username", "class" => "form-control"))
         );
         $builder->add('email', "email", array("constraints" => array(
             new Assert\NotBlank(),
@@ -28,13 +28,13 @@ class RegisterType extends AbstractType {
         $builder->add('lastname', "text", array("constraints" => array(
             new Assert\NotBlank(),
             new Assert\Length(array('min' => 2))),
-            "attr" => array("placeholder" => "nom", "class" => "form-control"))
+            "attr" => array("placeholder" => "lastname", "class" => "form-control"))
         );
 
         $builder->add('firstname', "text", array("constraints" => array(
             new Assert\NotBlank(),
             new Assert\Length(array('min' => 2))),
-            "attr" => array("placeholder" => "prénom", "class" => "form-control"))
+            "attr" => array("placeholder" => "firstname", "class" => "form-control"))
         );
         $builder->add('password_repeated', 'repeated', array(
             'type' => 'password',
@@ -54,7 +54,7 @@ class RegisterType extends AbstractType {
             $builder->add('username', "text", array("constraints" => array(
             	new Assert\NotBlank(),
             	new Assert\Length(array('min' => 3))),
-            	"attr" => array("placeholder" => "pseudo", "class" => "form-control"),
+            	"attr" => array("placeholder" => "username", "class" => "form-control"),
             	"data" => $this->user->getUsername())
 			);
 
@@ -68,14 +68,14 @@ class RegisterType extends AbstractType {
             $builder->add('lastname', "text", array("constraints" => array(
                 new Assert\NotBlank(),
                 new Assert\Length(array('min' => 2))),
-                "attr" => array("placeholder" => "nom", "class" => "form-control"),
+                "attr" => array("placeholder" => "lastname", "class" => "form-control"),
                 "data" => $this->user->getLastname())
             );
 
             $builder->add('firstname', "text", array("constraints" => array(
                 new Assert\NotBlank(),
                 new Assert\Length(array('min' => 2))),
-                "attr" => array("placeholder" => "prénom", "class" => "form-control"),
+                "attr" => array("placeholder" => "firstname", "class" => "form-control"),
                 "data" => $this->user->getFirstname())
             );
             $builder->add('password_repeated', 'repeated', array(
