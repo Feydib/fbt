@@ -151,7 +151,7 @@ class TournamentController implements ControllerProviderInterface {
      * Join a tournament
      * @param int $idTournament
      */
-    public function join($idTournament) {
+    public function join(Application $app, $idTournament) {
     	$lid = $app['session']->get('idleague');
         $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
 
