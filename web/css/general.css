@@ -15,7 +15,7 @@ body nav {
 }
 body #container {
     background-color: rgba(255, 255, 255, 0.9);
-    margin: 0 auto 40px auto;
+    margin: 0 auto;
     position: relative;
     width: 1024px;
 }
@@ -245,4 +245,10 @@ div.success p{
 .placeholder
 {
   color: #aaa;
+}
+
+@media screen and (max-heigh: 650px) {
+    body #container {
+        margin: 0 auto 40px auto;
+    }
 }
