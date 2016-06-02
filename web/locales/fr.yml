@@ -53,7 +53,7 @@ email already exists : Mail existant
 username already exists : Pseudo existant
 Invalid credentials.: Pseudo ou mot de passe incorect
 The form contains errors : Le formulaire contient des erreurs
-Your account was successfully created, please login : Votre compte a bien été créé, vous pouvez vous connecter
+Your account was successfully created but need to be activated.Please check your mail : Votre compte a bien été créé mais doit être activé. Veuillez vérifier vos mails.
 Your account was successfully updated, please logout and login again : Votre compte a bien été mis a jour, déconnectez puis reconnectez vous
 save succeed : Sauvegarde effectuée
 message send : Message envoyé
