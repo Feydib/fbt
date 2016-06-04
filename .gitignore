@@ -9,8 +9,9 @@ web/bundles/*
 bin/
 
 # Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
+App/Conf/parameters.ini
+App/Conf/parameters.yml
+App/Conf/conf.yml
 
 .idea/
 

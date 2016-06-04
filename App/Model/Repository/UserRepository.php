@@ -17,6 +17,15 @@ class UserRepository extends EntityRepository
     //protected $db;
     protected $table;
 
+    public function getUser($crit = array())
+    {
+        $user = $this->findOneBy($crit);
+        if (empty($user)) {
+    		return false;
+    	}
+        return $user;
+    }
+
     public function getUserByUsername($username)
     {
         $user = $this->findOneBy(array('username' => $username));

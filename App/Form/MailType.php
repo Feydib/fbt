@@ -7,10 +7,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MailType extends AbstractType {
-    function __construct($idTournament) {
-        $this->idTournament = $idTournament;
+
+	private $idTournament;
+
+    function __construct($idTournament = NULL) {
+       $this->idTournament = $idTournament;
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options ) {
         $builder->add('email', "email", array("constraints" => array(
             new Assert\NotBlank(),
@@ -20,7 +23,7 @@ class MailType extends AbstractType {
         $builder->add('tournament', 'hidden', array(
             'data' =>  $this->idTournament,
         ));
-       
+
     }
 
     public function getName() {

@@ -18,7 +18,7 @@ class ResetPasswordType extends AbstractType {
             new Assert\NotBlank(),
             new Assert\Email()),
             "attr" => array("placeholder" => "email", "class" => "form-control"))
-        ); 
+        );
     }
 
     public function getName() {

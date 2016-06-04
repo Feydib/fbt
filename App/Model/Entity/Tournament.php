@@ -71,7 +71,7 @@ class Tournament
         $this->idtournament = $idtournament;
     }
 
-    public function setIdteams($idleague) {
+    public function setIdleague(League $idleague) {
         $this->idleague = $idleague;
     }
 
