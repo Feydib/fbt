@@ -299,18 +299,19 @@ class MatchController implements ControllerProviderInterface {
      * @param \Silex\Application $app
      * @return type
      */
-    public function playerMatchBet($idplayers) {
+    public function playerMatchBet(Application $app, $idplayers) {
        $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
        $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
+       $lid = $this->app['session']->get('idleague');
 
        $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC'));
 
        $playersRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
        $players = $playersRepository->getUserById($idplayers);
 
-       $playersTournaments = $tournamentRepository->findMyTournaments($players);
+       $playersTournaments = $tournamentRepository->findMyTournaments($players, $lid);
        $currentUser = $playersRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
-       $currentUserTournaments = $tournamentRepository->findMyTournaments($currentUser);
+       $currentUserTournaments = $tournamentRepository->findMyTournaments($currentUser, $lid);
 
        $inSameTournament = false;
        foreach($playersTournaments as $tournament) {

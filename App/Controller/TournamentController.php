@@ -36,7 +36,7 @@ class TournamentController implements ControllerProviderInterface {
         $currentUser = $userRepository->getUserByUsername($this->app['security']->getToken()->getUser()->getUsername());
 
         $tournament = $tournamentRepository->find(array ('idtournament' => $idTournament, 'idleague' => $lid));
-        $betScorePlayers = $betScoreRepository->findTournamentScores($tournament);
+        $betScorePlayers = $betScoreRepository->findTournamentScores($tournament, $lid);
 
         $tournPlayers = $tournPlayersRepository->findBy(array("idtournament" => $tournament, "isaccepted" => true));
 
