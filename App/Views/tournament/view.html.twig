@@ -8,7 +8,7 @@
  <div class="row playersInfos">
     <div class="col-md-12">
         <h3>{% trans %}ranking{% endtrans %} :</h3>
-        
+
         <table>
             <tbody>
                 <tr>
@@ -21,11 +21,11 @@
                     {% for tournplayer in tournament.players %}
                         {% if tournplayer.idplayers == player and tournplayer.isaccepted == true %}
                             <tr>
-                                <td><a href="{{path('match.playerMatchBet', { idplayers : tournplayer.idplayers.idplayers} )}}">{{player.firstname|capitalize }} {{player.lastname|capitalize }} </a></td>
+                                <td><a href="{{path('match.playerMatchBet', { idplayers : tournplayer.idplayers.idplayers} )}}">{{player.username|capitalize }}</a></td>
                                 <td>{{player.rightpronostics}}</td>
                                 <td>{{player.wrongpronostics}}</td>
-                                <td> 
-                                    {{player.score}} {% trans %}pts{% endtrans %} 
+                                <td>
+                                    {{player.score}} {% trans %}pts{% endtrans %}
                                 <td>
                                     {% if currentUserAdmin == true %}
                                 <td>
@@ -55,7 +55,7 @@
                 {% if player.isaccepted == false %}
                     <div class="col-md-1"></div>
                     <div class="col-md-4">
-                    {{player.idplayers.firstname|capitalize}} {{player.idplayers.lastname|capitalize}} 
+                    {{player.idplayers.firstname|capitalize}} {{player.idplayers.lastname|capitalize}}
                     </div>
                     {% if currentUserAdmin == true %}
                         <div class="col-md-2">
@@ -70,7 +70,7 @@
             {% endfor %}
     </div>
 </div>
-           
+
 <div class="row playersInfos">
     <div class="col-md-10">
         <h3>{% trans %} invite player {% endtrans %}</h3>
