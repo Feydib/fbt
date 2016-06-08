@@ -16,95 +16,98 @@ use App\Model\Entity\Teams;
 class MatchController implements ControllerProviderInterface {
 
 	private $app;
+	private $lid;
 
     /**
      * Méthod to calcul points obtain by player after his bets
      * @param type $idMatch
      */
-    protected function calculPoint($idMatch) {
-	$matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
-	$betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
-	$betMatchRepository = $this->app['em']->getRepository('App\Model\Entity\Betmatchs');
-	$playersRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
-	$teamsRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
+    protected function calculPoint( $idMatch , $league) {
+		$matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
+		$betScoreRepository = $this->app['em']->getRepository('App\Model\Entity\Betscore');
+		$betMatchRepository = $this->app['em']->getRepository('App\Model\Entity\Betmatchs');
+		$playersRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
+		$teamsRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
 
-	$playerIdList = $betMatchRepository->findAllPlayersId();
-	$matchTeamList = $matchTeamRepository->find(null, 0, array("idmatchs" => $idMatch->getIdmatchs()));
+		//$playerIdList = $betMatchRepository->findAllPlayersId();
+		$playerIdList = $betMatchRepository->findPlayersIdbyLeague($this->lid);
+		$matchTeamList = $matchTeamRepository->find(null, 0, array("idmatchs" => $idMatch->getIdmatchs()));
 
-    //Get idTeam, Score, Pen and worldrank for both teams
-	foreach($matchTeamList as $matchTeam) {
-            $scoreList[] = $matchTeam->getScore();
-            $penList[] = $matchTeam->getPen();
-            $idmatchteamList[] = $matchTeam->getIdmatchteam();
-            $teamRankList[] = ($teamsRepository->getRank($matchTeam->getIdteams()->getIdteams()));
-            foreach ($matchTeam->getBet() as $bet) {
-		$betscoreList[] = $bet->getScore();
-		$betplayerList[] = $bet->getIdplayers();
-            }
-        }
+	    //Get idTeam, Score, Pen and worldrank for both teams
+		foreach($matchTeamList as $matchTeam) {
+	            $scoreList[] = $matchTeam->getScore();
+	            $penList[] = $matchTeam->getPen();
+	            $idmatchteamList[] = $matchTeam->getIdmatchteam();
+	            $teamRankList[] = ($teamsRepository->getRank($matchTeam->getIdteams()->getIdteams()));
+	            foreach ($matchTeam->getBet() as $bet) {
+			$betscoreList[] = $bet->getScore();
+			$betplayerList[] = $bet->getIdplayers();
+	            }
+	        }
 
-	foreach ($playerIdList as $player) { //List array for each players who bets
-            $i = $points = $coef = $odds = 0;
-            foreach ($betplayerList as $key => $betplayer) { //List array of betMatch to find players
-                if ($player['idplayers'] === $betplayer->getIdplayers()) { // Try to match players and betters
-                    $betscore[$i] = $betscoreList[$key];
-                    $i++;
-		}
-            }
-            //Calculate probability and odds
-            $diff = $teamRankList[0] - $teamRankList[1];
-            $rdiff = $teamRankList[1] - $teamRankList[0];
-            //Limit difference between two teams to 29, else we will tend infinity...
-            if ($diff < -29) {
-            	$diff = -29;
-            	$rdiff = 29;
-            }
-            if ($diff > 29) {
-            	$diff = 29;
-            	$rdiff = -29;
-            }
-            $probw = 1/3 - ($diff)/100;
-            $probl = 1/3 - ($rdiff)/100;
-            $oddw = round(1/$probw , 1);
-            $oddl = round(1/$probl , 1);
+		foreach ($playerIdList as $player) { //List array for each players who bets
+	            $i = $points = $coef = $odds = 0;
+	            foreach ($betplayerList as $key => $betplayer) { //List array of betMatch to find players
+	                if ($player['idplayers'] === $betplayer->getIdplayers()) { // Try to match players and betters
+	                    $betscore[$i] = $betscoreList[$key];
+	                    $i++;
+			}
+	            }
+	            //Calculate probability and odds
+	            $diff = $teamRankList[0] - $teamRankList[1];
+	            $rdiff = $teamRankList[1] - $teamRankList[0];
+	            //Limit difference between two teams to 29, else we will tend infinity...
+	            if ($diff < -29) {
+	            	$diff = -29;
+	            	$rdiff = 29;
+	            }
+	            if ($diff > 29) {
+	            	$diff = 29;
+	            	$rdiff = -29;
+	            }
+	            $probw = 1/3 - ($diff)/100;
+	            $probl = 1/3 - ($rdiff)/100;
+	            $oddw = round(1/$probw , 1);
+	            $oddl = round(1/$probl , 1);
 
-            //Verify if betscore is not null
-            if ($betscore[0] === null || $betscore[1] ===null ) {
-            	$odds = 0;
-            }
-            //If match bet = match result, then calulate odds, else, odds = 0
-            elseif ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
-                $odds = $oddw;
-            }
-            elseif ( ($scoreList[0] == $scoreList[1] && $betscore[0] == $betscore[1]) ) {
-                $odds = ($oddw > $oddl) ? round((3 + $oddw)/2 , 1) :  round((3 + $oddl)/2 , 1);
-            }
-            elseif ( ($scoreList[0] < $scoreList[1] && $betscore[0] < $betscore[1]) ) {
-                $odds = $oddl;
-            }
-            else {
-                $odds = 0;
-            }
-            //Limit odd
-            $odds = ($odds > 7) ? 7 : $odds;
+	            //Verify if betscore is not null
+	            if ($betscore[0] === null || $betscore[1] ===null ) {
+	            	$odds = 0;
+	            }
+	            //If match bet = match result, then calulate odds, else, odds = 0
+	            elseif ( ($scoreList[0] > $scoreList[1] && $betscore[0] > $betscore[1]) ) {
+	                $odds = $oddw;
+	            }
+	            elseif ( ($scoreList[0] == $scoreList[1] && $betscore[0] == $betscore[1]) ) {
+	                $odds = ($oddw > $oddl) ? round((3 + $oddw)/2 , 1) :  round((3 + $oddl)/2 , 1);
+	            }
+	            elseif ( ($scoreList[0] < $scoreList[1] && $betscore[0] < $betscore[1]) ) {
+	                $odds = $oddl;
+	            }
+	            else {
+	                $odds = 0;
+	            }
+	            //Limit odd
+	            $odds = ($odds > 7) ? 7 : $odds;
 
-            //Verify if bet score equal real score
-            if ($scoreList[0] == $betscore[0] && $scoreList[1] == $betscore[1]) {
-                $coef = 2;
-            }
-            elseif ($scoreList[0] == $betscore[0] || $scoreList[1] == $betscore[1]) {
-                $coef = 1.5;
-            }
-            else $coef = 1;
+	            //Verify if bet score equal real score
+	            if ($scoreList[0] == $betscore[0] && $scoreList[1] == $betscore[1]) {
+	                $coef = 2;
+	            }
+	            elseif ($scoreList[0] == $betscore[0] || $scoreList[1] == $betscore[1]) {
+	                $coef = 1.5;
+	            }
+	            else $coef = 1;
 
-            $points = 10*$coef*$odds;
+	            $points = 10*$coef*$odds;
 
-            $score = new Betscore();
-            $score->setScore($points);
-            $score->setIdmatchs($idMatch);
-            $score->setIdplayers($playersRepository->getUserById($player));
-            $betScoreRepository->save($score);
-        }
+	            $score = new Betscore();
+	            $score->setScore($points);
+	            $score->setIdleague($league);
+	            $score->setIdmatchs($idMatch);
+	            $score->setIdplayers($playersRepository->getUserById($player));
+	            $betScoreRepository->save($score);
+	        }
     }
 
     /**
@@ -139,11 +142,11 @@ class MatchController implements ControllerProviderInterface {
      * Method to update pool ranking
      * @param type $pool
      */
-    private function updatePoolRanking($pool) {
+    private function updatePoolRanking( $pool , $lid ) {
         $teamRepository = $this->app['em']->getRepository('App\Model\Entity\Teams');
         $matchRepository = $this->app['em']->getRepository('App\Model\Entity\Matchs');
         $matchteamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
-        $arrayTeams = $teamRepository->findTeams(array("pool" => $pool), null, 0, array("pts" => "DESC", "gav" => "DESC", "gf" => "DESC", "ga" => "ASC"));
+        $arrayTeams = $teamRepository->findTeams(array("pool" => $pool,"idleague" => $lid), null, 0, array("pts" => "DESC", "gav" => "DESC", "gf" => "DESC", "ga" => "ASC"));
 
         //var_dump($arrayTeams);
         $ranking = 1;
@@ -274,7 +277,7 @@ class MatchController implements ControllerProviderInterface {
         $teamRepository->update($team1);
         $teamRepository->update($team2);
 
-        $this->updatePoolRanking($team1->getPool());
+        $this->updatePoolRanking( $team1->getPool() , $team1->getIdleague() );
     }
 
     public function index(Application $app) {
@@ -352,9 +355,13 @@ class MatchController implements ControllerProviderInterface {
      * @param \Silex\Application $app
      * @return type
      */
-    public function doScore() {
+    public function doScore(Application $app) {
         $matchTeamRepository = $this->app['em']->getRepository('App\Model\Entity\Matchteam');
         $matchTeamList = $matchTeamRepository->find(null, 0, array("score" => NULL));
+        $leagueRepository = $this->app['em']->getRepository('App\Model\Entity\League');
+		//Get League
+		$this->lid = $app['session']->get('idleague');
+		$league = $leagueRepository->findLeague(array('idleague' => $this->lid));
 
         foreach($matchTeamList as $matchTeam) {
             $matchTeamIdList[] = $matchTeam->getIdmatchteam();
@@ -385,7 +392,7 @@ class MatchController implements ControllerProviderInterface {
                             $this->updateTeams($idmatch);
                         }
                         $this->completeNextMatchs($matchTeam);
-                        $this->calculPoint($idmatch);
+                        $this->calculPoint($idmatch , $league);
                     } else {
                         $savedMatchs[] = $idmatch;
                         $idmatchprec = $idmatch ;
@@ -482,7 +489,6 @@ class MatchController implements ControllerProviderInterface {
         $match->get("/recap", array($this,"nextAndPreviousMatchs") )->bind("match.nextPrevious");
         $match->post('/admin/match/doScore', array($this,"doScore"))->bind('match.doScore');
 
-        //$match->get("/admin/match/test/{pool}", array($this,"updatePoolRanking") )->bind("match.updatePoolRanking");
         return $match;
     }
 

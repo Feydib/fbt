@@ -4,6 +4,8 @@ namespace App\Model\Repository;
 
 use App\Model\Entity\Betmatchs;
 use App\Model\Entity\Players;
+use App\Model\Entity\Matchs;
+use App\Model\Entity\Matchteam;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -11,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class BetMatchRepository extends EntityRepository
 {
-    
+
 
     /**
      * Saves Betmatchs to the database.
@@ -23,7 +25,7 @@ class BetMatchRepository extends EntityRepository
         $this->_em->persist($betMatch);
         $this->_em->flush();
     }
-    
+
     /**
      * Update Betmatchs to the database.
      *
@@ -47,7 +49,7 @@ class BetMatchRepository extends EntityRepository
      * @return array A collection of matchs, keyed by id.
      */
     public function find($crit)
-    {        
+    {
         $betMatch = $this->findOneBy($crit);
         return $betMatch ? $betMatch : FALSE;
     }
@@ -65,11 +67,37 @@ class BetMatchRepository extends EntityRepository
     	->select ('pl.idplayers')
     	->from('App\Model\Entity\Betmatchs','be')
     	->join('be.idplayers', 'pl')
-    	->groupBy('be.idplayers');
+    	->groupBy('be.idplayers')
     	;
     	$query = $qb->getQuery();
     	return $query->getResult() ? $query->getResult() : FALSE;
     }
-    
-    
+
+    /**
+     * Returns a collection of Players filtered by League.
+     *
+     * @param integer $idleague
+     *		The league id filter
+     * @return array A collection of all Players Id.
+     */
+    public function findPlayersIdbyLeague($idleague)
+    {
+    	$parameters = array (
+    		'league' => $idleague
+    		);
+
+    	$qb = $this->_em->createQueryBuilder()
+    	->select ('pl.idplayers')
+    	->from('App\Model\Entity\Betmatchs','be')
+    	->join('be.idplayers', 'pl')
+    	->join('be.idmatchteam', 'mt')
+    	->join('mt.idmatchs', 'm')
+    	->groupBy('be.idplayers')
+    	->where('m.idleague = :league')
+    	->setparameters($parameters)
+    	;
+    	$query = $qb->getQuery();
+    	return $query->getResult() ? $query->getResult() : FALSE;
+    }
+
 }
