@@ -307,7 +307,7 @@ class MatchController implements ControllerProviderInterface {
        $tournamentRepository = $this->app['em']->getRepository('App\Model\Entity\Tournament');
        $lid = $this->app['session']->get('idleague');
 
-       $matchList = $matchRepository->find(array(), null, 0 , array('date' => 'ASC'));
+       $matchList = $matchRepository->find(array('idleague' => $app['session']->get('idleague')), null, 0 , array('date' => 'ASC'));
 
        $playersRepository = $this->app['em']->getRepository('App\Model\Entity\Players');
        $players = $playersRepository->getUserById($idplayers);

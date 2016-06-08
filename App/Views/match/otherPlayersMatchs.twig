@@ -5,8 +5,8 @@
 <div id="content">
 
     <h1>{% trans %} matchs list {% endtrans %}</h1>
-    
-    <h4>Pronostics de {{players.firstname|capitalize}} {{players.lastname|capitalize}}</h4>
+
+    <h4>Pronostics de {{players.username|capitalize}}</h4>
 
         {% for match in matchs %}
             <div class="row match">
@@ -15,40 +15,40 @@
                     <table>
                         <tbody>
                             <tr>
-                                
+
             {% set firstTeam = true %}
 
             {% for team in match.teams %}
 
-                
+
                 {% if firstTeam == false %}
                     <td class="ext">
                         {% for bet in team.bet %}
                             {% if bet.idplayers.idplayers == players.idplayers %}
-                                 <b>{{bet.score}}</b> 
+                                 <b>{{bet.score}}</b>
                             {% endif %}
-                        {% endfor %} 
+                        {% endfor %}
                     </td>
                 {% endif %}
-                
+
                     {% if firstTeam == true %}
                     <td class="int"><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
-                    {% endif %} 
+                    {% endif %}
                     <td class="int">{{team.idteams.countries.isoAlpha3}}</td>
                     {% if firstTeam == false %}
                         <td class="ext"><img src="{{ app.request.basepath }}/img/flag/medium/{{team.idteams.countries.isoNum}}.png" alt="{{team.idteams.countries.nameFr}}" title ="{{team.idteams.countries.nameFr}}" /></td>
-                    {% endif %} 
-                
+                    {% endif %}
+
                 {% if firstTeam == true %}
-                    <td class="int">  
+                    <td class="int">
                        {% for bet in team.bet %}
                             {% if bet.idplayers.idplayers == players.idplayers %}
-                                 <b>{{bet.score}}</b> 
+                                 <b>{{bet.score}}</b>
                             {% endif %}
                        {% endfor %}
-                    </td>   
+                    </td>
                 {% endif %}
-                
+
                 {% if firstTeam == true %}
                     <td>
                             -
@@ -57,11 +57,11 @@
 
                 {% set firstTeam = false %}
             {% endfor %}
-                <td> 
+                <td>
                     {% if "now"|date('YmdHi') > match.date|date('YmdHi') and render(url('bet.getPlayerScore', {player : players.username, idMatch : match.idmatchs} )) != "" %}
                         {{ render(url('bet.getPlayerScore', {player : players.username, idMatch : match.idmatchs} ))}} {% trans %}pts{% endtrans %}
                     {% endif %}
-                </td> 
+                </td>
                         </tr>
                     </tbody>
                 </table>
@@ -69,6 +69,6 @@
             </div>
         </div>
         {% endfor %}
-    
+
 </div>
 {% endblock %}
