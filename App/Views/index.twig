@@ -4,36 +4,60 @@
 {% block body %}
 <div id="content">
     <h1>Pronostics</h1>
-    {% if is_granted('ROLE_USER') %}
+<!--    {% if is_granted('ROLE_USER') %}
     <div class="row summary ">
         <div class="col-md-4 ">
         </div>
-        <div class="col-md-5 generalRank">
-            <h3>{% trans %}general ranking{% endtrans %}</h3>
-            <p><b>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</b></p>
-            <p><b>{{ render(url('bet.getCurrentPlayerRanking')) }}</b></p>
+        <div class="col-md-4 generalRank">
+            <h3 class="text-center">{% trans %}general ranking{% endtrans %}</h3>
+            <div class="row col-md-12">
+            	<p class="col-md-6"><b>{{ render(url('bet.getCurrentPlayerTotalScore'))}} {% trans %} pts {% endtrans %}</b></p>
+            	<p class="col-md-6"><b>{{ render(url('bet.getCurrentPlayerRanking')) }}</b></p>
+            </div>
         </div>
     </div>
-    {% endif %}
+    {% endif %}-->
     <div class="row loginForm">
-        <div class="col-md-1"></div>
-            {% if is_granted('ROLE_USER') %}
-                <div class="col-md-6">
-                {{ render(url('tournament.mytournaments'))}}
-                </div>
-            {% else %}
-                <div class="col-md-4">
-                {{ render(url('login'))}}
-                </div>
-            {% endif %}
-        <div class="col-md-1"></div>
-        <div class="col-md-5 bestPlayers">
-            <h3>{% trans %}best players{% endtrans %}</h3>
-
-            {{ render(url('bet.best'))}}
-            <div class="col-md-1"></div>
+		{% if is_granted('ROLE_USER') %}
+			<div class="col-md-4 myCompetitionsList">
+				<h3>{% trans %} my tournaments {% endtrans %}</h3>
+				{{ render(url('tournament.mytournaments'))}}
+            </div>
+            <div class="col-md-4 bestPlayers">
+            	<h3>{% trans %}general ranking{% endtrans %}</h3>
+            	{{ render(url('bet.best'))}}
+            </div>
+            <div class="row-fluid">
+        		<div class="col-md-4 pull-right">
+		        	<a class="twitter-timeline" href="https://twitter.com/FbtFree" data-widget-id="739166127411073024" width="300" height="400">Tweets de @FbtFree</a>
+		        	<script>
+		        		!function(d,s,id){
+		        			var js,
+		        			fjs=d.getElementsByTagName(s)[0],
+		        			p=/^http:/.test(d.location)?'http':'https';
+		        			if(!d.getElementById(id)){
+		        				js=d.createElement(s);
+		        				js.id=id;
+		        				js.src=p+"://platform.twitter.com/widgets.js";
+		        				fjs.parentNode.insertBefore(js,fjs);
+		        			}
+		        		}
+		        		(document,"script","twitter-wjs");
+		        	</script>
+		        </div>
+	        </div>
+        {% else %}
+        	<div class="col-md-4"></div>
+        	<div class="col-md-4">
+				{{ render(url('login'))}}
+			</div>
+			<div class="col-md-4"></div>
+		{% endif %}
         </div>
     </div>
+    <!-- Include next and previous matchs -->
     {{ render(url('match.nextPrevious'))}}
 </div>
+
+
 {% endblock %}

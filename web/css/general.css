@@ -42,12 +42,16 @@ body.accueil #container .bestPlayers h3 {
     margin: 0 0 30px;
     padding: 0;
 }
-body.accueil #container .bestPlayers table {
+body.accueil #container .myCompetitionsList h3 {
+    margin: 0 0 30px;
+    padding: 0;
+}
+/*body.accueil #container .bestPlayers table {
     margin: 0 auto;
 }
 body.accueil #container .bestPlayers table tr td, th {
     padding: 2px 5px;
-    width: 80px;
+    width: 80px;*/
 }
 body.accueil #container .first {
     padding: 2px 5px;
@@ -225,21 +229,21 @@ div.message p{
 }
 
 div.error{
-    border:1px solid #f46767; 
-    background:#FFBABA; 
+    border:1px solid #f46767;
+    background:#FFBABA;
     color : #D8000C;
 }
-     
+
 div.error p{
     background:#FFBABA url('../img/error.png') no-repeat;
 }
 
 div.success{
-    border:1px solid #9F6000; 
-    background:#FEEFB3; 
+    border:1px solid #9F6000;
+    background:#FEEFB3;
     color : #9F6000;
 }
-     
+
 div.success p{
     background:#FEEFB3 url('../img/icon_check.png') no-repeat;
 }

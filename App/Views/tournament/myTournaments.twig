@@ -1,11 +1,10 @@
 
 {% block body %}
-<div class="row myCompetitionsList">
-    <div class="col-md-10">
-        <h3>{% trans %} my tournaments {% endtrans %}</h3>
-        <table>       
+<div class="row">
+    <div class="col-md-12">
+        <table>
             {% for mytournament in myTournaments %}
-                <tr> 
+                <tr>
                     {% for player in mytournament.players %}
                         {% if player.isaccepted == true %}
                             <td><a href="{{path('tournament.view', { idTournament : mytournament.idTournament } )}}">{{mytournament.name}} </a></td>
@@ -16,11 +15,11 @@
                             <td colspan="2">{{mytournament.name}}</td>
                             <td colspan="2">{% trans %}accept waiting{% endtrans %}</td>
                         {% endif %}
-                    {% endfor %}  
-                    
+                    {% endfor %}
+
                 </tr>
             {% endfor %}
         </table>
-    </div>    
+    </div>
 </div>
 {% endblock %}

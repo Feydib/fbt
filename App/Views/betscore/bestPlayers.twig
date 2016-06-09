@@ -1,20 +1,20 @@
 {% block body %}
 <div class="row">
     <div class="col-md-12 bestPlayers">
-        <table>
+        <table class="table-condensed">
             <tbody>
                 <tr>
                     <th>Username</th>
                     <th>Points</th>
-                    <th>Prono. +</th>
-                    <th>Prono. -</th>
+                    <!--<th>Prono. +</th>
+                    <th>Prono. -</th>-->
                 </tr>
                 {% for player in players %}
                     <tr>
                         <td>{{player.username|capitalize}}</td>
                         <td>{{player.score}}</td>
-                        <td>{{player.rightpronostics}}</td>
-                        <td>{{player.wrongpronostics}}</td>
+                        <!--<td>{{player.rightpronostics}}</td>
+                        <td>{{player.wrongpronostics}}</td>-->
                     </tr>
                 {% endfor %}
             </tbody>
