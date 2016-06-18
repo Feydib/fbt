@@ -29,7 +29,7 @@ class MatchPrerequisite
      * })
      */
     private $idmatchs;
-    
+
     /**
      * @var \FbtMatchs
      *
@@ -39,7 +39,7 @@ class MatchPrerequisite
      * })
      */
     private $idmatchs1;
-    
+
     /**
      * @var \FbtMatchs
      * @OneToOne(targetEntity="Matchs")
@@ -52,16 +52,30 @@ class MatchPrerequisite
     /**
      * @var \FbtMatchs
      *
-     * @Column(name="idPoolWinner", type="integer", nullable=true)
+     * @Column(name="idPoolTeam1", type="integer", nullable=true)
      */
-    private $idpoolwinner;
-    
+    private $idpoolteam1;
+
     /**
      * @var \FbtMatchs
      *
-     * @Column(name="idPoolSecond", type="integer", nullable=true)
+     * @Column(name="idPoolTeam2", type="integer", nullable=true)
      */
-    private $idpoolsecond;
+    private $idpoolteam2;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="rankTeam1", type="integer", nullable=true)
+     */
+    private $rankteam1;
+
+    /**
+     * @var integer
+     *
+     * @Column(name="rankTeam2", type="integer", nullable=true)
+     */
+    private $rankteam2;
 
     public function getIdmatchrerequisite() {
         return $this->idmatchrerequisite;
@@ -79,12 +93,20 @@ class MatchPrerequisite
         return $this->idmatchs2;
     }
 
-    public function getIdpoolwinner() {
-        return $this->idpoolwinner;
+    public function getIdpoolteam1() {
+        return $this->idpoolteam1;
     }
 
-    public function getIdpoolsecond() {
-        return $this->idpoolsecond;
+    public function getIdpoolteam2() {
+        return $this->idpoolteam2;
+    }
+
+    public function getRankteam1() {
+        return $this->rankteam1;
+    }
+
+    public function getRankteam2() {
+        return $this->rankteam2;
     }
 
     public function setIdmatchrerequisite($idmatchrerequisite) {
@@ -103,14 +125,21 @@ class MatchPrerequisite
         $this->idmatchs2 = $idmatchs2;
     }
 
-    public function setIdpoolwinner(\FbtMatchs $idpoolwinner) {
-        $this->idpoolwinner = $idpoolwinner;
+    public function setIdpoolteam1(\FbtMatchs $idpoolteam1) {
+        $this->idpoolteam1 = $idpoolteam1;
     }
 
-    public function setIdpoolsecond(\FbtMatchs $idpoolsecond) {
-        $this->idpoolsecond = $idpoolsecond;
+    public function setIdpoolteam2(\FbtMatchs $idpoolteam2) {
+        $this->idpoolteam2 = $idpoolteam2;
     }
 
+    public function setRankteam1($rankteam1) {
+        $this->rankteam1 = $rankteam1;
+    }
+
+    public function setRankteam2($rankteam2) {
+        $this->rankteam2 = $rankteam2;
+    }
 
 
 }

@@ -71,7 +71,7 @@ class MatchController implements ControllerProviderInterface {
 	            $oddl = round(1/$probl , 1);
 
 	            //Verify if betscore is not null
-	            if ($betscore[0] === null || $betscore[1] ===null ) {
+	            if ($betscore[0] === null || $betscore[1] === null ) {
 	            	$odds = 0;
 	            }
 	            //If match bet = match result, then calulate odds, else, odds = 0
@@ -418,8 +418,8 @@ class MatchController implements ControllerProviderInterface {
         //if pool is completed we create following match with pool teams
         if($matchTeam->getIdmatchs()->getType() == "QUALIFICATION" && $this->isPoolCompleted($matchTeam->getIdteams()->getPool())) {
             //We get pool winner and second for final tour
-            $matchsWinner = $matchPrerequisiteRepository->find(array('idpoolwinner' => $matchTeam->getIdteams()->getPool()));
-            $matchsSecond = $matchPrerequisiteRepository->find(array('idpoolsecond' => $matchTeam->getIdteams()->getPool()));
+            $matchsWinner = $matchPrerequisiteRepository->find(array('idpoolteam1' => $matchTeam->getIdteams()->getPool()));
+            $matchsSecond = $matchPrerequisiteRepository->find(array('idpoolteam2' => $matchTeam->getIdteams()->getPool()));
 
             $teamList = $teamRepository->findTeams(array('pool' => $matchTeam->getIdteams()->getPool()), null, 0, array("ranking" => "ASC"));
 
