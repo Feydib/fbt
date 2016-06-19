@@ -391,7 +391,7 @@ class MatchController implements ControllerProviderInterface {
                         if ($matchTeam->getIdmatchs()->getType() == "QUALIFICATION") {
                             $this->updateTeams($idmatch);
                         }
-                        $this->completeNextMatchs($matchTeam);
+                        //$this->completeNextMatchs($matchTeam);
                         $this->calculPoint($idmatch , $league);
                     } else {
                         $savedMatchs[] = $idmatch;
@@ -418,8 +418,11 @@ class MatchController implements ControllerProviderInterface {
         //if pool is completed we create following match with pool teams
         if($matchTeam->getIdmatchs()->getType() == "QUALIFICATION" && $this->isPoolCompleted($matchTeam->getIdteams()->getPool())) {
             //We get pool winner and second for final tour
-            $matchsWinner = $matchPrerequisiteRepository->find(array('idpoolteam1' => $matchTeam->getIdteams()->getPool()));
-            $matchsSecond = $matchPrerequisiteRepository->find(array('idpoolteam2' => $matchTeam->getIdteams()->getPool()));
+            $matchsWinner = $matchPrerequisiteRepository->find(array('idpoolteam1' => $matchTeam->getIdteams()->getPool(), 'rankteam1' => '1'));
+            if ($matchPrerequisiteRepository->find(array('idpoolteam2' => $matchTeam->getIdteams()->getPool(), 'rankteam1' => '2')))
+            	$matchsSecond = $matchPrerequisiteRepository->find(array('idpoolteam2' => $matchTeam->getIdteams()->getPool(), 'rankteam1' => '2'));
+            else
+            	$matchsSecond = $matchPrerequisiteRepository->find(array('idpoolteam2' => $matchTeam->getIdteams()->getPool(), 'rankteam2' => '2'));
 
             $teamList = $teamRepository->findTeams(array('pool' => $matchTeam->getIdteams()->getPool()), null, 0, array("ranking" => "ASC"));
 
